@@ -6,6 +6,9 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 
+const { initializeAdmin } = require('./models/admin');
+const adminAuthRoutes = require('./routes/adminAuthRoutes');
+
 const frontUrl = process.env.NEXT_PUBLIC_APP_FRONTEND_URL;
 
 const { MONGO_URI } = require('./config/config');
@@ -31,9 +34,11 @@ app.use(express.json());
 app.use(cookieParser());
 
 
+app.use('/admin', adminAuthRoutes);
+
 
 app.get('/', (req, res) => {
-  res.send('Welcome to ARCES_2024');
+  res.send('Welcome to Gaibandha Student Association');
 });
 
 mongoose.connect(MONGO_URI)

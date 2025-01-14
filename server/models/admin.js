@@ -46,7 +46,7 @@ const initializeAdmin = async () => {
           // Use plain password here to let the pre('save') middleware hash it
           const initialAdmin = new Admin({
             email: 'admin@example.com',
-            passwordHash: '18420371f', // Plain password
+            passwordHash: 'password123', // Plain password
           });
     
           // Save the admin, triggering the middleware

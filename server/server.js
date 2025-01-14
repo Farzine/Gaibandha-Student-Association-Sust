@@ -1,13 +1,13 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const multer = require('multer');
 const cors = require('cors'); 
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 
 const { initializeAdmin } = require('./models/admin');
 const adminAuthRoutes = require('./routes/adminAuthRoutes');
+const userControllerRoutes = require('./routes/userControllerRoutes');
 
 const frontUrl = process.env.NEXT_PUBLIC_APP_FRONTEND_URL;
 
@@ -35,6 +35,7 @@ app.use(cookieParser());
 
 
 app.use('/admin', adminAuthRoutes);
+app.use('/user', userControllerRoutes);
 
 
 app.get('/', (req, res) => {

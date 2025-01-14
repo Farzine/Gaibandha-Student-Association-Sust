@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const { initializeAdmin } = require('./models/admin');
 const adminAuthRoutes = require('./routes/adminAuthRoutes');
 const userControllerRoutes = require('./routes/userControllerRoutes');
+const galleryControllerRoutes = require('./routes/galleryControllerRoutes');
 
 const frontUrl = process.env.NEXT_PUBLIC_APP_FRONTEND_URL;
 
@@ -36,6 +37,7 @@ app.use(cookieParser());
 
 app.use('/admin', adminAuthRoutes);
 app.use('/user', userControllerRoutes);
+app.use('/gallery', galleryControllerRoutes);
 
 
 app.get('/', (req, res) => {

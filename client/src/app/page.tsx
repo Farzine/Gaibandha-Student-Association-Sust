@@ -1,12 +1,14 @@
 import { BackgroundBeamsDemo } from "@/components/BackgroundBeamsDemo";
 import { BackgroundGradientDemo } from "@/components/BackgroundGradientDemo";
 import { CardHoverEffectDemo } from "@/components/CardHoverEffectDemo";
+import Navbar from "@/components/Navbar";
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
 import Image from "next/image";
 
 export default function Home() {
   return (
     <div >
+      <Navbar />
       <AnimatedTestimonials
         testimonials={[
           {

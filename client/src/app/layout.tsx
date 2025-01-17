@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import CosmicBackground from "../components/ui/CosmicBackground";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,10 +26,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <div className="cosmic-container">
+          <CosmicBackground />
+        </div>
+        <div className="content-wrapper">
+          <main className="content-container">
+            {children}
+          </main>
+        </div>
       </body>
     </html>
   );

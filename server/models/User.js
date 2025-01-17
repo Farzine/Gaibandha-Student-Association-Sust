@@ -98,7 +98,7 @@ const userSchema = new mongoose.Schema({
     designation: { 
         type: String, 
         enum: ['President', 'Vice-President', 'General Secretary','Joint General Secretary','Assistant General Secretary','Treasurer','Assistant Treasurer',
-            'Organizing Secretary','IT Secretary','Assistant IT Secretary','Cultural Secretary','Assistant Cultural Secretary','Adcisor','Member'
+            'Organizing Secretary','IT Secretary','Assistant IT Secretary','Cultural Secretary','Assistant Cultural Secretary','Advisor','Member'
         ], 
         default: 'Member'
     },

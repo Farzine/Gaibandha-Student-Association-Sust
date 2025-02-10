@@ -65,7 +65,7 @@ export default function Navbar() {
                 Pricing
               </button>
               {isPricingDropdownOpen && (
-                <ul className="absolute top-10 left-0 w-40 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
+                <ul className="absolute top-10 left-0 w-40 bg-white border rounded-lg shadow-lg dark:bg-gray-800 z-10 dark:border-gray-700">
                   <li>
                     <Link
                       href="/pricing/basic"

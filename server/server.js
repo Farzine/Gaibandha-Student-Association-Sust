@@ -12,7 +12,7 @@ const galleryControllerRoutes = require('./routes/galleryControllerRoutes');
 
 const frontUrl = process.env.NEXT_PUBLIC_APP_FRONTEND_URL;
 
-const { MONGO_URI } = require('./config/config');
+const { MONGO_URI, PORT } = require('./config/config');
 
 
 const corsOptions ={
@@ -23,7 +23,6 @@ const corsOptions ={
 }
 
 const app = express();
-const PORT = 5000;
 
 app.use(cors(corsOptions));
 

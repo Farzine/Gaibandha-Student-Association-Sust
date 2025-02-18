@@ -1,28 +1,91 @@
+"use client";
 import Link from "next/link";
-
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Sign In Page | Free Next.js Template for Startup and SaaS",
-  description: "This is Sign In Page for Startup Nextjs Template",
-  // other metadata
-};
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const SigninPage = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showError, setShowError] = useState(true);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showSuccess, setShowSuccess] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Handle change for text
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Check if all fields are filled
+  const isFormValid = Object.entries(formData).every(([key, value]) => {
+    return value.trim() !== "";
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!isFormValid) {
+      setErrorMessage("Please fill out email and password fields.");
+      return;
+    }
+    setErrorMessage("");
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/user/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+          }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrorMessage(data.message || "Login failed");
+        throw new Error(data.message || "Login failed");
+      }
+
+      setSuccessMessage(data.message);
+      // Optionally, you can redirect the user to a verification page:
+      router.push("/dashboard");
+      // setShowVerificationModal(true);
+    } catch (err: any) {
+      setErrorMessage(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
-              <div className="shadow-three mx-auto max-w-[500px] rounded bg-white px-6 py-10 dark:bg-dark sm:p-[60px]">
+              <div className="mx-auto max-w-[500px] rounded bg-white px-6 py-10 shadow-three dark:bg-dark sm:p-[60px]">
                 <h3 className="mb-3 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
                   Sign in to your account
                 </h3>
                 <p className="mb-11 text-center text-base font-medium text-body-color">
                   Login to your account for a faster checkout.
                 </p>
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div className="mb-8">
                     <label
                       htmlFor="email"
@@ -33,8 +96,10 @@ const SigninPage = () => {
                     <input
                       type="email"
                       name="email"
+                      value={formData.email}
+                      onChange={handleChange}
                       placeholder="Enter your Email"
-                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
+                      className="w-full rounded-sm border border-stroke bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                     />
                   </div>
                   <div className="mb-8">
@@ -44,12 +109,33 @@ const SigninPage = () => {
                     >
                       Your Password
                     </label>
-                    <input
-                      type="password"
-                      name="password"
-                      placeholder="Enter your Password"
-                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
-                    />
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        placeholder="Enter your Password"
+                        className="w-full rounded-sm border border-stroke bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                      />
+                      <button
+                        type="button"
+                        className="absolute inset-y-4 right-4 flex items-center"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                      >
+                        {showPassword ? (
+                          <Eye
+                            size={20}
+                            className="text-body-color dark:text-body-color-dark "
+                          />
+                        ) : (
+                          <EyeOff
+                            size={20}
+                            className="text-body-color dark:text-body-color-dark "
+                          />
+                        )}
+                      </button>
+                    </div>
                   </div>
                   <div className="mb-8 flex flex-col justify-between sm:flex-row sm:items-center">
                     <div className="mb-4 sm:mb-0">
@@ -94,9 +180,83 @@ const SigninPage = () => {
                       </a>
                     </div>
                   </div>
+
+                  {/* Display error or success messages */}
+                  {showError && errorMessage && (
+                    <div
+                      id="alert-additional-content-2"
+                      className="border-danger bg-[#FEF2F2] mb-4 rounded-lg border p-4 text-[#F87171] dark:border-danger dark:bg-[#1F2937] dark:text-[#F87171]"
+                      role="alert"
+                    >
+                      <div className="flex items-center">
+                        <svg
+                          className="me-2 h-4 w-4 shrink-0"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                        </svg>
+                        <span className="sr-only">Info</span>
+                        <h3 className="text-lg font-medium">
+                          Error occurred:{" "}
+                        </h3>
+                      </div>
+                      <div className="mb-4 mt-2 text-sm">{errorMessage}</div>
+                      <div className="flex">
+                        <button
+                          type="button"
+                          onClick={() => setShowError(false)}
+                          className="dark:text-[#EF4443] rounded-lg border border-[#CB8686] bg-transparent px-3 py-1.5 text-center text-xs font-medium text-[#991B3E] hover:bg-[#991B3E] hover:text-white focus:outline-none focus:ring-4 focus:ring-[#FCA5A5] dark:border-[#7E282F] dark:hover:bg-[#DC2626] dark:hover:text-white dark:focus:ring-[#991B1B]"
+                        >
+                          Dismiss
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  {showSuccess && successMessage && (
+                    <div
+                      id="alert-additional-content-3"
+                      className="dark:bg-[#1F2937] mb-4 rounded-lg border border-[#065F46] bg-[#ECFDF5] p-4 text-[#065F46] dark:border-[#065F46] dark:text-[#34D399]"
+                      role="alert"
+                    >
+                      <div className="flex items-center">
+                        <svg
+                          className="me-2 h-4 w-4 shrink-0"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                        </svg>
+                        <h3 className="text-lg font-medium">Success: </h3>
+                      </div>
+                      <div className="mb-4 mt-2 text-sm">{successMessage}</div>
+                      <div className="flex">
+                        <button
+                          type="button"
+                          onClick={() => setShowSuccess(false)}
+                          className="dark:text-[#34D399] dark:hover:text-white rounded-lg border border-[#ADF2D6] bg-transparent px-3 py-1.5 text-center text-xs font-medium text-[#065F46] hover:bg-[#065F46] hover:text-white focus:outline-none focus:ring-4 focus:ring-[#6EE7B7] dark:border-[#13443F] dark:hover:bg-[#059669] dark:focus:ring-[#065F46]"
+                        >
+                          Dismiss
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Signin button */}
                   <div className="mb-6">
-                    <button className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
-                      Sign in
+                    <button
+                      type="submit"
+                      disabled={!isFormValid || loading}
+                      className={`flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white shadow-submit duration-300 hover:bg-primary/90 dark:shadow-submit-dark ${
+                        (!isFormValid || loading) &&
+                        "cursor-not-allowed opacity-50"
+                      }`}
+                    >
+                      {loading ? "Signing in..." : "Sign in"}
                     </button>
                   </div>
                 </form>

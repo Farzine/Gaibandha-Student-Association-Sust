@@ -34,6 +34,13 @@ exports.registerUser = async (req, res) => {
             "Password must contain uppercase, lowercase, number, special character, and be at least 6 characters long",
         });
     }
+    // Validate session format
+    const sessionRegex = /^\d{4}-\d{4}$/;
+    if (!session || !sessionRegex.test(session)) {
+      return res.status(400).json({
+        message: "Session must be in the format YYYY-YYYY(2020-2021)",
+      });
+    }
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -45,7 +52,6 @@ exports.registerUser = async (req, res) => {
 
     // Generate email verification OTP
     const emailOTP = generateOTP();
-    const expireTime = Date.now() + 5 * 60 * 1000; // 5 minutes
 
     // Create new user with unverified email
     const newUser = new User({
@@ -85,8 +91,10 @@ exports.loginUser = async (req, res) => {
       return res.status(400).json({ message: "Invalid email" });
     }
 
-    if (!password || typeof password !== "string" || password.length < 6) {
-      return res.status(400).json({ message: "Invalid password" });
+    const strongPasswordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$/;
+    if (!password || typeof password !== "string" || !strongPasswordRegex.test(password)) {
+      return res.status(400).json({ message: "Invalid password, Password must contain uppercase, lowercase, number, special character, and be at least 6 characters long" });
     }
 
     const user = await User.findOne({ email });
@@ -293,3 +301,40 @@ exports.verifyEmail = async (req, res) => {
       res.status(500).json({ message: 'Error resetting password' });
     }
   };
+
+
+  exports.resendCode = async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+      }
+  
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(400).json({ message: "User not found" });
+      }
+  
+      // Generate a new OTP using your helper function
+      const newOTP = generateOTP();
+  
+      // Update the user's OTP field
+      user.emailVerificationOTP = newOTP;
+      await user.save();
+  
+      // Send the new OTP via email using your email service
+      await sendEmail({
+        to: email,
+        subject: "Verify Your Email",
+        html: verificationEmailTemplate(newOTP),
+      });
+  
+      res
+        .status(200)
+        .json({ message: "Verification code resent. Please check your email." });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Failed to resend verification code" });
+    }
+  };
+  

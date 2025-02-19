@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import OTPVerificationModal from "./OTPVerificationModal"; 
+import OTPVerificationModal from "./OTPVerificationModal";
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -39,7 +39,7 @@ const SignupPage = () => {
 
   // Check if all fields are filled and terms are accepted
   const isFormValid = Object.entries(formData).every(([key, value]) => {
-    if (typeof value === "boolean") return value === true; 
+    if (typeof value === "boolean") return value === true;
     return value.trim() !== "";
   });
 
@@ -147,7 +147,7 @@ const SignupPage = () => {
                     <div className="relative">
                       {/* Tooltip for Password Requirements */}
                       {showTooltip && (
-                        <div className="text-gray-700 dark:bg-gray-800 dark:text-gray-300 absolute left-0 top-full mt-2 w-[280px] rounded-lg dark:bg-[#1D2430] p-3 text-sm shadow-md bg-white">
+                        <div className="text-gray-700 dark:bg-gray-800 dark:text-gray-300 absolute left-0 top-full mt-2 w-[280px] rounded-lg bg-white p-3 text-sm shadow-md dark:bg-[#1D2430]">
                           <p className="mb-1 font-medium">
                             Password must contain:
                           </p>
@@ -201,7 +201,7 @@ const SignupPage = () => {
                       name="department"
                       value={formData.department}
                       onChange={handleChange}
-                      className="w-full rounded-sm border border-stroke bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                      className="w-full rounded-sm border border-stroke bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none h-5/6"
                     >
                       <option
                         value=""
@@ -377,7 +377,7 @@ const SignupPage = () => {
                   {showError && errorMessage && (
                     <div
                       id="alert-additional-content-2"
-                      className="border-danger bg-[#FEF2F2] mb-4 rounded-lg border p-4 text-[#F87171] dark:border-danger dark:bg-[#1F2937] dark:text-[#F87171]"
+                      className="mb-4 rounded-lg border border-danger bg-[#FEF2F2] p-4 text-[#F87171] dark:border-danger dark:bg-[#1F2937] dark:text-[#F87171]"
                       role="alert"
                     >
                       <div className="flex items-center">
@@ -400,7 +400,7 @@ const SignupPage = () => {
                         <button
                           type="button"
                           onClick={() => setShowError(false)}
-                          className="dark:text-[#EF4443] rounded-lg border border-[#CB8686] bg-transparent px-3 py-1.5 text-center text-xs font-medium text-[#991B3E] hover:bg-[#991B3E] hover:text-white focus:outline-none focus:ring-4 focus:ring-[#FCA5A5] dark:border-[#7E282F] dark:hover:bg-[#DC2626] dark:hover:text-white dark:focus:ring-[#991B1B]"
+                          className="rounded-lg border border-[#CB8686] bg-transparent px-3 py-1.5 text-center text-xs font-medium text-[#991B3E] hover:bg-[#991B3E] hover:text-white focus:outline-none focus:ring-4 focus:ring-[#FCA5A5] dark:border-[#7E282F] dark:text-[#EF4443] dark:hover:bg-[#DC2626] dark:hover:text-white dark:focus:ring-[#991B1B]"
                         >
                           Dismiss
                         </button>
@@ -410,7 +410,7 @@ const SignupPage = () => {
                   {showSuccess && successMessage && (
                     <div
                       id="alert-additional-content-3"
-                      className="dark:bg-[#1F2937] mb-4 rounded-lg border border-[#065F46] bg-[#ECFDF5] p-4 text-[#065F46] dark:border-[#065F46] dark:text-[#34D399]"
+                      className="mb-4 rounded-lg border border-[#065F46] bg-[#ECFDF5] p-4 text-[#065F46] dark:border-[#065F46] dark:bg-[#1F2937] dark:text-[#34D399]"
                       role="alert"
                     >
                       <div className="flex items-center">
@@ -430,7 +430,7 @@ const SignupPage = () => {
                         <button
                           type="button"
                           onClick={() => setShowSuccess(false)}
-                          className="dark:text-[#34D399] dark:hover:text-white rounded-lg border border-[#ADF2D6] bg-transparent px-3 py-1.5 text-center text-xs font-medium text-[#065F46] hover:bg-[#065F46] hover:text-white focus:outline-none focus:ring-4 focus:ring-[#6EE7B7] dark:border-[#13443F] dark:hover:bg-[#059669] dark:focus:ring-[#065F46]"
+                          className="rounded-lg border border-[#ADF2D6] bg-transparent px-3 py-1.5 text-center text-xs font-medium text-[#065F46] hover:bg-[#065F46] hover:text-white focus:outline-none focus:ring-4 focus:ring-[#6EE7B7] dark:border-[#13443F] dark:text-[#34D399] dark:hover:bg-[#059669] dark:hover:text-white dark:focus:ring-[#065F46]"
                         >
                           Dismiss
                         </button>
@@ -448,7 +448,14 @@ const SignupPage = () => {
                         "cursor-not-allowed opacity-50"
                       }`}
                     >
-                      {loading ? "Signing up..." : "Sign up"}
+                      {loading ? (
+                        <div className="flex items-center gap-2">
+                          <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                          <span>Signing up...</span>
+                        </div>
+                      ) : (
+                        "Sign up"
+                      )}
                     </button>
                   </div>
                 </form>
@@ -520,8 +527,8 @@ const SignupPage = () => {
           </svg>
         </div>
       </section>
-       {/* --- Import and render the OTP Verification Modal --- */}
-       <OTPVerificationModal
+      {/* --- Import and render the OTP Verification Modal --- */}
+      <OTPVerificationModal
         isOpen={showVerificationModal}
         email={formData.email}
         onClose={() => setShowVerificationModal(false)}

@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Cookie from "js-cookie"; 
+import ForgotPasswordModal from "./ForgotPasswordModalProps";
 
 const SigninPage = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +18,7 @@ const SigninPage = () => {
   const [showSuccess, setShowSuccess] = useState(true);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
 
   // Handle change for text
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,6 +62,10 @@ const SigninPage = () => {
       if (!response.ok) {
         setErrorMessage(data.message || "Login failed");
         throw new Error(data.message || "Login failed");
+      }
+
+      if (data.token) {
+        Cookie.set("token", data.token, { expires: 7 }); 
       }
 
       setSuccessMessage(data.message);
@@ -175,6 +182,10 @@ const SigninPage = () => {
                       <a
                         href="#0"
                         className="text-sm font-medium text-primary hover:underline"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setShowVerificationModal(true);
+                        }}
                       >
                         Forgot Password?
                       </a>
@@ -185,7 +196,7 @@ const SigninPage = () => {
                   {showError && errorMessage && (
                     <div
                       id="alert-additional-content-2"
-                      className="border-danger bg-[#FEF2F2] mb-4 rounded-lg border p-4 text-[#F87171] dark:border-danger dark:bg-[#1F2937] dark:text-[#F87171]"
+                      className="mb-4 rounded-lg border border-danger bg-[#FEF2F2] p-4 text-[#F87171] dark:border-danger dark:bg-[#1F2937] dark:text-[#F87171]"
                       role="alert"
                     >
                       <div className="flex items-center">
@@ -208,7 +219,7 @@ const SigninPage = () => {
                         <button
                           type="button"
                           onClick={() => setShowError(false)}
-                          className="dark:text-[#EF4443] rounded-lg border border-[#CB8686] bg-transparent px-3 py-1.5 text-center text-xs font-medium text-[#991B3E] hover:bg-[#991B3E] hover:text-white focus:outline-none focus:ring-4 focus:ring-[#FCA5A5] dark:border-[#7E282F] dark:hover:bg-[#DC2626] dark:hover:text-white dark:focus:ring-[#991B1B]"
+                          className="rounded-lg border border-[#CB8686] bg-transparent px-3 py-1.5 text-center text-xs font-medium text-[#991B3E] hover:bg-[#991B3E] hover:text-white focus:outline-none focus:ring-4 focus:ring-[#FCA5A5] dark:border-[#7E282F] dark:text-[#EF4443] dark:hover:bg-[#DC2626] dark:hover:text-white dark:focus:ring-[#991B1B]"
                         >
                           Dismiss
                         </button>
@@ -218,7 +229,7 @@ const SigninPage = () => {
                   {showSuccess && successMessage && (
                     <div
                       id="alert-additional-content-3"
-                      className="dark:bg-[#1F2937] mb-4 rounded-lg border border-[#065F46] bg-[#ECFDF5] p-4 text-[#065F46] dark:border-[#065F46] dark:text-[#34D399]"
+                      className="mb-4 rounded-lg border border-[#065F46] bg-[#ECFDF5] p-4 text-[#065F46] dark:border-[#065F46] dark:bg-[#1F2937] dark:text-[#34D399]"
                       role="alert"
                     >
                       <div className="flex items-center">
@@ -238,7 +249,7 @@ const SigninPage = () => {
                         <button
                           type="button"
                           onClick={() => setShowSuccess(false)}
-                          className="dark:text-[#34D399] dark:hover:text-white rounded-lg border border-[#ADF2D6] bg-transparent px-3 py-1.5 text-center text-xs font-medium text-[#065F46] hover:bg-[#065F46] hover:text-white focus:outline-none focus:ring-4 focus:ring-[#6EE7B7] dark:border-[#13443F] dark:hover:bg-[#059669] dark:focus:ring-[#065F46]"
+                          className="rounded-lg border border-[#ADF2D6] bg-transparent px-3 py-1.5 text-center text-xs font-medium text-[#065F46] hover:bg-[#065F46] hover:text-white focus:outline-none focus:ring-4 focus:ring-[#6EE7B7] dark:border-[#13443F] dark:text-[#34D399] dark:hover:bg-[#059669] dark:hover:text-white dark:focus:ring-[#065F46]"
                         >
                           Dismiss
                         </button>
@@ -256,7 +267,14 @@ const SigninPage = () => {
                         "cursor-not-allowed opacity-50"
                       }`}
                     >
-                      {loading ? "Signing in..." : "Sign in"}
+                      {loading ? (
+                        <div className="flex items-center gap-2">
+                          <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                          <span>Signing in...</span>
+                        </div>
+                      ) : (
+                        "Sign in"
+                      )}
                     </button>
                   </div>
                 </form>
@@ -328,6 +346,10 @@ const SigninPage = () => {
           </svg>
         </div>
       </section>
+      <ForgotPasswordModal
+        isOpen={showVerificationModal}
+        onClose={() => setShowVerificationModal(false)}
+      />
     </>
   );
 };

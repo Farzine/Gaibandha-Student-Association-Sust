@@ -106,9 +106,9 @@ exports.loginUser = async (req, res) => {
     const token = jwt.sign(
       { email: user.email, id: user._id },
       process.env.SECRET_KEY,
-      { expiresIn: "1d" }
+      { expiresIn: "7d" }
     );
-    res.cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000 });
+    res.cookie("token", token, {httpOnly: true, secure: process.env.NODE_ENV, sameSite: "strict", maxAge: 7 * 24 * 60 * 60 * 1000 });
 
     res.status(200).json({ message: "Login successful", token });
   } catch (error) {
@@ -214,7 +214,7 @@ exports.verifyEmail = async (req, res) => {
       user.emailVerificationOTP = undefined;
       await user.save();
   
-      res.status(200).json({ message: 'Email verified successfully' });
+      res.status(200).json({ message: 'Email verified successfully, now login to enter your account' });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Email verification failed' });
@@ -235,7 +235,7 @@ exports.verifyEmail = async (req, res) => {
   
       // Generate OTP
       const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit
-      const expireTime = Date.now() + 5 * 60 * 1000; // 5 min from now
+      const expireTime = Date.now() + 10 * 60 * 1000; // 10 min from now
   
       // Save OTP and expiration
       user.resetPasswordOTP = otp;
@@ -277,13 +277,11 @@ exports.verifyEmail = async (req, res) => {
         return res.status(400).json({ message: 'User not found' });
       }
   
-      // Check OTP and expiration
-      if (
-        user.resetPasswordOTP !== otp ||
-        !user.resetPasswordOTPExpire ||
-        user.resetPasswordOTPExpire < Date.now()
-      ) {
-        return res.status(400).json({ message: 'Invalid or expired OTP' });
+      if (user.resetPasswordOTP !== otp) {
+        return res.status(400).json({ message: 'Invalid OTP' });
+      }
+      if (!user.resetPasswordOTPExpire || user.resetPasswordOTPExpire < Date.now()) {
+        return res.status(400).json({ message: 'OTP expired' });
       }
   
       // Update password
@@ -303,6 +301,44 @@ exports.verifyEmail = async (req, res) => {
   };
 
 
+  exports.resendCodeForResetPassword = async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+      }
+  
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(400).json({ message: "User not found" });
+      }
+  
+      // Generate a new OTP using your helper function
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const expireTime = Date.now() + 10 * 60 * 1000; // 10 min from now
+  
+      // Save OTP and expiration
+      user.resetPasswordOTP = otp;
+      user.resetPasswordOTPExpire = expireTime;
+      await user.save();
+  
+      // Send the new OTP via email using your email service
+      await sendEmail({
+        to: email,
+        subject: "Reset Your Password",
+        html: verificationEmailTemplate(otp),
+      });
+  
+      res
+        .status(200)
+        .json({ message: "Verification code resent. Please check your email." });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Failed to resend verification code" });
+    }
+  };
+  
+
   exports.resendCode = async (req, res) => {
     try {
       const { email } = req.body;
@@ -316,17 +352,19 @@ exports.verifyEmail = async (req, res) => {
       }
   
       // Generate a new OTP using your helper function
-      const newOTP = generateOTP();
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const expireTime = Date.now() + 5 * 60 * 1000;
   
       // Update the user's OTP field
-      user.emailVerificationOTP = newOTP;
+      user.emailVerificationOTP = otp;
+      user.emailVerificationOTPExpire = expireTime;
       await user.save();
   
       // Send the new OTP via email using your email service
       await sendEmail({
         to: email,
         subject: "Verify Your Email",
-        html: verificationEmailTemplate(newOTP),
+        html: verificationEmailTemplate(otp),
       });
   
       res
@@ -337,4 +375,3 @@ exports.verifyEmail = async (req, res) => {
       res.status(500).json({ message: "Failed to resend verification code" });
     }
   };
-  

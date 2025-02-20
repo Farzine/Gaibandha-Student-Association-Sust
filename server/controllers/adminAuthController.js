@@ -13,8 +13,8 @@ exports.login = async (req, res) => {
         if (err) console.error(err);
         if (!isMatch) return res.status(400).json({ message: 'Invalid email or password' });
   
-        const token = jwt.sign({ email: admin.email }, process.env.SECRET_KEY, { expiresIn: '30d' });
-        res.cookie('token', token, { maxAge: 30 * 24 * 60 * 60 * 1000 });
+        const token = jwt.sign({ email: admin.email }, process.env.SECRET_KEY, { expiresIn: '7d' });
+        res.cookie('token', token, { maxAge: 7 * 24 * 60 * 60 * 1000 });
         res.json({ token });
       });
     } catch (err) {

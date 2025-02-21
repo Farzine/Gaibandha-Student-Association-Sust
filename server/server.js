@@ -9,7 +9,11 @@ const { initializeAdmin } = require('./models/admin');
 const adminAuthRoutes = require('./routes/adminAuthRoutes');
 const eventRoutes = require('./routes/adminTask/eventRoutes');
 const userControllerRoutes = require('./routes/userControllerRoutes');
-const galleryControllerRoutes = require('./routes/galleryControllerRoutes');
+const galleryControllerRoutes = require('./routes/imageUpload/galleryControllerRoutes');
+const memberControllerRoutes = require('./routes/adminTask/memberControllerRoutes');
+const heroSectionImageRoutes = require('./routes/imageUpload/heroSectionImageRoutes');
+const contactUsRoutes = require('./routes/contactRoutes');
+const noticeRoutes = require('./routes/noticeRoutes');
 
 const frontUrl = process.env.NEXT_PUBLIC_APP_FRONTEND_URL;
 const adminFrontUrl = process.env.NEXT_PUBLIC_ADMIN_FRONTEND_URL;
@@ -40,6 +44,10 @@ app.use('/admin', adminAuthRoutes);
 app.use('/user', userControllerRoutes);
 app.use('/gallery', galleryControllerRoutes);
 app.use('/adminTask', eventRoutes);
+app.use('/adminTask', memberControllerRoutes);
+app.use('/heroSectionImage', heroSectionImageRoutes);
+app.use('/sendMessage', contactUsRoutes);
+app.use('/notice', noticeRoutes);
 
 
 app.get('/', (req, res) => {

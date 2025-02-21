@@ -2,12 +2,13 @@ const express = require('express');
 const router = express.Router();
 const eventController = require('../../controllers/adminTask/eventController');
 const upload = require('../../config/multer');
+const authenticateToken = require('../../middlewares/authMiddleware');
 
-router.post('/events', upload.single('eventPhoto'), eventController.createEvent);
+router.post('/events', upload.single('eventPhoto'), authenticateToken, eventController.createEvent);
 
-router.put('/events/:id', upload.single('eventPhoto'), eventController.updateEvent);
+router.put('/events/:id', upload.single('eventPhoto'), authenticateToken, eventController.updateEvent);
 
-router.delete('/events/:id', eventController.deleteEvent);
+router.delete('/events/:id', authenticateToken, eventController.deleteEvent);
 
 router.get('/events', eventController.getAllEvents);
 

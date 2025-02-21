@@ -1,5 +1,5 @@
-const cloudinary = require('../config/cloudinary');
-const Image = require('../models/gallery');
+const cloudinary = require('../../config/cloudinary');
+const Image = require('../../models/imageUpload/gallery');
 
 exports.uploadImage = async (req, res) => {
   try {
@@ -48,7 +48,7 @@ exports.deleteImage = async (req, res) => {
 exports.getImages = async (req, res) => {
   try {
     const images = await Image.find();
-    res.status(200).json(images);
+    res.status(200).json(images, { message: 'Images fetched successfully' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });

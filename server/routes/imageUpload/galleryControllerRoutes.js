@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('../config/multer');
-const imageController = require('../controllers/galleryController');
-const authenticateToken = require('../middlewares/authMiddleware');
+const upload = require('../../config/multer');
+const imageController = require('../../controllers/imageUpload/galleryController');
+const authenticateToken = require('../../middlewares/authMiddleware');
 
 router.post('/upload', authenticateToken, upload.single('image'), imageController.uploadImage);
 router.delete('/:id', authenticateToken, imageController.deleteImage);

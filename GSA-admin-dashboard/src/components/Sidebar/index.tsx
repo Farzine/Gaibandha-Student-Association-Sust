@@ -69,8 +69,13 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Calendar",
-        route: "/dashboard/calendar",
+        label: "Images Upload",
+        route: "#",
+        children: [
+          { label: "Gallery", route: "/dashboard/gallery" },
+          { label: "Hero Image", route: "/dashboard/heroSectionImage" },
+        
+        ],
       },
       {
         icon: (

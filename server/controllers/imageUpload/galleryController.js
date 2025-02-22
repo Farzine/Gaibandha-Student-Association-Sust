@@ -48,9 +48,15 @@ exports.deleteImage = async (req, res) => {
 exports.getImages = async (req, res) => {
   try {
     const images = await Image.find();
-    res.status(200).json(images, { message: 'Images fetched successfully' });
+
+    // Return a JSON object with success, data, and a message
+    res.status(200).json({
+      success: true,
+      data: images,
+      message: "Images fetched successfully",
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };

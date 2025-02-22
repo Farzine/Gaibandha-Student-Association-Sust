@@ -47,7 +47,11 @@ const menuGroups = [
         ),
         label: "Members",
         route: "#",
-        children: [{ label: "Member Request", route: "/dashboard" }],
+        children: [
+          { label: "Member Request", route: "/dashboard" },
+          { label: "Categorized Members", route: "/dashboard/categorizedMembers" },
+        
+        ],
       },
       {
         icon: (

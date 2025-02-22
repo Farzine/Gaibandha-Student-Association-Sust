@@ -5,6 +5,7 @@ const authenticateToken = require('../../middlewares/authMiddleware');
 
 
 router.get("/member-requests", memberController.getAllMemberRequests);
+router.get("/member-request/:id", memberController.getMemberRequestById);
 router.post("/handle-member-requests", authenticateToken, memberController.handleMemberRequest);
 
 router.get("/categorizeMember", memberController.getCategorizedMembers);

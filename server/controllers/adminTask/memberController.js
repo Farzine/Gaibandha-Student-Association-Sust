@@ -32,6 +32,23 @@ exports.getAllMemberRequests = async (req, res) => {
     }
   };
 
+  exports.getMemberRequestById = async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found"
+        });
+      }
+
+      res.status(200).json({ success: true, data: user , message: "Member request fetched successfully" });
+    } catch (error) { 
+      res.status(500).json({ success: false, message: "Error fetching member request", error: error.message });
+    } 
+  };
+
   exports.handleMemberRequest = async (req, res) => {
     try {
       const { userId, action } = req.body;
@@ -84,10 +101,30 @@ exports.getAllMemberRequests = async (req, res) => {
         });
       }
     } catch (error) {
+      console.error("Member request error:", error);
+  
+      // 1) Check if it's a Mongoose validation error
+      if (error.name === "ValidationError") {
+        // Collect all messages
+        const validationErrors = {};
+  
+        // Loop over each field that failed validation
+        for (let field in error.errors) {
+          validationErrors[field] = error.errors[field].message;
+        }
+  
+        return res.status(400).json({
+          success: false,
+          message: "Validation failed",
+          errors: validationErrors,
+        });
+      }
+  
+      // 2) Otherwise, send a generic 500 error response
       res.status(500).json({
         success: false,
         message: "Error handling member request",
-        error: error.message
+        error: error.message,
       });
     }
   };

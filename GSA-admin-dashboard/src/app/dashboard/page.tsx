@@ -1,19 +1,15 @@
-import ECommerce from "@/components/Dashboard/E-commerce";
+import MemberRequest from "@/components/Member/MemberRequest";
 import { Metadata } from "next";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 export const metadata: Metadata = {
-  title:
-    "Next.js E-commerce Dashboard | TailAdmin - Next.js Dashboard Template",
-  description: "This is Next.js Home for TailAdmin Dashboard Template",
+  title: "Member Request | Gaibandha Students Association, SUST",
+  description: "Member Request admin page of Gaibandha Students Association, SUST",
 };
 
 export default function Home() {
   return (
     <>
-      <DefaultLayout>
-        <ECommerce />
-      </DefaultLayout>
+        <MemberRequest />
     </>
   );
 }

@@ -1,0 +1,54 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
+@layer utilities {
+    .text-balance {
+      text-wrap: balance;
+    }
+    /* Keyframes for the shimmer effect */
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Skeleton base style + shimmer overlay */
+  .skeleton {
+    @apply relative overflow-hidden bg-gray-200 rounded;
+  }
+
+  .skeleton::before {
+    content: "";
+    @apply absolute top-0 left-0 h-full w-full;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    animation: shimmer 1.6s infinite ease-in-out;
+  }
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Hides scrollbar in Webkit browsers like Chrome, Safari */
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* Hides scrollbar in IE and Edge */
+    scrollbar-width: none; /* Hides scrollbar in Firefox */
+  }
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }

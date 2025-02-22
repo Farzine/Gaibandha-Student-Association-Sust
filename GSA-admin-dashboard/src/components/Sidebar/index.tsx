@@ -45,9 +45,9 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Dashboard",
+        label: "Members",
         route: "#",
-        children: [{ label: "eCommerce", route: "/dashboard" }],
+        children: [{ label: "Member Request", route: "/dashboard" }],
       },
       {
         icon: (

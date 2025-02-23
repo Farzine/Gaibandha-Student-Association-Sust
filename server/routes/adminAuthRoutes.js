@@ -5,6 +5,6 @@ const authenticateToken = require('../middlewares/authMiddleware');
 
 router.post('/login', adminController.login);
 router.put('/update-email-password', authenticateToken, adminController.updateEmailAndPassword);
-router.post('/logout', adminController.logout); 
+router.post('/logout',authenticateToken, adminController.logout); 
 
 module.exports = router;

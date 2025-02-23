@@ -301,10 +301,11 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "Authentication",
+        label: "Admin",
         route: "#",
         children: [
-          { label: "Sign In", route: "/" },
+          { label: "Update Email & Password", route: "/dashboard/updateCredentials" },
+          { label: "Sign out 🔒", route: "/dashboard/signout" },
         ],
       },
     ],
@@ -314,7 +315,7 @@ const menuGroups = [
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
-
+  
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
       <aside

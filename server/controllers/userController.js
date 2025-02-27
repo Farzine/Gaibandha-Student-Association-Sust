@@ -73,7 +73,17 @@ exports.registerUser = async (req, res) => {
         to: email,
         subject: 'Verify Your Email',
         html: verificationEmailTemplate(emailOTP),
+        queueIfLimit: false,
       });
+
+     await User.updateMany({}, {
+      $push: {
+        notifications: {
+          message: `Welcome ${name}, admin will verify your account soon.`,
+          createdAt: new Date()
+        }
+      }
+    });
   
       res.status(201).json({ 
         message: 'User registered successfully. Please check your email for the OTP to verify your account.' 
@@ -247,6 +257,7 @@ exports.verifyEmail = async (req, res) => {
         to: email,
         subject: 'Reset Your Password',
         html: resetPasswordTemplate(otp),
+        queueIfLimit: false,
       });
   
       return res.status(200).json({ message: 'OTP sent to your email' });
@@ -327,6 +338,7 @@ exports.verifyEmail = async (req, res) => {
         to: email,
         subject: "Reset Your Password",
         html: verificationEmailTemplate(otp),
+        queueIfLimit: false,
       });
   
       res
@@ -365,6 +377,7 @@ exports.verifyEmail = async (req, res) => {
         to: email,
         subject: "Verify Your Email",
         html: verificationEmailTemplate(otp),
+        queueIfLimit: false,
       });
   
       res

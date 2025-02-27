@@ -1,4 +1,4 @@
-const Contact = require('../models/Contact');
+const Contact = require('../../models/adminTask/Contact');
 
 exports.submitContact = async (req, res) => {
   try {

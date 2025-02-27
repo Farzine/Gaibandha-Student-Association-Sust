@@ -40,7 +40,7 @@ const HeroSectionImage: React.FC = () => {
   // Loader states
   const [loading, setLoading] = useState(false); // For fetch & delete
   const [uploading, setUploading] = useState(false); // For upload button
-  const [deleting, setDeleting] = useState(false); // For delete button
+  const [deleting, setDeleting] = useState<string | null>(null); // For delete button
 
   // Alert states
   const [alertType, setAlertType] = useState<"success" | "error">("success");
@@ -120,7 +120,7 @@ const HeroSectionImage: React.FC = () => {
   // DELETE /:id
   const handleDelete = async (id: string) => {
     try {
-      setDeleting(true);
+      setDeleting(id);
       const token = Cookies.get("token");
       await axios.delete(
         `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/heroSectionImage/${id}`,
@@ -139,7 +139,7 @@ const HeroSectionImage: React.FC = () => {
         err.response?.data?.message || "Failed to delete image",
       );
     } finally {
-      setDeleting(false);
+      setDeleting(null);
     }
   };
 
@@ -269,10 +269,10 @@ const HeroSectionImage: React.FC = () => {
             <div style={{ position: "absolute", top: 0, right: 0 }}>
               <button
                 onClick={() => handleDelete(img._id)}
-                disabled={deleting}
+                disabled={deleting === img._id}
                 className="inline-flex items-center justify-center bg-meta-1 px-2 py-2 text-center font-medium text-white hover:bg-opacity-80 lg:px-2 lg:py-2 xl:px-2 xl:py-2"
               >
-                {deleting ? (
+                {deleting == img._id ? (
                   <div className="flex items-center gap-2">
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
                     <span>Deleting...</span>

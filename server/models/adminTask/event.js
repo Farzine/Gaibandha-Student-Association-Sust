@@ -1,27 +1,37 @@
 const mongoose = require('mongoose');
 
 const eventSchema = new mongoose.Schema({
-  eventDate: {
+  title: {
+    type: String,
+    required: true,
+  },
+  date: {
     type: Date,
     required: true,
   },
-  eventTitle: {
+  location: {
     type: String,
     required: true,
   },
-  eventDetails: {
+  description: {
     type: String,
     required: true,
   },
-  eventPhoto: {
-    type: String,
-    required: true,
-  },
-  public_id: {
-    type: String,
-    required: true,
-  },
-}, { timestamps: true });
+  images: [{
+    path: {
+      type: String,
+      required: true,
+    },
+    public_id: {
+      type: String,
+      required: true,
+    }
+  }],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  }
+});
 
 const Event = mongoose.model('Event', eventSchema);
 

@@ -1,4 +1,5 @@
-const Notice = require('../models/Notice');
+const Notice = require('../../models/adminTask/Notice');
+const User = require('../../models/User');
 
 // Create new notice
 exports.createNotice = async (req, res) => {
@@ -17,6 +18,15 @@ exports.createNotice = async (req, res) => {
     const notice = await Notice.create({
       title,
       created_at: new Date()
+    });
+
+    await User.updateMany({}, {
+      $push: {
+        notifications: {
+          message: `New Notice: "${title}" has been created.`,
+          createdAt: new Date()
+        }
+      }
     });
 
     res.status(201).json({
@@ -112,6 +122,15 @@ exports.updateNotice = async (req, res) => {
         message: 'Notice not found'
       });
     }
+
+    await User.updateMany({}, {
+      $push: {
+        notifications: {
+          message: `Notice Updated: "${title}" has been updated.`,
+          createdAt: new Date()
+        }
+      }
+    });
 
     res.status(200).json({
       success: true,

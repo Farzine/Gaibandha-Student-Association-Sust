@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const authenticateToken = require('../middlewares/authMiddleware');
-const contactController = require('../controllers/contactController');
+const authenticateToken = require('../../middlewares/authMiddleware');
+const contactController = require('../../controllers/adminTask/contactController');
 
 // Public route for submitting contact form
 router.post('/contact', contactController.submitContact);

@@ -23,8 +23,23 @@ const verificationEmailTemplate = (otp) => {
       </div>
     `;
   };
+
+  // New template for event notifications
+const eventNotificationTemplate = (event) => {
+  return `
+    <div style="font-family: Arial; padding: 20px;">
+      <h2>New Event: ${event.title}</h2>
+      <p><strong>Date:</strong> ${new Date(event.date).toLocaleDateString()}</p>
+      <p><strong>Location:</strong> ${event.location}</p>
+      <p><strong>Description:</strong> ${event.description}</p>
+      <hr/>
+      <p>We hope to see you there!</p>
+    </div>
+  `;
+};
   
   module.exports = {
+    eventNotificationTemplate, 
     verificationEmailTemplate,
     resetPasswordTemplate,
   };

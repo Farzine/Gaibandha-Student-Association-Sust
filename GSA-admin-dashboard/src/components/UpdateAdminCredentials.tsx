@@ -98,7 +98,7 @@ export default function UpdateAdminCredentials() {
   }
 
   return (
-    <div className="min-h-screen p-4">
+    <div className="min-h-screen p-20">
       {/* Alert */}
       {showAlert && alertMessage && (
         <Alert type={alertType} message={alertMessage} onClose={handleCloseAlert} />

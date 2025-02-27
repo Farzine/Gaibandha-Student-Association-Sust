@@ -1,5 +1,26 @@
 const mongoose = require("mongoose");
 
+const notificationSchema = new mongoose.Schema(
+  {
+    message: {
+      type: String,
+      required: true,
+    },
+    read: {
+      type: Boolean,
+      default: false,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  { _id: false } 
+);
+
+
+
+
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -81,7 +102,7 @@ const userSchema = new mongoose.Schema(
     },
     profilePic: {
       type: String,
-      default: "https://example.com/default-profile-picture.jpg",
+      default: "../default_profile_pic.png",
     },
     schoolName: { type: String },
     collegeName: { type: String },
@@ -124,6 +145,7 @@ const userSchema = new mongoose.Schema(
 
     emailVerificationOTP: { type: String },
     emailVerified: { type: Boolean, default: false },
+    notifications: [notificationSchema],
   },
   {
     timestamps: true,

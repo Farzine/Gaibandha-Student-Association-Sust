@@ -1,28 +1,169 @@
 const cloudinary = require('../../config/cloudinary');
 const Event = require('../../models/adminTask/event');
+const User = require('../../models/User'); 
+const sendEmail = require('../../config/emailService');
+const { eventNotificationTemplate } = require('../../config/emailTemplates');
+
 
 exports.createEvent = async (req, res) => {
   try {
-    const file = req.file;
-    const { eventDate, eventTitle, eventDetails } = req.body;
+    const files = req.files;
+    const { title, date, location, description } = req.body;
 
-    if (!file) {
-      return res.status(400).json({ message: 'Event photo is required' });
+    if (!files || files.length === 0) {
+      return res.status(400).json({ message: 'No files uploaded' });
     }
 
+    // Process the images
+    const images = files.map(file => ({
+      path: file.path,
+      public_id: file.filename
+    }));
+
+    // Create and save the event
     const event = new Event({
-      eventDate,
-      eventTitle,
-      eventDetails,
-      eventPhoto: file.path,
-      public_id: file.filename,
+      title,
+      date,
+      location,
+      description,
+      images
     });
 
     await event.save();
-    res.status(201).json({ message: 'Event created successfully', event });
+
+    // Send email notification to all members
+    try {
+      // Get all members
+      const members = await User.find({}, 'email');
+      
+      // Send email to each member
+      const emailPromises = members.map(member => {
+        return sendEmail({
+          to: member.email,
+          subject: `New Event: ${title}`,
+          html: eventNotificationTemplate(event),
+          queueIfLimit: true // Queue emails if limit reached
+        });
+      });
+      
+      // Wait for all emails to be sent or queued
+      await Promise.allSettled(emailPromises);
+
+      await User.updateMany({}, {
+        $push: {
+          notifications: {
+            message: `New Event: "${title}" has been created.`,
+            createdAt: new Date()
+          }
+        }
+      });
+      
+      res.status(201).json({ 
+        success: true,
+        message: 'Event created and notifications sent', 
+        event 
+      });
+    } catch (emailErr) {
+      // If there's an error with emails, still return success for event creation
+      console.error('Error sending email notifications:', emailErr);
+      res.status(201).json({ 
+        success: true,
+        message: 'Event created but there was an issue sending notifications', 
+        event 
+      });
+    }
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+exports.getEvents = async (req, res) => {
+  try {
+    const events = await Event.find().sort({ date: -1 });
+
+    res.status(200).json({
+      success: true,
+      data: events,
+      message: "Events fetched successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+exports.getEventById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const event = await Event.findById(id);
+
+    if (!event) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Event not found" 
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: event,
+      message: "Event fetched successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+exports.updateEvent = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, date, location, description } = req.body;
+    
+    const event = await Event.findById(id);
+    
+    if (!event) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Event not found" 
+      });
+    }
+    
+    // Update basic info
+    const updatedData = {
+      title,
+      date,
+      location,
+      description
+    };
+    
+    // Handle new images if any
+    if (req.files && req.files.length > 0) {
+      const newImages = req.files.map(file => ({
+        path: file.path,
+        public_id: file.filename
+      }));
+      
+      // Add new images to existing ones
+      updatedData.images = [...event.images, ...newImages];
+    }
+    
+    const updatedEvent = await Event.findByIdAndUpdate(
+      id, 
+      updatedData,
+      { new: true }
+    );
+
+    
+    res.status(200).json({
+      success: true,
+      data: updatedEvent,
+      message: "Event updated successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
@@ -32,92 +173,66 @@ exports.deleteEvent = async (req, res) => {
     const event = await Event.findById(id);
 
     if (!event) {
-      return res.status(404).json({ message: 'Event not found' });
+      return res.status(404).json({ 
+        success: false, 
+        message: "Event not found" 
+      });
     }
 
-    await cloudinary.uploader.destroy(event.public_id);
+    // Delete all images from cloudinary
+    const deletePromises = event.images.map(image => 
+      cloudinary.uploader.destroy(image.public_id)
+    );
+    
+    await Promise.all(deletePromises);
     await Event.findByIdAndDelete(id);
 
-    res.status(200).json({ message: 'Event deleted successfully' });
+    res.status(200).json({
+      success: true,
+      message: "Event deleted successfully",
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
-exports.updateEvent = async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { eventTitle, eventDetails, eventDate } = req.body;
-      const file = req.file;
-  
-      const event = await Event.findById(id);
-      if (!event) {
-        return res.status(404).json({ message: 'Event not found' });
-      }
-  
-      const updateData = {
-        eventTitle: eventTitle || event.eventTitle,
-        eventDetails: eventDetails || event.eventDetails,
-        eventDate: eventDate || event.eventDate,
-      };
-  
-      if (file) {
-        // Delete old image from cloudinary
-        await cloudinary.uploader.destroy(event.public_id);
-        // Add new image details
-        updateData.eventPhoto = file.path;
-        updateData.public_id = file.filename;
-      }
-  
-      const updatedEvent = await Event.findByIdAndUpdate(
-        id,
-        updateData,
-        { new: true }
-      );
-  
-      res.status(200).json({ message: 'Event updated successfully', event: updatedEvent });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Server error' });
-    }
-  };
-
-
-exports.getAllEvents = async (req, res) => {
+exports.deleteEventImage = async (req, res) => {
   try {
-    const events = await Event.find().sort({ eventDate: -1 });
-    res.status(200).json(events);
+    const { eventId, imageId } = req.params;
+    
+    const event = await Event.findById(eventId);
+    
+    if (!event) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Event not found" 
+      });
+    }
+    
+    // Find the image in the array
+    const imageToDelete = event.images.id(imageId);
+    
+    if (!imageToDelete) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Image not found" 
+      });
+    }
+    
+    // Delete image from cloudinary
+    await cloudinary.uploader.destroy(imageToDelete.public_id);
+    
+    // Remove the image from the array
+    event.images.pull(imageId);
+    await event.save();
+    
+    res.status(200).json({
+      success: true,
+      message: "Image deleted successfully",
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
-
-exports.getUpcomingEvents = async (req, res) => {
-    try {
-      const currentDate = new Date();
-      const events = await Event.find({
-        eventDate: { $gt: currentDate }
-      }).sort({ eventDate: 1 });
-      
-      res.status(200).json(events);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Server error' });
-    }
-  };
-
-  exports.getPastEvents = async (req, res) => {
-    try {
-      const currentDate = new Date();
-      const events = await Event.find({
-        eventDate: { $lt: currentDate }
-      }).sort({ eventDate: -1 });
-      
-      res.status(200).json(events);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Server error' });
-    }
-  };

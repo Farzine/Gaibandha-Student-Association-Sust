@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const authenticateToken = require('../middlewares/authMiddleware');
-const noticeController = require('../controllers/noticeController');
+const authenticateToken = require('../../middlewares/authMiddleware');
+const noticeController = require('../../controllers/adminTask/noticeController');
 
 // Public routes
 router.get('/', noticeController.getAllNotices);

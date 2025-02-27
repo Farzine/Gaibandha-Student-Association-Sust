@@ -183,8 +183,8 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "Tables",
-        route: "/dashboard/tables",
+        label: "Events",
+        route: "/dashboard/events",
       },
       {
         icon: (

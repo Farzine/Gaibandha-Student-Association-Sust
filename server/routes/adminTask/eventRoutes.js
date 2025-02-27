@@ -1,19 +1,17 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const eventController = require('../../controllers/adminTask/eventController');
-const upload = require('../../config/multer');
-const authenticateToken = require('../../middlewares/authMiddleware');
+const upload = require("../../config/multer");
+const eventController = require("../../controllers/adminTask/eventController");
+const authenticateToken = require("../../middlewares/authMiddleware");
 
-router.post('/events', upload.single('eventPhoto'), authenticateToken, eventController.createEvent);
 
-router.put('/events/:id', upload.single('eventPhoto'), authenticateToken, eventController.updateEvent);
+router.post("/create", authenticateToken, upload.array("images", 10), eventController.createEvent); // 10 images max
 
-router.delete('/events/:id', authenticateToken, eventController.deleteEvent);
+router.get("/", eventController.getEvents);
+router.get("/:id", eventController.getEventById);
 
-router.get('/events', eventController.getAllEvents);
-
-router.get('/events/upcoming', eventController.getUpcomingEvents);
-
-router.get('/events/past', eventController.getPastEvents);
+router.put("/:id", authenticateToken, upload.array("images", 10), eventController.updateEvent);
+router.delete("/:id", authenticateToken, eventController.deleteEvent);
+router.delete("/:eventId/image/:imageId", authenticateToken, eventController.deleteEventImage);
 
 module.exports = router;

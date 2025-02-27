@@ -1,4 +1,5 @@
 "use client";
+import { div } from "framer-motion/client";
 import Cookie from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
@@ -77,7 +78,8 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center py-45">
+    <div className="fixed items-center">
+    <div className="flex items-center justify-center p-16">
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
@@ -269,6 +271,7 @@ const SignIn: React.FC = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

@@ -237,7 +237,7 @@ const ContactMessagesDashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen p-4 bg-[#f9fafb] dark:bg-[#111827]">
+    <div className="min-h-screen p-4 bg-[#f9fafb] dark:bg-[#1A222C]">
       {showAlert && alertMessage && (
         <div className="fixed top-4 right-4 z-50 w-full max-w-md">
           <Alert

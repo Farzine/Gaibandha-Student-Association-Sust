@@ -1,10 +1,7 @@
 "use client";
-import "jsvectormap/dist/jsvectormap.css";
-import "flatpickr/dist/flatpickr.min.css";
-import "@/css/satoshi.css";
-import "@/css/style.css";
 import React, { useEffect, useState } from "react";
 import Loader from "@/components/Dashboard-components/common/Loader";
+import DefaultLayout from "@/components/Dashboard-components/Layouts/DefaultLayout";
 
 export default function RootLayout({
   children,
@@ -24,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning={true}>
         <div className="dark:bg-boxdark-2 dark:text-bodydark">
+          <DefaultLayout>
           {loading ? <Loader /> : children}
+          </DefaultLayout>
         </div>
       </body>
     </html>

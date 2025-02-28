@@ -11,7 +11,6 @@ export const metadata: Metadata = {
 
 const Settings = () => {
   return (
-    <DefaultLayout>
       <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Settings" />
 
@@ -317,7 +316,6 @@ const Settings = () => {
           </div>
         </div>
       </div>
-    </DefaultLayout>
   );
 };
 

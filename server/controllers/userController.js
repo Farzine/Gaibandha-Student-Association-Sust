@@ -388,3 +388,27 @@ exports.verifyEmail = async (req, res) => {
       res.status(500).json({ message: "Failed to resend verification code" });
     }
   };
+
+  exports.getUserDetails = async (req, res) => {
+    try {
+      const { id } = req.params;
+      if (!id) {
+        return res.status(400).json({ message: "User ID is required" });
+      }
+  
+      // Find the user by ID and exclude sensitive fields
+      const user = await User.findById(id).select(
+        "-password -emailVerificationOTP -emailVerificationOTPExpire -resetPasswordOTP -resetPasswordOTPExpire"
+      );
+  
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      res.status(200).json({ success: true, data: user });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error retrieving user details" });
+    }
+  };
+  

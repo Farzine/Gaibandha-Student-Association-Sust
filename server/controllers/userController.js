@@ -129,69 +129,100 @@ exports.loginUser = async (req, res) => {
 
 exports.updateUserDetails = async (req, res) => {
   try {
-    // Get user ID from the authenticated user
     const userId = req.user.id;
-
-    // Create an object with allowed update fields
-    const updateFields = {};
-
-    // Upload profile picture to Cloudinary if provided
-    if (req.files && req.files.profilePic) {
-      const file = req.files.profilePic.tempFilePath; // Assuming you're using a library like `express-fileupload`
-      const uploadResult = await cloudinary.uploader.upload(file, {
-        folder: "user_profiles", // Optional: Specify folder in Cloudinary
-        use_filename: true,
-        unique_filename: true,
-      });
-      updateFields.profilePic = uploadResult.secure_url;
-    }
-
-    // Only add fields that are present in the request body
-    if (req.body.name) updateFields.name = req.body.name;
-    if (req.body.department) updateFields.department = req.body.department;
-    if (req.body.session) updateFields.session = req.body.session;
-    if (req.body.bloodGroup) updateFields.bloodGroup = req.body.bloodGroup;
-    if (req.body.presentAddress)
-      updateFields.presentAddress = req.body.presentAddress;
-    if (req.body.permanentAddress)
-      updateFields.permanentAddress = req.body.permanentAddress;
-    if (req.body.profession) updateFields.profession = req.body.profession;
-    if (req.body.facebookId) updateFields.facebookId = req.body.facebookId;
-    if (req.body.linkedinId) updateFields.linkedinId = req.body.linkedinId;
-    if (req.body.about) updateFields.about = req.body.about;
-    if (req.body.religiousStatus)
-      updateFields.religiousStatus = req.body.religiousStatus;
-    if (req.body.schoolName) updateFields.schoolName = req.body.schoolName;
-    if (req.body.collegeName) updateFields.collegeName = req.body.collegeName;
-    if (req.body.phone) updateFields.phone = req.body.phone;
-
-    // Update the updated_at timestamp
-    updateFields.updated_at = Date.now();
-
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { $set: updateFields },
-      {
-        new: true, // Return the updated document
-        runValidators: true, // Run schema validators
-        select: "-password -email -designation -member -alumni", // Exclude these fields from the response
-      }
-    );
-
-    if (!updatedUser) {
+    
+    // 1) First, find the user in the DB
+    const user = await User.findById(userId);
+    if (!user) {
       return res.status(404).json({
         success: false,
         message: "User not found",
       });
     }
 
-    res.status(200).json({
+    // 2) Prepare the object of fields to update
+    const updateFields = {};
+
+    // If a new profile picture is provided, handle Cloudinary upload
+    if (req.file) {
+      // a) Remove old Cloudinary image if it exists
+      if (user.profilePic && user.profilePic.includes("cloudinary.com")) {
+      try {
+        // Extract public_id from the URL
+        const urlParts = user.profilePic.split("/");
+        const filenameWithExtension = urlParts[urlParts.length - 1];
+        const publicId = `GSAS/${filenameWithExtension.split('.')[0]}`;
+        
+        // Delete old image from Cloudinary
+        await cloudinary.uploader.destroy(publicId);
+      } catch (err) {
+        console.error("Error deleting old Cloudinary image:", err.message);
+        return res.status(400).json({
+          success: false,
+          message: "Error updating profile pic",
+          error: err.message,
+        });
+      }
+      }
+
+      // b) Get the URL of the new profile pic (already uploaded by multer middleware)
+      updateFields.profilePic = req.file.path || req.file.secure_url;
+    }
+
+    // 3) Only add fields that are present in the request body
+    if (req.body.name) updateFields.name = req.body.name;
+    if (req.body.department) updateFields.department = req.body.department;
+    if (req.body.session) updateFields.session = req.body.session;
+    if (req.body.bloodGroup) updateFields.bloodGroup = req.body.bloodGroup;
+    if (req.body.presentAddress) {
+      updateFields.presentAddress = req.body.presentAddress;
+    }
+    if (req.body.permanentAddress) {
+      updateFields.permanentAddress = req.body.permanentAddress;
+    }
+    if (req.body.profession) updateFields.profession = req.body.profession;
+    if (req.body.facebookId) updateFields.facebookId = req.body.facebookId;
+    if (req.body.linkedinId) updateFields.linkedinId = req.body.linkedinId;
+    if (req.body.about) updateFields.about = req.body.about;
+    if (req.body.religiousStatus) {
+      updateFields.religiousStatus = req.body.religiousStatus;
+    }
+    if (req.body.schoolName) updateFields.schoolName = req.body.schoolName;
+    if (req.body.collegeName) updateFields.collegeName = req.body.collegeName;
+    if (req.body.phone) updateFields.phone = req.body.phone;
+
+    // 4) (Optional) Update the updated_at timestamp if you want a custom field
+    updateFields.updated_at = Date.now();
+
+    // 5) Perform the update
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updateFields },
+      {
+        new: true,            // Return the updated document
+        runValidators: true,  // Run schema validators
+        select: "-password -email -designation -member -alumni", // Exclude these fields
+      }
+    );
+
+    // 6) If somehow not found (edge case), return 404
+    if (!updatedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found after update",
+      });
+    }
+
+
+    // 7) Return success
+    return res.status(200).json({
       success: true,
       message: "Profile updated successfully",
       data: updatedUser,
     });
   } catch (error) {
-    res.status(400).json({
+    console.error("Error updating profile:", error);
+    return res.status(400).json({
       success: false,
       message: "Error updating profile",
       error: error.message,

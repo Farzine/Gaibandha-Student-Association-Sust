@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaFacebookF, FaLinkedinIn, FaEnvelope } from "react-icons/fa";
+import Breadcrumb from "./Breadcrumbs/Breadcrumb";
 
 interface DecodedToken {
   id: string;
@@ -104,6 +105,8 @@ const Profile = () => {
   }
 
   return (
+    <div className="mx-auto max-w-7xl">
+      <Breadcrumb pageName="Profile" />
     <section className="w-full overflow-hidden dark:bg-[#1A222C]">
       <div className="flex flex-col">
         {/* Cover Image */}
@@ -127,7 +130,7 @@ const Profile = () => {
                 alt="Profile Picture"
                 width={160}
                 height={160}
-                className="h-full w-full object-cover"
+                className="h-fit w-fit object-cover"
               />
             </div>
 
@@ -372,6 +375,7 @@ const Profile = () => {
         </div>
       </div>
     </section>
+    </div>
   );
 };
 

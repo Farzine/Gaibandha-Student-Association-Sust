@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-// const fileUpload = require("express-fileupload");
 const cors = require('cors'); 
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
@@ -25,7 +24,7 @@ const { MONGO_URI, PORT } = require('./config/config');
 
 const corsOptions ={
   origin: [frontUrl, adminFrontUrl],
-  methods:['GET','POST','PUT','DELETE'],
+  methods:['GET','POST','PUT','DELETE','PATCH'],
   credentials:true,            
   optionSuccessStatus:200,
 }
@@ -40,15 +39,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.json());
 app.use(cookieParser());
-
-// app.use(
-//   fileUpload({
-//     useTempFiles: true,         // store files temporarily
-//     tempFileDir: "/tmp/",       // or any other temp folder
-//     parseNested: true,          // helps parse nested text fields
-//     // debug: true,             // optionally see debug logs
-//   })
-// );
 
 
 app.use('/admin', adminAuthRoutes);

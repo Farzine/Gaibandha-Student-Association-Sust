@@ -747,7 +747,7 @@ export default function Settings() {
               >
                 <ArrowUpTrayIcon className="mx-auto h-10 w-10 text-primary" />
                 <p className="text-primary">Click to upload</p>
-                <p className="mt-1.5">SVG, PNG, JPG or GIF (max, 800x800px)</p>
+                <p className="mt-1.5">PNG or JPG (max, 800x800px)</p>
                 <input
                   type="file"
                   accept="image/*"

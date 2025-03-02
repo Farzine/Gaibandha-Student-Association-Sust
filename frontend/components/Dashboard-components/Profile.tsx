@@ -58,7 +58,7 @@ const Profile = () => {
     }
   }, []);
 
-//   if (loading) {
+//   if (loading) {  // akhane akta sundor loader lagate hbe
 //     return (
 //       <div className="flex h-screen items-center justify-center">
 //         <div className="border-blue-500 h-10 w-10 animate-spin rounded-full border-4 border-t-transparent"></div>

@@ -2,15 +2,13 @@ const User = require('../../models/User');
 
 exports.markNotificationAsRead = async (req, res) => {
   try {
+    // We rely on the token for user
     const userId = req.user.id;
-    const { notificationId } = req.params.id; 
+    // We get the notificationId from route params
+    const { notificationId } = req.params;
 
-    // Remove the notification with the given id from the user's notifications array
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { $pull: { notifications: { _id: notificationId } } },
-      { new: true }
-    );
+    // Find the user 
+    const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({
@@ -19,13 +17,31 @@ exports.markNotificationAsRead = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    // Find the notification
+    const notification = user.notifications.find(
+      (n) => n._id.toString() === notificationId
+    );
+
+    if (!notification) {
+      return res.status(404).json({
+        success: false,
+        message: 'Notification not found'
+      });
+    }
+
+    // Mark as read
+    notification.read = true;
+
+    // Save
+    await user.save();
+
+    return res.status(200).json({
       success: true,
-      message: 'Notification marked as read and removed',
-      notifications: user.notifications
+      message: 'Notification marked as read',
+      notification,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: 'Error marking notification as read',
       error: error.message

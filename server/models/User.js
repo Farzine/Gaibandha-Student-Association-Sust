@@ -15,7 +15,6 @@ const notificationSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { _id: false } 
 );
 
 
@@ -78,21 +77,9 @@ const userSchema = new mongoose.Schema(
     profession: { type: String },
     facebookId: {
       type: String,
-      // validate: {
-      //   validator: function (v) {
-      //     return /^https?:\/\/(www\.)?facebook\.com/.test(v);
-      //   },
-      //   message: (props) => `${props.value} is not a valid Facebook URL!`,
-      // },
     },
     linkedinId: {
       type: String,
-      // validate: {
-      //   validator: function (v) {
-      //     return /^https?:\/\/(www\.)?linkedin\.com/.test(v);
-      //   },
-      //   message: (props) => `${props.value} is not a valid LinkedIn URL!`,
-      // },
     },
     about: { type: String },
     religiousStatus: {

@@ -4,7 +4,8 @@ const { markNotificationAsRead, getAllNotifications } = require('../../controlle
 const authenticateToken = require('../../middlewares/authMiddleware');
 
 
-router.delete('/:id', authenticateToken, markNotificationAsRead);
-router.get('/', authenticateToken, getAllNotifications);
+router.patch('/mark-as-read/:notificationId', authenticateToken, markNotificationAsRead);
+router.get('/:id', authenticateToken, getAllNotifications);
+
 
 module.exports = router;

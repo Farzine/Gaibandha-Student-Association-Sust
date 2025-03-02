@@ -1,7 +1,6 @@
 import Link from "next/link";
-import DropdownMessage from "./DropdownMessage";
 import DropdownNotification from "./DropdownNotification";
-import ThemeToggler from "@/components/Landingpage-components/Header/ThemeToggler";
+import ThemeToggler from "@/components/Dashboard-components/Header/ThemeToggler";
 import DropdownUser from "./DropdownUser";
 import Image from "next/image";
 
@@ -111,10 +110,6 @@ const Header = (props: {
             {/* <!-- Notification Menu Area --> */}
             <DropdownNotification />
             {/* <!-- Notification Menu Area --> */}
-
-            {/* <!-- Chat Notification Area --> */}
-            <DropdownMessage />
-            {/* <!-- Chat Notification Area --> */}
           </ul>
 
           {/* <!-- User Area --> */}

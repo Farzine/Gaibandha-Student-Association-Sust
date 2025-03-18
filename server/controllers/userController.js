@@ -120,7 +120,15 @@ exports.loginUser = async (req, res) => {
     );
     res.cookie("token", token, {httpOnly: true, secure: process.env.NODE_ENV, sameSite: "strict", maxAge: 7 * 24 * 60 * 60 * 1000 });
 
-    res.status(200).json({ message: "Login successful", token });
+    res.status(200).json({ message: "Login successful", token,
+      userData: {
+        _id:user._id,
+        name: user.name,
+        email: user.email,
+        profilePic: user.profilePic,
+        profession: user.profession,
+      },
+     });
   } catch (error) {
     res.status(500).json({ message: "Login failed" });
     console.error(error);
@@ -440,6 +448,29 @@ exports.verifyEmail = async (req, res) => {
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error retrieving user details" });
+    }
+  };
+
+
+  exports.logoutUser = async (req, res) => {
+    try {
+      // Clear the authentication token cookie
+      res.clearCookie('token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict'
+      });
+      
+      return res.status(200).json({
+        success: true,
+        message: 'Logged out successfully'
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Logout failed'
+      });
     }
   };
   

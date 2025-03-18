@@ -15,6 +15,7 @@ const heroSectionImageRoutes = require('./routes/imageUpload/heroSectionImageRou
 const contactUsRoutes = require('./routes/adminTask/contactRoutes');
 const noticeRoutes = require('./routes/adminTask/noticeRoutes');
 const notificationRoutes = require('./routes/adminTask/notificationRoutes');
+const messageRoutes = require('./routes/adminTask/messageRoutes');
 
 const frontUrl = process.env.NEXT_PUBLIC_APP_FRONTEND_URL;
 const adminFrontUrl = process.env.NEXT_PUBLIC_ADMIN_FRONTEND_URL;
@@ -50,6 +51,7 @@ app.use('/heroSectionImage', heroSectionImageRoutes);
 app.use('/sendMessage', contactUsRoutes);
 app.use('/notice', noticeRoutes);
 app.use('/notification', notificationRoutes);
+app.use('/message', messageRoutes);
 
 
 app.get('/', (req, res) => {

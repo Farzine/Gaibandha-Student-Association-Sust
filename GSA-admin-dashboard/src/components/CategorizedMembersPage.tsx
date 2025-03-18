@@ -8,7 +8,6 @@ import Image from "next/image";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 
-
 /** The extended User interface */
 interface User {
   _id: string;
@@ -47,6 +46,7 @@ interface CategorizedMembers {
 /** Possible designations */
 const DESIGNATION_OPTIONS = [
   "President",
+  "Senior Vice President",
   "Vice-President",
   "General Secretary",
   "Joint General Secretary",
@@ -54,6 +54,15 @@ const DESIGNATION_OPTIONS = [
   "Treasurer",
   "Assistant Treasurer",
   "Organizing Secretary",
+  "Assistant Organizing Secretary",
+  "Office Secretary",
+  "Assistant Office Secretary",
+  "Women's Affairs Secretary",
+  "Assistant Women's Affairs Secretary",
+  "Sports Secretary",
+  "Assistant Sports Secretary",
+  "Publication Secretary",
+  "Assistant Publication Secretary",
   "IT Secretary",
   "Assistant IT Secretary",
   "Cultural Secretary",
@@ -106,7 +115,10 @@ const CategorizedMembersPage: React.FC = () => {
 
   // ------------- Handlers -------------
   // Update member designation
-  const handleDesignationChange = async (userId: string, newDesignation: string) => {
+  const handleDesignationChange = async (
+    userId: string,
+    newDesignation: string,
+  ) => {
     try {
       const token = Cookies.get("token");
       await axios.post(
@@ -114,7 +126,7 @@ const CategorizedMembersPage: React.FC = () => {
         { userId, designation: newDesignation },
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       setShowSuccess(true);
@@ -122,7 +134,9 @@ const CategorizedMembersPage: React.FC = () => {
       fetchCategorizedMembers();
     } catch (err: any) {
       setShowError(true);
-      setErrorMessage(err?.response?.data?.message || "Error updating designation.");
+      setErrorMessage(
+        err?.response?.data?.message || "Error updating designation.",
+      );
     }
   };
 
@@ -200,11 +214,17 @@ const CategorizedMembersPage: React.FC = () => {
   // Render each row in the table
   const renderMemberRow = (user: User) => {
     return (
-      <div key={user._id} className="grid grid-cols-1 gap-10 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-2 md:grid-cols-7 lg:grid-cols-10 xl:px-6 2xl:px-7.5">
+      <div
+        key={user._id}
+        className="grid grid-cols-1 gap-10 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-2 md:grid-cols-7 lg:grid-cols-10 xl:px-6 2xl:px-7.5"
+      >
         {/* Name & Image */}
-        <div className="flex items-center col-span-1 sm:col-span-1 md:col-span-2">
-          <button onClick={() => openProfile(user._id)} className="flex items-center space-x-3">
-            <div className="h-12 w-12 overflow-hidden rounded-md flex-shrink-0">
+        <div className="col-span-1 flex items-center sm:col-span-1 md:col-span-2">
+          <button
+            onClick={() => openProfile(user._id)}
+            className="flex items-center space-x-3"
+          >
+            <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-md">
               <Image
                 src={user.profilePic || "/images/user/user-06.png"}
                 width={60}
@@ -213,44 +233,46 @@ const CategorizedMembersPage: React.FC = () => {
                 className="object-cover"
               />
             </div>
-            <p className="text-sm font-bold text-black hover:text-[#005CC8] hover:underline dark:text-white dark:hover:text-[#005CC8] line-clamp-2">
+            <p className="line-clamp-2 text-sm font-bold text-black hover:text-[#005CC8] hover:underline dark:text-white dark:hover:text-[#005CC8]">
               {user.name}
             </p>
           </button>
         </div>
 
         {/* Department */}
-        <div className="col-span-1 sm:col-span-1 md:col-span-2 flex items-center">
-          <p className="text-sm text-black dark:text-white line-clamp-1">
+        <div className="col-span-1 flex items-center sm:col-span-1 md:col-span-2">
+          <p className="line-clamp-1 text-sm text-black dark:text-white">
             {user.department}
           </p>
         </div>
 
         {/* Session */}
-        <div className="col-span-1 sm:col-span-1 md:col-span-2 flex items-center">
+        <div className="col-span-1 flex items-center sm:col-span-1 md:col-span-2">
           <p className="text-sm text-black dark:text-white">{user.session}</p>
         </div>
 
         {/* Designation dropdown */}
-        <div className="col-span-1 sm:col-span-1 md:col-span-2 flex items-center">
+        <div className="col-span-1 flex items-center sm:col-span-1 md:col-span-2">
           <select
             value={user.designation || "Member"}
             onChange={(e) => handleDesignationChange(user._id, e.target.value)}
-            className="w-full rounded-md border border-gray-300 bg-white p-2 text-sm dark:border-strokedark dark:bg-boxdark dark:text-white"
+            className="border-gray-300 w-full rounded-md border bg-white p-2 text-sm dark:border-strokedark dark:bg-boxdark dark:text-white"
           >
             {DESIGNATION_OPTIONS.map((des) => (
-              <option key={des} value={des}>{des}</option>
+              <option key={des} value={des}>
+                {des}
+              </option>
             ))}
           </select>
         </div>
 
         {/* Alumni checkbox */}
-        <div className="col-span-1 sm:col-span-1 md:col-span-1 flex items-center">
+        <div className="col-span-1 flex items-center sm:col-span-1 md:col-span-1">
           <input
             type="checkbox"
             checked={!!user.alumni}
             onChange={(e) => handleAlumniChange(user._id, e.target.checked)}
-            className="rounded border-gray-300"
+            className="border-gray-300 rounded"
           />
           <label className="ml-2 text-sm text-black dark:text-white">
             Alumni
@@ -265,11 +287,13 @@ const CategorizedMembersPage: React.FC = () => {
     return (
       <div className="mb-6 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="px-4 py-6 md:px-6 xl:px-7.5">
-          <h4 className="text-xl font-semibold text-black dark:text-white">{title}</h4>
+          <h4 className="text-xl font-semibold text-black dark:text-white">
+            {title}
+          </h4>
         </div>
 
         {/* Table Header */}
-        <div className="hidden grid-cols-1 gap-10 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-2 md:grid-cols-10 lg:grid-cols-16 xl:px-6 2xl:px-7.5 sm:grid">
+        <div className="lg:grid-cols-16 hidden grid-cols-1 gap-10 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid sm:grid-cols-2 md:grid-cols-10 xl:px-6 2xl:px-7.5">
           <div className="col-span-1 sm:col-span-1 md:col-span-2">
             <p className="font-medium">Name</p>
           </div>
@@ -341,7 +365,7 @@ const CategorizedMembersPage: React.FC = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className="absolute right-4 top-4 text-xl text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 absolute right-4 top-4 text-xl"
               onClick={() => setShowProfile(false)}
             >
               ×

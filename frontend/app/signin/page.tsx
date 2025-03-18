@@ -58,6 +58,9 @@ const SigninPage = () => {
       );
 
       const data = await response.json();
+      const userData =data.userData;
+      // save the user data in the local storage
+      localStorage.setItem("userData", JSON.stringify(userData));
 
       if (!response.ok) {
         setErrorMessage(data.message || "Login failed");

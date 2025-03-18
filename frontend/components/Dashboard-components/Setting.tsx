@@ -78,7 +78,7 @@ export default function Settings() {
   // - 'existingProfilePicUrl' is the user's currently stored profile photo URL
   const [profilePic, setProfilePic] = useState<File | null>(null);
   const [existingProfilePicUrl, setExistingProfilePicUrl] = useState<string>(
-    "/images/user/user-03.png", // fallback if user has none
+    "/images/user/default-avatar.png",
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
 

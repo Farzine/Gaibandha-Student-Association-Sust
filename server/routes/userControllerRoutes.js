@@ -5,6 +5,7 @@ const userController = require('../controllers/userController');
 const authenticateToken = require('../middlewares/authMiddleware');
 
 router.post('/login', userController.loginUser);
+router.post('/logout', authenticateToken, userController.logoutUser);
 router.post('/register', userController.registerUser);
 router.post('/updateUser', authenticateToken, upload.single("profilePic"), userController.updateUserDetails); 
 router.post('/verify-email', userController.verifyEmail);

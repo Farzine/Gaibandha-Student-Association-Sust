@@ -1,10 +1,57 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ClickOutside from "@/components/Dashboard-components/ClickOutside";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
+  const router = useRouter();
+
+
+  // Get user data from local storage
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("userData");
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    }
+  }, []);
+
+  // Function to handle logout
+  const handleLogout = async () => {
+    try {
+      // Send the logout request to the backend
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/user/logout`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
+        }
+      );
+
+      // Clear user data from localStorage
+      localStorage.removeItem("userData");
+
+      // Remove the token from cookies
+      Cookies.remove("token");
+
+      // Redirect to the login page or any public page after logout
+      router.push("/signin");
+    } catch (err) {
+      console.error("Logout failed", err);
+    toast.error("Failed to logout. Please try again.", {
+      position: "top-right",
+      duration: 3000,
+    });
+    }
+  };
+
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -15,23 +62,21 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+          {userData?.name }
           </span>
-          <span className="block text-xs">UX Designer</span>
+          <span className="block text-xs">{userData?.profession}</span>
         </span>
 
-        <span className="h-12 w-12 rounded-full">
+        <div className=" relative h-12 w-12 overflow-hidden rounded-full border-2 border-primary shadow-sm transition-all duration-300 hover:scale-105">
           <Image
-            width={112}
-            height={112}
-            src={"/images/user/user-01.png"}
-            style={{
-              width: "auto",
-              height: "auto",
-            }}
-            alt="User"
+            src={userData?.profilePic || "/images/user/default-avatar.png"}
+            alt={userData?.name || "User"}
+            className="h-fit w-fit"
+            priority
+            fill
           />
-        </span>
+          <div className="absolute inset-0 rounded-full ring-2 ring-white/10"></div>
+        </div>
 
         <svg
           className="hidden fill-current sm:block"
@@ -124,11 +169,13 @@ const DropdownUser = () => {
                     fill=""
                   />
                 </svg>
-                Account Settings
+                Settings
               </Link>
             </li>
           </ul>
-          <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+          <button
+          onClick={handleLogout}
+           className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
             <svg
               className="fill-current"
               width="22"

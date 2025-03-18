@@ -184,12 +184,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Messages",
-        route: "#",
-        children: [
-          { label: "VP & GS Message", route: "/dashboard/ui/alerts" },
-          { label: "VC and Pro VC Message", route: "/dashboard/ui/buttons" },
-          { label: "Advisor Message", route: "/dashboard/ui/buttons" },
-        ],
+        route: "/dashboard/messages",
       },
       {
         icon: (

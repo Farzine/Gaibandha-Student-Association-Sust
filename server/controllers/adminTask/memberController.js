@@ -140,6 +140,7 @@ exports.getCategorizedMembers = async (req, res) => {
     const categorizedMembers = {
       committee: users.filter(user => [
         "President",
+        "Senior Vice President",
         "Vice-President",
         "General Secretary",
         "Joint General Secretary",
@@ -147,10 +148,19 @@ exports.getCategorizedMembers = async (req, res) => {
         "Treasurer",
         "Assistant Treasurer",
         "Organizing Secretary",
+        "Assistant Organizing Secretary",
+        "Office Secretary",
+        "Assistant Office Secretary",
+        "Women's Affairs Secretary",
+        "Assistant Women's Affairs Secretary",
+        "Sports Secretary",
+        "Assistant Sports Secretary",
+        "Publication Secretary",
+        "Assistant Publication Secretary",
         "IT Secretary",
         "Assistant IT Secretary",
         "Cultural Secretary",
-        "Assistant Cultural Secretary"
+        "Assistant Cultural Secretary",
       ].includes(user.designation)),
       advisors: users.filter(user => user.designation === "Advisor"),
       alumni: users.filter(user => user.alumni === true),

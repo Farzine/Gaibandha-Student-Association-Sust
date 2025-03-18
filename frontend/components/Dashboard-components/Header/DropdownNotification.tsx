@@ -191,7 +191,7 @@ const DropdownNotification = () => {
             {/* Error Message */}
             {showError && !loading && (
               <div className="border-t border-stroke px-4.5 py-3 dark:border-strokedark">
-                <p className="text-sm text-red-500">{errorMessage}</p>
+                <p className="text-sm text-meta-7">{errorMessage}</p>
               </div>
             )}
 
@@ -213,26 +213,29 @@ const DropdownNotification = () => {
                 {notifications.map((notification) => (
                   <li key={notification._id}>
                     <div
-                      onClick={() =>
-                        markAsRead(notification._id, notification.read)
-                      }
-                      className={`cursor-pointer flex flex-col gap-1 border-t border-stroke px-4.5 py-3 
+                      onClick={() => markAsRead(notification._id, notification.read)}
+                      className={`cursor-pointer flex flex-col gap-2 border-t border-stroke px-4.5 py-3.5 
                                  hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 
-                                 ${
-                                   !notification.read
-                                     ? "bg-gray-light dark:bg-meta-3"
-                                     : ""
+                                 transition-colors duration-200 ${
+                                   !notification.read ? "bg-bodydark1 dark:bg-meta-3" : ""
                                  }`}
                     >
-                      <p className="text-sm text-black dark:text-white">
-                        {notification.message}
-                      </p>
-                      <p className="text-xs text-bodydark2 dark:text-bodydark1">
-                        {formatDate(notification.createdAt)} {new Date(notification.createdAt).toLocaleTimeString("en-GB", {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </p>
+                      <div className="flex justify-between items-start">
+                        <p className={`text-sm ${!notification.read ? "font-medium" : ""} text-black dark:text-white line-clamp-2`}>
+                          {notification.message}
+                        </p>
+                        {!notification.read && (
+                          <span className="h-2 w-2 rounded-full bg-meta-5 flex-shrink-0 mt-1.5"></span>
+                        )}
+                      </div>
+                      <div className="flex items-center">
+                        <p className="text-xs text-[#6b7280] dark:text-bodydark1">
+                          {formatDate(notification.createdAt)} • {new Date(notification.createdAt).toLocaleTimeString("en-GB", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </p>
+                      </div>
                     </div>
                   </li>
                 ))}

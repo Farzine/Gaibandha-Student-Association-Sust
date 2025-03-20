@@ -25,6 +25,7 @@ exports.submitContact = async (req, res) => {
       data: contact
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       success: false,
       message: 'Error submitting contact form',

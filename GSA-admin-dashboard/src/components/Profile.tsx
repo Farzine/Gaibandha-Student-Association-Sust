@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import { FaFacebookF, FaLinkedinIn, FaEnvelope, FaPhone } from "react-icons/fa";
 
 interface ProfileProps {
   user: {
@@ -32,94 +33,142 @@ interface ProfileProps {
 
 const Profile: React.FC<ProfileProps> = ({ user }) => {
   return (
-    <div className="rounded-md mt-2 border h-fit w-fit border-stroke bg-white shadow-lg dark:border-strokedark dark:bg-boxdark">
-      {/* Main Content (Profile Pic + Info) */}
-      <div className="px-4 pt-6 pb-6 sm:px-6 lg:pb-8">
-        <div className="relative flex flex-col items-center md:-mt-12 md:flex-row md:items-start md:space-x-6">
-          {/* Profile Pic */}
-          <div className="flex-shrink-0">
-            <div className="relative mx-auto h-32 w-32 overflow-hidden rounded-full border-4 border-white bg-white shadow-md dark:border-boxdark sm:h-36 sm:w-36">
+    <div className="mx-auto max-w-4xl rounded-xl border border-[#f3f4f6] bg-white shadow-xl transition-all dark:border-[#374151] dark:bg-[#1f2937]">
+
+      {/* Profile Container */}
+      <div className="px-4 pb-8 sm:px-8">
+        {/* Profile Picture and Basic Info */}
+        <div className="flex flex-col md:flex-row md:items-end md:space-x-6">
+          {/* Profile Picture */}
+          <div className="relative -mt-16 flex-shrink-0 md:-mt-20">
+            <div className="relative mx-auto h-32 w-32 overflow-hidden rounded-full border-4 border-white bg-white shadow-md dark:border-[#374151] md:h-40 md:w-40">
               <Image
                 src={user.profilePic || "/images/user/user-06.png"}
-                alt="profile"
+                alt={user.name}
                 fill
-                className="object-cover"
+                className="w-fit h-fit"
+                sizes="(max-width: 768px) 128px, 160px"
+                priority
               />
             </div>
           </div>
 
-          {/* Basic Info (Name, Department, etc.) */}
-          <div className="mt-4 flex-1 text-center md:mt-12 md:text-left">
-            <h3 className="mb-1 text-xl font-semibold text-black dark:text-white md:text-2xl">
+          {/* Basic Info */}
+          <div className="mt-4 flex flex-1 flex-col items-center text-center md:items-start md:text-left">
+            <h1 className="text-2xl font-bold text-[#111827] dark:text-white md:text-3xl">
               {user.name}
-            </h3>
-            <div className="rounded bg-white/70 p-2 dark:bg-boxdark/70 md:mt-2">
-              <p className="text-base font-medium text-gray-800 dark:text-gray-200">
-                {user.department}
-              </p>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">
-                {user.email}
-              </p>
+            </h1>
+            <p className="mt-1 text-lg font-medium text-[#374151] dark:text-[#e5e7eb]">
+              {user.department}
+            </p>
+            
+            {/* Contact Info Row */}
+            <div className="mt-3 flex flex-wrap items-center gap-4">
+              <div className="flex items-center text-[#4b5563] dark:text-[#d1d5db]">
+                <FaEnvelope className="mr-2 h-4 w-4" />
+                <span className="text-sm">{user.email}</span>
+              </div>
+              
               {user.phone && (
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">
-                  Phone: {user.phone}
-                </p>
+                <div className="flex items-center text-[#4b5563] dark:text-[#d1d5db]">
+                  <FaPhone className="mr-2 h-4 w-4" />
+                  <span className="text-sm">{user.phone}</span>
+                </div>
+              )}
+              
+              {/* Social Media Links */}
+              <div className="flex gap-3">
+                {user.facebookId && (
+                  <a
+                    href={user.facebookId}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors"
+                    aria-label="Facebook Profile"
+                  >
+                    <FaFacebookF />
+                  </a>
+                )}
+                {user.linkedinId && (
+                  <a
+                    href={user.linkedinId}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1d4ed8] text-white hover:bg-[#1e40af] transition-colors"
+                    aria-label="LinkedIn Profile"
+                  >
+                    <FaLinkedinIn />
+                  </a>
+                )}
+              </div>
+            </div>
+            
+            {/* Badges */}
+            <div className="mt-3 flex flex-wrap gap-2">
+              {user.member && (
+                <span className="rounded-full bg-[#dcfce7] px-3 py-1 text-xs font-medium text-[#166534] dark:bg-[#14532d] dark:text-[#bbf7d0]">
+                  Member
+                </span>
+              )}
+              {user.alumni && (
+                <span className="rounded-full bg-[#dbeafe] px-3 py-1 text-xs font-medium text-[#1e40af] dark:bg-[#1e3a8a] dark:text-[#bfdbfe]">
+                  Alumni
+                </span>
+              )}
+              {user.emailVerified && (
+                <span className="rounded-full bg-[#f3e8ff] px-3 py-1 text-xs font-medium text-[#6b21a8] dark:bg-[#581c87] dark:text-[#e9d5ff]">
+                  Verified
+                </span>
               )}
             </div>
           </div>
         </div>
 
-        {/* About Section */}
-        {user.about && (
-          <div className="mx-auto mt-6 max-w-2xl text-center md:text-left">
-            <h4 className="mb-2 text-lg font-semibold text-black dark:text-white">
-              About
-            </h4>
-            <p
-              className="
-                text-sm
-                leading-relaxed
-                text-gray-600
-                dark:text-gray-300
-                break-words
-                max-h-64
-                overflow-y-auto
-                scrollbar-hide
-                pr-2      /* extra space for scrollbar on Windows, optional */
-              "
-            >
-              {user.about}
-            </p>
+        {/* Content Sections */}
+        <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
+          {/* About Section */}
+          <div className="lg:col-span-3">
+            {user.about && (
+              <section className="rounded-lg bg-[#f9fafb] p-6 shadow-sm dark:bg-[#374151]/30">
+                <h2 className="mb-3 text-xl font-semibold text-[#111827] dark:text-white">
+                  About
+                </h2>
+                <p className="text-[#374151] dark:text-[#d1d5db] leading-relaxed max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-[#d1d5db] dark:scrollbar-thumb-[#4b5563] pr-2">
+                  {user.about}
+                </p>
+              </section>
+            )}
           </div>
-        )}
 
-        {/* Additional Info */}
-        <div className="mx-auto mt-6 grid max-w-2xl grid-cols-1 gap-5 text-sm md:grid-cols-2">
-          {/* Left Column */}
-          <div className="space-y-3">
-            <ProfileInfo label="Session" value={user.session} />
-            <ProfileInfo label="Blood Group" value={user.bloodGroup} />
-            <ProfileInfo label="Religion" value={user.religiousStatus} />
-            <ProfileInfo label="Profession" value={user.profession} />
-            <ProfileInfo label="Designation" value={user.designation} />
-            <ProfileInfo label="School" value={user.schoolName} />
-            <ProfileInfo label="College" value={user.collegeName} />
+          {/* Personal Info */}
+          <div className="lg:col-span-2">
+            <section className="rounded-lg bg-[#f9fafb] p-6 shadow-sm dark:bg-[#374151]/30 h-full">
+              <h2 className="mb-4 text-xl font-semibold text-[#111827] dark:text-white">
+                Personal Information
+              </h2>
+              <div className="grid grid-cols-1 gap-y-4 gap-x-8 sm:grid-cols-2">
+                <ProfileInfo label="Session" value={user.session} />
+                <ProfileInfo label="Blood Group" value={user.bloodGroup} />
+                <ProfileInfo label="Religion" value={user.religiousStatus} />
+                <ProfileInfo label="Profession" value={user.profession} />
+                <ProfileInfo label="Designation" value={user.designation} />
+                <ProfileInfo label="Present Address" value={user.presentAddress} />
+                <ProfileInfo label="Permanent Address" value={user.permanentAddress} />
+              </div>
+            </section>
           </div>
-          {/* Right Column */}
-          <div className="space-y-3">
-            <ProfileInfo label="Present Address" value={user.presentAddress} />
-            <ProfileInfo
-              label="Permanent Address"
-              value={user.permanentAddress}
-            />
-            <ProfileInfo label="Facebook" value={user.facebookId} link />
-            <ProfileInfo label="LinkedIn" value={user.linkedinId} link />
-            <ProfileInfo label="Member" value={user.member ? "Yes" : "No"} />
-            <ProfileInfo label="Alumni" value={user.alumni ? "Yes" : "No"} />
-            <ProfileInfo
-              label="Email Verified"
-              value={user.emailVerified ? "Yes" : "No"}
-            />
+
+          {/* Education */}
+          <div>
+            <section className="rounded-lg bg-[#f9fafb] p-6 shadow-sm dark:bg-[#374151]/30 h-full">
+              <h2 className="mb-4 text-xl font-semibold text-[#111827] dark:text-white">
+                Education
+              </h2>
+              <div className="space-y-4">
+                <ProfileInfo label="School" value={user.schoolName} />
+                <ProfileInfo label="College" value={user.collegeName} />
+              </div>
+            </section>
           </div>
         </div>
       </div>
@@ -138,8 +187,8 @@ function ProfileInfo({ label, value, link }: ProfileInfoProps) {
   if (!value) return null;
 
   return (
-    <div>
-      <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+    <div className="group">
+      <p className="text-sm font-medium text-[#f9fafb] dark:text-[#9ca3af]">
         {label}
       </p>
       {link ? (
@@ -147,12 +196,12 @@ function ProfileInfo({ label, value, link }: ProfileInfoProps) {
           href={value}
           target="_blank"
           rel="noopener noreferrer"
-          className="break-all text-blue-600 hover:underline dark:text-blue-400"
+          className="mt-1 block break-all text-[#2563eb] hover:underline dark:text-[#60a5fa] transition-colors"
         >
           {value}
         </a>
       ) : (
-        <p className="text-gray-700 dark:text-gray-200">{value}</p>
+        <p className="mt-1 text-[#1f2937] dark:text-[#e5e7eb]">{value}</p>
       )}
     </div>
   );

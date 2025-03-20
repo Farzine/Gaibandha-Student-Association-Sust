@@ -5,42 +5,57 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 /* MUI Components */
+import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
-import CardActionArea from "@mui/material/CardActionArea";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
+import Fade from "@mui/material/Fade";
+import Zoom from "@mui/material/Zoom";
+import CircularProgress from "@mui/material/CircularProgress";
 
-/* Custom Loader (full-screen or center spinner) */
+/* Icons */
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import ImageIcon from "@mui/icons-material/Image";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+
+/* Custom Loader */
 import Loader from "@/components/common/Loader";
 
-/* Your custom Alert component for success/error handling */
+/* Custom Alert component */
 import Alert from "@/components/Alert";
 
-/* 
-  The shape of your images in the DB (Mongoose schema).
-  Adjust if needed:
-*/
+/* Interface for the image data */
 interface HeroImage {
   _id: string;
-  path: string; // The actual image URL (cloudinary or local)
+  path: string;
   public_id: string;
   description?: string;
   title: string;
 }
 
 const HeroSectionImage: React.FC = () => {
+  // ------------------ State ------------------
   const [images, setImages] = useState<HeroImage[]>([]);
 
   // Form states
   const [file, setFile] = useState<File | null>(null);
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
+  const [preview, setPreview] = useState<string | null>(null);
 
   // Loader states
-  const [loading, setLoading] = useState(false); // For fetch & delete
-  const [uploading, setUploading] = useState(false); // For upload button
-  const [deleting, setDeleting] = useState<string | null>(null); // For delete button
+  const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   // Alert states
   const [alertType, setAlertType] = useState<"success" | "error">("success");
@@ -48,11 +63,22 @@ const HeroSectionImage: React.FC = () => {
   const [showAlert, setShowAlert] = useState(false);
 
   // ------------------ Effects ------------------
-  // Fetch images on mount
   useEffect(() => {
     fetchImages();
   }, []);
 
+  // Create preview when file changes
+  useEffect(() => {
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      setPreview(objectUrl);
+      
+      // Free memory when component unmounts
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setPreview(null);
+    }
+  }, [file]);
 
   // ------------------ Handlers ------------------
   // GET images
@@ -62,8 +88,6 @@ const HeroSectionImage: React.FC = () => {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/heroSectionImage`,
       );
-      // Make sure your backend returns: { success: true, data: [...], message: '' }
-      // Then setImages(res.data.data)
       setImages(res.data.data);
     } catch (err: any) {
       showAlertMessage("error", "Failed to fetch images");
@@ -79,6 +103,12 @@ const HeroSectionImage: React.FC = () => {
       showAlertMessage("error", "Please choose a file first!");
       return;
     }
+    
+    if (!title.trim()) {
+      showAlertMessage("error", "Title is required!");
+      return;
+    }
+    
     try {
       setUploading(true);
 
@@ -94,19 +124,19 @@ const HeroSectionImage: React.FC = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`, // remove if not needed
+            Authorization: `Bearer ${token}`,
           },
         },
       );
 
-      showAlertMessage("success", "Image uploaded successfully!");
-      // re-fetch to show new image
+      showAlertMessage("success", "Hero image uploaded successfully!");
       fetchImages();
 
       // Reset form
       setFile(null);
       setDescription("");
       setTitle("");
+      setPreview(null);
     } catch (err: any) {
       showAlertMessage(
         "error",
@@ -131,7 +161,6 @@ const HeroSectionImage: React.FC = () => {
         },
       );
       showAlertMessage("success", "Image deleted successfully!");
-      // Remove from local state or re-fetch
       setImages((prev) => prev.filter((img) => img._id !== id));
     } catch (err: any) {
       showAlertMessage(
@@ -142,7 +171,6 @@ const HeroSectionImage: React.FC = () => {
       setDeleting(null);
     }
   };
-
 
   // Simple helper to show an alert
   const showAlertMessage = (type: "success" | "error", message: string) => {
@@ -162,10 +190,9 @@ const HeroSectionImage: React.FC = () => {
     return <Loader />;
   }
 
-
   return (
-    <div className="min-h-screen p-4">
-      {/* Alert - only render if showAlert is true */}
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      {/* Alert component */}
       {showAlert && alertMessage && (
         <Alert
           type={alertType}
@@ -175,117 +202,309 @@ const HeroSectionImage: React.FC = () => {
       )}
 
       {/* Upload Form */}
-      <form
-        onSubmit={handleUpload}
-        className="mb-8 rounded-sm border border-stroke bg-white p-6 shadow-default dark:border-strokedark dark:bg-boxdark"
+      <Paper
+        elevation={2}
+        sx={{
+          p: 3,
+          mb: 5,
+          borderRadius: 2,
+          backgroundColor: (theme) =>
+            theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+        }}
       >
-        <h3 className="mb-4 text-lg font-medium text-black dark:text-white">
-          File upload
-        </h3>
-
-        <div className="mb-4">
-          <label className="mb-2 block text-sm font-medium text-black dark:text-white">
-            Attach file
-          </label>
-          <input
-            type="file"
-            onChange={(e) => {
-              if (e.target.files && e.target.files[0]) {
-                setFile(e.target.files[0]);
-              }
-            }}
-            className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="mb-2 block text-sm font-medium text-black dark:text-white">
-            Title
-          </label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full rounded-md border border-stroke p-3 outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="mb-2 block text-sm font-medium text-black dark:text-white">
-            Description
-          </label>
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Optional description"
-            className="w-full rounded-md border border-stroke p-3 outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white"
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={uploading}
-          className="disabled:bg-gray-400 disabled:hover:bg-gray-400 inline-flex items-center gap-2 rounded bg-primary px-5 py-2 font-medium text-white transition-colors hover:bg-opacity-90"
+        <Typography
+          variant="h6"
+          component="h2"
+          gutterBottom
+          sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1,
+            fontWeight: 500,
+            mb: 3 
+          }}
         >
-          {/* If uploading, show spinner or text; otherwise show normal text */}
-          {uploading ? (
-            <div className="flex items-center gap-2">
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-              <span>Uploading...</span>
-            </div>
-          ) : (
-            "Upload Image"
-          )}
-        </button>
-      </form>
+          <AddPhotoAlternateIcon color="primary" />
+          Add New Hero Image
+        </Typography>
 
-      {/* Gallery Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {images.map((img) => (
-          <Card
-            key={img._id}
-            sx={{ maxWidth: 345, position: "relative" }}
-            className="shadow-md"
-          >
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                height="180"
-                image={img.path}
-                alt={img.description || "Gallery Image"}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h6" component="div">
-                  {img.title}
-                </Typography>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  {img.description || "No description"}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-
-            {/* Delete Button */}
-            <div style={{ position: "absolute", top: 0, right: 0 }}>
-              <button
-                onClick={() => handleDelete(img._id)}
-                disabled={deleting === img._id}
-                className="inline-flex items-center justify-center bg-meta-1 px-2 py-2 text-center font-medium text-white hover:bg-opacity-80 lg:px-2 lg:py-2 xl:px-2 xl:py-2"
+        <form onSubmit={handleUpload}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <Box
+                sx={{
+                  border: "2px dashed",
+                  borderColor: "divider",
+                  borderRadius: 2,
+                  p: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                  minHeight: 250,
+                  cursor: "pointer",
+                  backgroundColor: (theme) =>
+                    theme.palette.mode === "dark" ? "rgb(36,48,63)" : "rgba(0,0,0,0.02)",
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    borderColor: "primary.main",
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === "dark" ? "rgb(36,48,65)" : "rgba(0,0,0,0.04)",
+                  },
+                }}
+                onClick={() => document.getElementById("hero-image-upload")?.click()}
               >
-                {deleting == img._id ? (
-                  <div className="flex items-center gap-2">
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                    <span>Deleting...</span>
-                  </div>
+                <input
+                  id="hero-image-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      setFile(e.target.files[0]);
+                    }
+                  }}
+                  style={{ display: "none" }}
+                />
+                {preview ? (
+                  <Box
+                    component="img"
+                    src={preview}
+                    alt="Preview"
+                    sx={{
+                      width: "100%",
+                      maxHeight: 300,
+                      objectFit: "contain",
+                      borderRadius: 1,
+                    }}
+                  />
                 ) : (
-                  "Delete"
+                  <>
+                    <ImageIcon
+                      sx={{ fontSize: 64, color: "primary.main", mb: 2, opacity: 0.7 }}
+                    />
+                    <Typography variant="body1" color="text.secondary">
+                      Drag and drop an image or click to browse
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary" sx={{ mt: 1 }}>
+                      Recommended size: 1920×1080px
+                    </Typography>
+                  </>
                 )}
-              </button>
-            </div>
-          </Card>
-        ))}
-      </div>
-    </div>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    required
+                    label="Title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    variant="outlined"
+                    helperText="Enter a title for the hero image"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    variant="outlined"
+                    multiline
+                    rows={4}
+                    placeholder="Enter a brief description for this hero image"
+                    helperText="Optional: Add context or description for this image"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    disabled={uploading || !file}
+                    startIcon={
+                      uploading ? (
+                        <CircularProgress size={20} color="inherit" />
+                      ) : (
+                        <UploadFileIcon />
+                      )
+                    }
+                    fullWidth
+                    sx={{ 
+                      py: 1.5,
+                      mt: 1,
+                      fontWeight: 500,
+                      boxShadow: 2
+                    }}
+                  >
+                    {uploading ? "Uploading..." : "Upload Hero Image"}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </form>
+      </Paper>
+
+      {/* Current Hero Images Section */}
+      <Box sx={{ mb: 4 }}>
+        <Typography 
+          variant="h6" 
+          gutterBottom 
+          sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1,
+            mb: 3
+          }}
+        >
+          <ImageIcon fontSize="small" color="primary" />
+          Current Hero Images
+          <Typography 
+            component="span" 
+            variant="body2" 
+            sx={{ 
+              ml: 2,
+              color: (theme) => 
+                theme.palette.mode === "light" ? 'text.secondary':"text.primary",
+              backgroundColor: (theme) => 
+                theme.palette.mode === 'light' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+              px: 1.5,
+              py: 0.5,
+              borderRadius: 4,
+              fontSize: '0.75rem',
+            }}
+          >
+            {images.length} {images.length === 1 ? 'image' : 'images'}
+          </Typography>
+        </Typography>
+
+        {images.length === 0 ? (
+          <Paper
+            elevation={0}
+            sx={{
+              p: 4,
+              textAlign: "center",
+              borderRadius: 2,
+              backgroundColor: (theme) =>
+                theme.palette.mode === "dark" ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.02)",
+            }}
+          >
+            <ImageIcon sx={{ fontSize: 48, color: "text.disabled", mb: 2 }} />
+            <Typography variant="h6" color="text.secondary">
+              No hero images yet
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              Upload your first hero image using the form above.
+            </Typography>
+          </Paper>
+        ) : (
+          <Grid container spacing={3}>
+            {images.map((img) => (
+              <Grid item xs={12} sm={6} md={4} key={img._id}>
+                <Zoom in={true} style={{ transitionDelay: '100ms' }}>
+                  <Card
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      overflow: "hidden",
+                      borderRadius: 2,
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        transform: "translateY(-4px)",
+                        boxShadow: (theme) => theme.shadows[10],
+                      },
+                    }}
+                  >
+                    <Box sx={{ position: "relative", paddingTop: "56.25%" }}>
+                      <CardMedia
+                        component="img"
+                        image={img.path}
+                        alt={img.title}
+                        sx={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                      />
+                      
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: 0,
+                          right: 0,
+                          m: 1,
+                        }}
+                      >
+                        <IconButton
+                          aria-label="delete image"
+                          onClick={() => handleDelete(img._id)}
+                          disabled={deleting === img._id}
+                          size="small"
+                          sx={{
+                            backgroundColor: "rgba(255, 255, 255, 0.9)",
+                            color: "error.main",
+                            "&:hover": {
+                              backgroundColor: "error.main",
+                              color: "white",
+                            },
+                            width: 36,
+                            height: 36,
+                          }}
+                        >
+                          {deleting === img._id ? (
+                            <CircularProgress size={20} color="inherit" />
+                          ) : (
+                            <DeleteIcon fontSize="small" />
+                          )}
+                        </IconButton>
+                      </Box>
+                    </Box>
+                    
+                    <CardContent sx={{ flexGrow: 1, p: 2 }}>
+                      <Typography 
+                        variant="subtitle1" 
+                        component="h3"
+                        fontWeight={500}
+                        gutterBottom
+                        noWrap
+                      >
+                        {img.title}
+                      </Typography>
+                      {img.description && (
+                        <Typography 
+                          variant="body2" 
+                          color="text.secondary"
+                          sx={{
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            lineHeight: 1.5,
+                          }}
+                        >
+                          {img.description}
+                        </Typography>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Zoom>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </Box>
+    </Container>
   );
 };
 

@@ -50,6 +50,18 @@ exports.getImages = async (req, res) => {
     const images = await Image.find();
 
     // Return a JSON object with success, data, and a message
+    res.status(200).json(images);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+exports.getAllImages = async (req, res) => {
+  try {
+    const images = await Image.find();
+
+    // Return a JSON object with success, data, and a message
     res.status(200).json({
       success: true,
       data: images,

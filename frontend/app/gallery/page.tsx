@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Imageholder from "@/components/ui/Imageholder";
 import { CiImageOn } from "react-icons/ci";
 import { RiFilterLine } from "react-icons/ri";
 import { IoClose } from "react-icons/io5";
-import Breadcrumb from "@/components/Landingpage-components/Common/Breadcrumb";
+import MasonryImageGrid from "@/components/ui/Imageholder";
 
 interface ImageItem {
   path: string;
@@ -175,7 +174,7 @@ export default function Gallery() {
         </span>
       </div>
       <main className="min-h-screen pt-20 lg:pt-[80px]">
-        <div className="mx-auto max-w-8xl px-4 pb-10 pt-20 sm:px-6 lg:px-8">
+        <div className="max-w-8xl mx-auto px-4 pb-10 pt-20 sm:px-6 lg:px-8">
           {/* Header - Fixed */}
           <div className="mb-8 flex flex-col items-center justify-between md:flex-row">
             <div className="mb-4 flex items-center md:mb-0">
@@ -309,7 +308,7 @@ export default function Gallery() {
               )}
 
               {/* Scrollable image content container */}
-              <div className="h-[calc(130vh-320px)] overflow-y-auto">
+              <div className="h-[calc(170vh-320px)] overflow-y-auto">
                 {loading ? (
                   <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                     {[...Array(12)].map((_, index) => (
@@ -321,16 +320,19 @@ export default function Gallery() {
                     ))}
                   </div>
                 ) : filteredImages.length > 0 ? (
-                  <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                    {filteredImages.map((item, index) => (
-                      <Imageholder
-                        key={index}
+                    <div className="grid auto-rows-[1fr] grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+                    {[...filteredImages]
+                      .sort(() => Math.random() - 0.5)
+                      .map((item, index) => (
+                      <MasonryImageGrid
+                        key={`${item.public_id}-${index}`}
                         src={item.path}
                         desc={item.description}
                         year={item.year}
+                        tag={item.tag}
                       />
-                    ))}
-                  </div>
+                      ))}
+                    </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-12">
                     <div className="mb-4 rounded-full bg-[#f3f4f6] p-4 dark:bg-[#1f2937]">

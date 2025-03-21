@@ -15,16 +15,39 @@ const Header = () => {
 
   // Sticky Navbar
   const [sticky, setSticky] = useState(false);
+  const [stickyEnabled, setStickyEnabled] = useState(true);
   const handleStickyNavbar = () => {
-    if (window.scrollY >= 80) {
+    if (stickyEnabled && window.scrollY >= 80) {
       setSticky(true);
     } else {
       setSticky(false);
     }
   };
+  
   useEffect(() => {
     window.addEventListener("scroll", handleStickyNavbar);
-  });
+    
+    // Listen for custom event from MasonryImageGrid component
+    const handleStickyToggle = (e) => {
+      setStickyEnabled(e.detail.enabled);
+      
+      // Force immediate update of sticky state
+      if (!e.detail.enabled) {
+        setSticky(false);
+      } else if (window.scrollY >= 80) {
+        setSticky(true);
+      }
+    };
+    
+    window.addEventListener("toggleStickyNavbar", handleStickyToggle);
+    
+    // Cleanup event listeners
+    return () => {
+      window.removeEventListener("scroll", handleStickyNavbar);
+      window.removeEventListener("toggleStickyNavbar", handleStickyToggle);
+    };
+  }, [stickyEnabled]);
+
 
   // submenu handler
   const [openIndex, setOpenIndex] = useState(-1);

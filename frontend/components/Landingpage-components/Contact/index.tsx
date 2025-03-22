@@ -199,15 +199,15 @@ const Contact = () => {
             {/* Section Header */}
             <div className="mb-12 text-center">
               <div className="relative mb-12">
-                <h2 className="text-3xl font-bold text-center md:text-4xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600 dark:from-primary dark:to-indigo-300">
+                <h2 className="bg-gradient-to-r from-primary to-[#9333ea] bg-clip-text text-center text-3xl font-bold text-transparent dark:from-primary dark:to-[#a5b4fc] md:text-4xl lg:text-5xl">
                   Contact Us
                 </h2>
-                <div className="flex justify-center items-center mt-4">
-                  <div className="h-1 w-16 bg-gradient-to-r from-primary to-purple-600 rounded-full"></div>
-                  <div className="h-1 w-8 mx-2 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
-                  <div className="h-1 w-4 bg-gray-200 dark:bg-gray-800 rounded-full"></div>
+                <div className="mt-4 flex items-center justify-center">
+                  <div className="h-1 w-16 rounded-full bg-gradient-to-r from-primary to-[#9333ea]"></div>
+                  <div className="mx-2 h-1 w-8 rounded-full bg-[#d1d5db] dark:bg-[#374151]"></div>
+                  <div className="h-1 w-4 rounded-full bg-[#e5e7eb] dark:bg-[#1f2937]"></div>
                 </div>
-                <div className="absolute -z-10 opacity-10 blur-3xl w-36 h-36 rounded-full bg-primary top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                <div className="absolute left-1/2 top-1/2 -z-10 h-36 w-36 -translate-x-1/2 -translate-y-1/2 transform rounded-full bg-primary opacity-10 blur-3xl"></div>
               </div>
               <TextAnimate
                 animation="blurInUp"
@@ -254,10 +254,10 @@ const Contact = () => {
                         Our Location
                       </h4>
                       <BoxReveal boxColor={"#5046e6"} duration={0.5}>
-                      <p className="text-sm text-[#4b5563] dark:text-[#9ca3af]">
-                        Shahjalal University of Science and Technology,
-                        Sylhet-3114, Bangladesh
-                      </p>
+                        <p className="text-sm text-[#4b5563] dark:text-[#9ca3af]">
+                          Shahjalal University of Science and Technology,
+                          Sylhet-3114, Bangladesh
+                        </p>
                       </BoxReveal>
                     </div>
                   </div>
@@ -284,9 +284,9 @@ const Contact = () => {
                         Email Address
                       </h4>
                       <BoxReveal boxColor={"#5046e6"} duration={0.5}>
-                      <p className="text-sm text-[#4b5563] dark:text-[#9ca3af]">
-                        gsasust2005@gmail.com
-                      </p>
+                        <p className="text-sm text-[#4b5563] dark:text-[#9ca3af]">
+                          gsasust2005@gmail.com
+                        </p>
                       </BoxReveal>
                     </div>
                   </div>
@@ -313,9 +313,9 @@ const Contact = () => {
                         Phone
                       </h4>
                       <BoxReveal boxColor={"#5046e6"} duration={0.5}>
-                      <p className="text-sm text-[#4b5563] dark:text-[#9ca3af]">
-                        +880 1614823637
-                      </p>
+                        <p className="text-sm text-[#4b5563] dark:text-[#9ca3af]">
+                          +880 1614823637
+                        </p>
                       </BoxReveal>
                     </div>
                   </div>

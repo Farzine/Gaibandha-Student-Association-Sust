@@ -1,7 +1,6 @@
 import RelatedPost from "@/components/Landingpage-components/Blog/RelatedPost";
 import SharePost from "@/components/Landingpage-components/Blog/SharePost";
 import TagButton from "@/components/Landingpage-components/Blog/TagButton";
-import NewsLatterBox from "@/components/Landingpage-components/Contact/NewsLatterBox";
 import Image from "next/image";
 
 import { Metadata } from "next";
@@ -458,8 +457,6 @@ const BlogSidebarPage = () => {
                   <TagButton text="Business" />
                 </div>
               </div>
-
-              <NewsLatterBox />
             </div>
           </div>
         </div>

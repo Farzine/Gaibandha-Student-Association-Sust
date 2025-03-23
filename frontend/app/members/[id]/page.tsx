@@ -77,19 +77,51 @@ const MemberProfilePage = () => {
   // Loading state
   if (loading) {
     return (
-      <div className="bg-gray-50 dark:bg-gray-900 flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <div
-            className="border-indigo-600 inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-            role="status"
-          >
-            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-              Loading...
-            </span>
+      <div className="min-h-screen bg-[#f9fafb] py-16 pt-28 dark:bg-[#111827] md:py-20 lg:py-28 lg:pt-[150px]">
+        <div className="container mx-auto px-4">
+          <div className="animate-pulse">
+
+            {/* Profile card skeleton */}
+            <div className="mx-auto max-w-4xl overflow-hidden rounded-xl bg-white shadow-md dark:bg-[#1e293b]">
+              <div className="flex flex-col md:flex-row">
+                {/* Profile image skeleton */}
+                <div className="flex items-center justify-center p-6 md:w-1/3">
+                  <div className="bg-[#e2e8f0] dark:bg-[#334155] h-48 w-48 rounded-full"></div>
+                </div>
+
+                {/* Profile details skeleton */}
+                <div className="space-y-6 p-6 md:w-2/3">
+                  <div className="space-y-3">
+                    <div className="bg-[#e2e8f0] dark:bg-[#334155] h-8 w-3/4 rounded-md"></div>
+                    <div className="bg-[#e2e8f0] dark:bg-[#334155] h-4 w-1/2 rounded"></div>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    {[...Array(6)].map((_, i) => (
+                      <div key={i} className="space-y-2">
+                        <div className="bg-[#e2e8f0] dark:bg-[#334155] h-4 w-1/3 rounded"></div>
+                        <div className="bg-[#e2e8f0] dark:bg-[#334155] h-6 w-full rounded"></div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="bg-[#e2e8f0] dark:bg-[#334155] h-4 w-1/4 rounded"></div>
+                    <div className="bg-[#e2e8f0] dark:bg-[#334155] h-24 rounded"></div>
+                  </div>
+
+                  <div className="flex space-x-4">
+                    {[...Array(3)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="bg-[#e2e8f0] dark:bg-[#334155] h-10 w-10 rounded-md"
+                      ></div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <p className="text-gray-600 dark:text-gray-300 mt-4">
-            Loading member profile...
-          </p>
         </div>
       </div>
     );
@@ -98,23 +130,23 @@ const MemberProfilePage = () => {
   // Error state
   if (error || !user) {
     return (
-      <div className="bg-gray-50 dark:bg-gray-900 flex min-h-screen flex-col items-center justify-center p-4">
-        <div className="bg-red-50 dark:bg-red-900/30 border-red-500 w-full max-w-md rounded-lg border-l-4 p-6 shadow-md">
-          <h2 className="text-red-700 dark:text-red-400 mb-2 text-xl font-bold">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-[#f9fafb] p-4 dark:bg-[#111827]">
+        <div className="w-full max-w-md rounded-lg border-l-4 border-[#ef4444] bg-[#fef2f2] p-6 shadow-md">
+          <h2 className="mb-2 text-xl font-bold text-[#b91c1c] dark:text-[#f87171]">
             Error
           </h2>
-          <p className="text-red-600 dark:text-red-300 mb-4">
+          <p className="mb-4 text-[#dc2626] dark:text-[#fca5a5]">
             {error || "Member not found"}
           </p>
           <div className="flex space-x-4">
             <button
               onClick={() => fetchMemberData()}
-              className="bg-red-600 hover:bg-red-700 rounded px-4 py-2 text-white transition-colors duration-200"
+              className="rounded bg-[#dc2626] px-4 py-2 text-white transition-colors duration-200 hover:bg-[#b91c1c]"
             >
               Try Again
             </button>
             <Link href="/members">
-              <button className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded px-4 py-2 transition-colors duration-200">
+              <button className="rounded bg-[#e5e7eb] px-4 py-2 text-[#1f2937] transition-colors duration-200 hover:bg-[#d1d5db] dark:bg-[#374151] dark:text-[#e5e7eb] dark:hover:bg-[#4b5563]">
                 Back to Members
               </button>
             </Link>

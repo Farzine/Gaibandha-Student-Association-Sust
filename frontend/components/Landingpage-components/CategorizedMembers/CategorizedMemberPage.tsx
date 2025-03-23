@@ -1,6 +1,5 @@
 "use client";
-import Profile from "@/components/Landingpage-components/CategorizedMembers/ProfileCard";
-import ProfileCard from "@/components/Landingpage-components/CategorizedMembers/ProfileInfoCard";
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useTheme, useMediaQuery } from "@mui/material";
@@ -9,10 +8,9 @@ import SchoolIcon from "@mui/icons-material/School";
 import BadgeIcon from "@mui/icons-material/Badge";
 import GroupsIcon from "@mui/icons-material/Groups";
 import SearchIcon from "@mui/icons-material/Search";
-import { alpha } from "@mui/material/styles";
-import { useRouter } from "next/navigation";
 import ProfileInfoCard from "@/components/Landingpage-components/CategorizedMembers/ProfileInfoCard";
 import { TextAnimate } from "@/components/ui/text-animate";
+import { SparklesText } from "@/components/ui/sparkles-text";
 
 /** The extended User interface */
 interface User {
@@ -49,32 +47,6 @@ interface CategorizedMembers {
   generalMembers: User[];
 }
 
-const DESIGNATION_OPTIONS = [
-  "President",
-  "Senior Vice President",
-  "Vice-President",
-  "General Secretary",
-  "Joint General Secretary",
-  "Assistant General Secretary",
-  "Treasurer",
-  "Assistant Treasurer",
-  "Organizing Secretary",
-  "Assistant Organizing Secretary",
-  "Office Secretary",
-  "Assistant Office Secretary",
-  "Women's Affairs Secretary",
-  "Assistant Women's Affairs Secretary",
-  "Sports Secretary",
-  "Assistant Sports Secretary",
-  "Publication Secretary",
-  "Assistant Publication Secretary",
-  "IT Secretary",
-  "Assistant IT Secretary",
-  "Cultural Secretary",
-  "Assistant Cultural Secretary",
-  "Advisor",
-  "Member",
-];
 
 // Category Tab Interface
 interface CategoryTab {
@@ -84,7 +56,6 @@ interface CategoryTab {
 }
 
 const CategorizedMembersPage: React.FC = () => {
-  const router = useRouter();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -303,12 +274,10 @@ const CategorizedMembersPage: React.FC = () => {
         <div className="mx-auto max-w-7xl">
           {/* Section Header */}
           <div className="mb-12 text-center">
-            <div className="relative mb-12">
-              <h2 className="to-[#9333ea] dark:to-[#a5b4fc] bg-gradient-to-r from-primary bg-clip-text text-center text-3xl font-bold text-transparent dark:from-primary md:text-4xl lg:text-5xl">
-                Our Members
-              </h2>
+            <div className="relative mb-12"> 
+              <SparklesText text="Our Members" className=""/>
               <div className="mt-4 flex items-center justify-center">
-                <div className="to-[#9333ea] h-1 w-16 rounded-full bg-gradient-to-r from-primary"></div>
+                <div className="to-[#60a5fa] h-1 w-16 rounded-full bg-gradient-to-r from-[#2563eb]"></div>
                 <div className="bg-[#d1d5db] dark:bg-[#374151] mx-2 h-1 w-8 rounded-full"></div>
                 <div className="bg-[#e5e7eb] dark:bg-[#1f2937] h-1 w-4 rounded-full"></div>
               </div>

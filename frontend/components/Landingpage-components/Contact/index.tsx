@@ -4,6 +4,7 @@ import Link from "next/link";
 import DockDemo from "../dock-demo-3";
 import { TextAnimate } from "@/components/ui/text-animate";
 import { BoxReveal } from "@/components/ui/box-reveal";
+import { SparklesText } from "@/components/ui/sparkles-text";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -199,13 +200,11 @@ const Contact = () => {
             {/* Section Header */}
             <div className="mb-12 text-center">
               <div className="relative mb-12">
-                <h2 className="bg-gradient-to-r from-primary to-[#9333ea] bg-clip-text text-center text-3xl font-bold text-transparent dark:from-primary dark:to-[#a5b4fc] md:text-4xl lg:text-5xl">
-                  Contact Us
-                </h2>
-                <div className="mt-4 flex items-center justify-center">
-                  <div className="h-1 w-16 rounded-full bg-gradient-to-r from-primary to-[#9333ea]"></div>
-                  <div className="mx-2 h-1 w-8 rounded-full bg-[#d1d5db] dark:bg-[#374151]"></div>
-                  <div className="h-1 w-4 rounded-full bg-[#e5e7eb] dark:bg-[#1f2937]"></div>
+              <SparklesText text="Contact Us" className=""/>
+              <div className="mt-4 flex items-center justify-center">
+                <div className="to-[#60a5fa] h-1 w-16 rounded-full bg-gradient-to-r from-[#2563eb]"></div>
+                <div className="bg-[#d1d5db] dark:bg-[#374151] mx-2 h-1 w-8 rounded-full"></div>
+                <div className="bg-[#e5e7eb] dark:bg-[#1f2937] h-1 w-4 rounded-full"></div>
                 </div>
                 <div className="absolute left-1/2 top-1/2 -z-10 h-36 w-36 -translate-x-1/2 -translate-y-1/2 transform rounded-full bg-primary opacity-10 blur-3xl"></div>
               </div>

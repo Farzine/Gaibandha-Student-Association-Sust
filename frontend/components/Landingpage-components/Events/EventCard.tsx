@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, MapPin, Clock } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const EventCard = ({ event }) => {
   const { images, title, location, date, description, _id } = event;
@@ -59,7 +60,7 @@ const EventCard = ({ event }) => {
                 : 'opacity-0 scale-105'
             }`}
               >
-            <img
+            <Image
               src={img.path}
               alt={`Event ${index + 1}`}
               className="h-full w-full object-cover"

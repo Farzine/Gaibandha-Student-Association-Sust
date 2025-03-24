@@ -3,25 +3,22 @@ import React, { useState, useEffect, use } from "react";
 import {
   Calendar,
   MapPin,
-  Clock,
   Share2,
   ChevronLeft,
   ChevronRight,
   ArrowLeft,
   Users,
-  Tag,
-  Ticket,
   Award,
   AlertCircle,
 } from "lucide-react";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { Event } from "./types";
-import Head from "next/head";
 import Link from "next/link";
 import { SparklesText } from "@/components/ui/sparkles-text";
 import { TextAnimate } from "@/components/ui/text-animate";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 const EventDetailsPage = () => {
   const params = useParams();
@@ -449,7 +446,7 @@ const EventDetailsPage = () => {
             {/* Hero section with improved image display */}
             <div className="relative h-[50vh] w-full overflow-hidden md:h-[60vh] lg:h-[70vh]">
               <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/30 to-transparent"></div>
-              <img
+              <Image
                 src={imageUrls[currentImageIndex]}
                 alt={event.title}
                 className="h-full w-full object-cover transition-transform duration-700 ease-in-out hover:scale-105"
@@ -580,7 +577,7 @@ const EventDetailsPage = () => {
                   </h2>
                   <div className="border-[#f3f4f6] dark:border-[#374151] bg-[#f9fafb] dark:bg-[#1f2937]/50 hover:bg-[#f3f4f6] dark:hover:bg-[#374151]/50 flex items-center rounded-lg border p-4 transition-colors">
                     <div className="dark:border-[#374151] mr-4 h-16 w-16 overflow-hidden rounded-full border-2 border-white shadow-md">
-                      <img
+                      <Image
                         src="/images/user/user-01.png"
                         alt="Organizer"
                         className="h-full w-full object-cover"
@@ -614,7 +611,7 @@ const EventDetailsPage = () => {
                           setShowFullGallery(true);
                         }}
                       >
-                        <img
+                        <Image
                           src={img}
                           alt={`Gallery ${index + 1}`}
                           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
@@ -704,7 +701,7 @@ const EventDetailsPage = () => {
               <ChevronLeft size={30} />
             </button>
 
-            <img
+            <Image
               src={imageUrls[currentImageIndex]}
               alt={`Gallery ${currentImageIndex + 1}`}
               className="max-h-[85vh] max-w-[85vw] object-contain"

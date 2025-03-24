@@ -309,7 +309,7 @@ export default function OTPVerificationModal({
           {/* Resend option */}
           <div className="mt-5 text-center">
             <p className="text-sm text-[#4b5563] dark:text-[#9ca3af]">
-              Didn't receive the code?{" "}
+              Didn&apos;t receive the code?{" "}
               <button
                 onClick={handleResendCode}
                 disabled={timeLeft > 270} // Disable resend for 30 seconds after sending

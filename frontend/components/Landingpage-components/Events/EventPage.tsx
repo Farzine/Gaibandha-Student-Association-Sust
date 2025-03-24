@@ -241,7 +241,7 @@ const EventsPage: React.FC = () => {
               className="text-lg text-[#4b5563] dark:text-[#d1d5db]"
             >
               Discover and join our latest events. From workshops to social
-              gatherings, there's something for everyone.
+              gatherings, there&apos;s something for everyone.
             </TextAnimate>
           </div>
           {/* Events */}

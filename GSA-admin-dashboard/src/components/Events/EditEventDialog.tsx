@@ -4,6 +4,7 @@ import { XMarkIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { Event, EventFormData, AlertProps } from "./types";
 import EventInputForm from "./EventInputForm";
 import Alert from "./Alert";
+import Image from "next/image";
 
 interface EditEventDialogProps {
   open: boolean;
@@ -78,7 +79,7 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
                       key={img._id} 
                       className="relative group rounded-lg overflow-hidden shadow-md border border-[#e5e7eb] hover:shadow-lg transition-all"
                     >
-                      <img
+                      <Image
                         src={img.path}
                         alt={event.title}
                         className="w-full h-48 object-cover"

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { CalendarIcon, MapPinIcon, PhotoIcon, PencilIcon, TrashIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Event } from "./types";
+import Image from "next/image";
 
 interface EventListProps {
   events: Event[];
@@ -80,7 +81,7 @@ const EventList: React.FC<EventListProps> = ({
                         : "opacity-0 pointer-events-none"
                     }`}
                   >
-                    <img
+                    <Image
                       src={img.path}
                       alt={`${event.title} - image ${index + 1}`}
                       className="w-full h-full object-cover"

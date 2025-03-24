@@ -33,7 +33,6 @@ interface ProfileProps {
 
 const MemberProfilePage = () => {
   const params = useParams();
-  const router = useRouter();
   const id = params.id as string;
 
   // States

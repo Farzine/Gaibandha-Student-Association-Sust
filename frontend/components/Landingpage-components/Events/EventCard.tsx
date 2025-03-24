@@ -60,7 +60,7 @@ const EventCard = ({ event }) => {
                 : 'opacity-0 scale-105'
             }`}
               >
-            <Image
+            <img
               src={img.path}
               alt={`Event ${index + 1}`}
               className="h-full w-full object-cover"

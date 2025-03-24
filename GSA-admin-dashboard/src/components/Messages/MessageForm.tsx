@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Editor } from 'primereact/editor';
-import Image from 'next/image';
+
 
 type MessageFormProps = {
   initialData?: { 
@@ -179,7 +179,7 @@ const MessageForm: React.FC<MessageFormProps> = ({
             {imagePreview && (
               <div className="mt-4">
                 <div className="relative rounded-lg overflow-hidden w-40 h-40 mx-auto border border-[#e5e7eb] dark:border-[#4b5563]">
-                  <Image 
+                  <img 
                     src={imagePreview} 
                     alt="Preview" 
                     className="w-full h-full object-cover" 

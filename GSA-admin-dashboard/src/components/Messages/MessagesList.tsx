@@ -2,7 +2,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { MessageType } from "./types";
-import Image from "next/image";
 
 interface MessagesListProps {
   onEdit: (message: MessageType) => void;
@@ -157,7 +156,7 @@ const MessagesList: React.FC<MessagesListProps> = ({
                       <td className="whitespace-nowrap px-6 py-4">
                         {message.path ? (
                           <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-[#e5e7eb] dark:border-[#4b5563]">
-                            <Image
+                            <img
                               src={message.path}
                               alt={message.name}
                               className="h-full w-full object-cover"

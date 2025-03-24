@@ -26,6 +26,38 @@ export default function OTPVerificationModal({
   const inputRefs = useRef<HTMLInputElement[]>([]);
   const router = useRouter();
 
+
+
+  // Cancel registration when modal is closed
+  const handleCancel = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/user/cancel-registration`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        }
+      );
+
+      const data = await response.json();
+      
+      // Close the modal regardless of the response
+      onClose();
+
+      // Optional: Handle potential errors or successful cancellation
+      if (!response.ok) {
+        console.error('Cancel registration failed:', data.message);
+      }
+    } catch (err: any) {
+      console.error('Error cancelling registration:', err.message);
+    }
+  };
+
+  const handleCloseModal = () => {
+    handleCancel();
+  };
+
   // When modal opens, reset the timer to 300 seconds
   useEffect(() => {
     if (isOpen) {
@@ -78,22 +110,23 @@ export default function OTPVerificationModal({
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
     const pastedData = e.clipboardData.getData("text/plain").trim();
-    
+
     // Check if pasted content matches expected format
     if (/^\d+$/.test(pastedData) && pastedData.length <= otp.length) {
       const digits = pastedData.split("");
       const newOtp = [...otp];
-      
+
       digits.forEach((digit, index) => {
         if (index < otp.length) {
           newOtp[index] = digit;
         }
       });
-      
+
       setOtp(newOtp);
-      
+
       // Focus the next empty input or the last one if all filled
-      const nextEmptyIndex = digits.length < otp.length ? digits.length : otp.length - 1;
+      const nextEmptyIndex =
+        digits.length < otp.length ? digits.length : otp.length - 1;
       if (inputRefs.current[nextEmptyIndex]) {
         inputRefs.current[nextEmptyIndex].focus();
       }
@@ -124,9 +157,7 @@ export default function OTPVerificationModal({
       if (!response.ok) {
         throw new Error(data.message || "Invalid code or verification error");
       }
-
-      setSuccess("Your email has been verified successfully!");
-      // router.push("/dashboard");
+      setSuccess("Email verified! Please sign in to continue.");
 
       // Option 2: show success briefly, then redirect
       setTimeout(() => {
@@ -165,7 +196,7 @@ export default function OTPVerificationModal({
   // Handle key down events for navigation between inputs
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       // Move to previous input on backspace if current is empty
@@ -178,35 +209,57 @@ export default function OTPVerificationModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4">
-      <div className="w-full max-w-md bg-white dark:bg-[#1f2937] rounded-xl shadow-2xl overflow-hidden transition-all transform animate-fadeIn">
+    <div className="absolute lg:inset-70 inset-0 lg:mt-0 mt-100 min-h-screen z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
+      <div className="animate-fadeIn w-full max-w-md transform overflow-hidden rounded-xl bg-white shadow-2xl transition-all dark:bg-[#1f2937]">
         <div className="relative">
           {/* Header with decorative accent */}
           <div className="h-2 bg-gradient-to-r from-[#3b82f6] to-[#9333ea]"></div>
-          
+
           {/* Close button */}
           <button
-            onClick={onClose}
-            className="absolute top-4 right-4 text-[#9ca3af] hover:text-[#4b5563] dark:hover:text-[#e5e7eb] transition-colors"
+            onClick={handleCloseModal}
+            className="absolute right-4 top-4 text-[#9ca3af] transition-colors hover:text-[#4b5563] dark:hover:text-[#e5e7eb]"
             aria-label="Close"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
 
         <div className="p-6 md:p-8">
-          <div className="flex flex-col items-center mb-6">
-            <div className="w-16 h-16 bg-[#eff6ff] dark:bg-[#dbeafe] rounded-full flex items-center justify-center mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          <div className="mb-6 flex flex-col items-center">
+            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#eff6ff] dark:bg-[#dbeafe]">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-8 w-8 text-primary"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                />
               </svg>
             </div>
             <h2 className="text-2xl font-bold text-[#1f2937] dark:text-white">
               Verify Your Account
             </h2>
-            <p className="text-[#4b5563] dark:text-[#d1d5db] text-center mt-2">
+            <p className="mt-2 text-center text-[#4b5563] dark:text-[#d1d5db]">
               We sent a verification code to{" "}
               <span className="font-medium text-primary">{email}</span>
             </p>
@@ -215,12 +268,26 @@ export default function OTPVerificationModal({
           {/* Timer indicator */}
           <div className="mb-6">
             <div className="flex items-center justify-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#6b7280] dark:text-[#9ca3af]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 text-[#6b7280] dark:text-[#9ca3af]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               {timeLeft > 0 ? (
                 <span className="text-sm font-medium text-[#4b5563] dark:text-[#d1d5db]">
-                  Code expires in <span className="text-primary font-bold">{formatTime(timeLeft)}</span>
+                  Code expires in{" "}
+                  <span className="font-bold text-primary">
+                    {formatTime(timeLeft)}
+                  </span>
                 </span>
               ) : (
                 <span className="text-sm font-medium text-[#ef4444]">
@@ -228,9 +295,9 @@ export default function OTPVerificationModal({
                 </span>
               )}
             </div>
-            <div className="w-full bg-[#e5e7eb] dark:bg-[#374151] rounded-full h-1.5 mt-2">
-              <div 
-                className="bg-primary h-1.5 rounded-full transition-all duration-1000 ease-linear"
+            <div className="mt-2 h-1.5 w-full rounded-full bg-[#e5e7eb] dark:bg-[#374151]">
+              <div
+                className="h-1.5 rounded-full bg-primary transition-all duration-1000 ease-linear"
                 style={{ width: `${(timeLeft / 300) * 100}%` }}
               ></div>
             </div>
@@ -238,36 +305,67 @@ export default function OTPVerificationModal({
 
           {/* Error and Success Messages */}
           {error && (
-            <div className="mb-6 p-4 rounded-lg bg-[#fef2f2] dark:bg-[#fee2e2] border border-[#fecaca] dark:border-[#991b1b] flex items-start">
-              <svg className="h-5 w-5 text-[#ef4444] mt-0.5 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <div className="mb-6 flex items-start rounded-lg border border-[#fecaca] bg-[#fef2f2] p-4 dark:border-[#991b1b] dark:bg-[#fee2e2]">
+              <svg
+                className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-[#ef4444]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               <div>
-                <h3 className="text-sm font-medium text-[#991b1b] dark:text-[#991b1b]">Error</h3>
-                <p className="mt-1 text-sm text-[#b91c1c] dark:text-[#f87171]">{error}</p>
+                <h3 className="text-sm font-medium text-[#991b1b] dark:text-[#991b1b]">
+                  Error
+                </h3>
+                <p className="mt-1 text-sm text-[#b91c1c] dark:text-[#f87171]">
+                  {error}
+                </p>
               </div>
             </div>
           )}
 
           {success && (
-            <div className="mb-6 p-4 rounded-lg bg-green-50 dark:bg-[#dcfce7] border border-[#bbf7d0] dark:border-[#166534] flex items-start">
-              <svg className="h-5 w-5 text-[#22c55e] mt-0.5 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <div className="bg-green-50 mb-6 flex items-start rounded-lg border border-[#bbf7d0] p-4 dark:border-[#166534] dark:bg-[#dcfce7]">
+              <svg
+                className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-[#22c55e]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               <div>
-                <h3 className="text-sm font-medium text-[#166534] dark:text-[#166534]">Success</h3>
-                <p className="mt-1 text-sm text-[#15803d] dark:text-[#4ade80]">{success}</p>
+                <h3 className="text-sm font-medium text-[#166534] dark:text-[#166534]">
+                  Success
+                </h3>
+                <p className="mt-1 text-sm text-[#15803d] dark:text-[#4ade80]">
+                  {success}
+                </p>
               </div>
             </div>
           )}
 
           {/* OTP input field */}
           <div className="mb-6">
-            <label htmlFor="otp-input" className="block text-sm font-medium text-[#374151] dark:text-[#d1d5db] mb-2">
+            <label
+              htmlFor="otp-input"
+              className="mb-2 block text-sm font-medium text-[#374151] dark:text-[#d1d5db]"
+            >
               Enter verification code
             </label>
-            <div 
-              className="flex justify-center gap-2 md:gap-3" 
+            <div
+              className="flex justify-center gap-2 md:gap-3"
               onPaste={handlePaste}
             >
               {otp.map((digit, index) => (
@@ -280,7 +378,7 @@ export default function OTPVerificationModal({
                   value={digit}
                   onChange={(e) => handleOTPChange(e, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
-                  className="w-10 h-12 md:w-12 md:h-14 rounded-lg border-2 text-center text-xl font-bold text-[#1f2937] dark:text-white focus:border-primary focus:ring focus:ring-primary/20 dark:focus:ring-primary/40 dark:bg-[#374151] dark:border-[#4b5563] transition-all duration-200"
+                  className="h-12 w-10 rounded-lg border-2 text-center text-xl font-bold text-[#1f2937] transition-all duration-200 focus:border-primary focus:ring focus:ring-primary/20 dark:border-[#4b5563] dark:bg-[#374151] dark:text-white dark:focus:ring-primary/40 md:h-14 md:w-12"
                   aria-label={`Digit ${index + 1}`}
                 />
               ))}
@@ -291,13 +389,29 @@ export default function OTPVerificationModal({
           <button
             onClick={handleVerifyOTP}
             disabled={loading}
-            className="w-full py-3.5 rounded-lg bg-primary hover:bg-primary/90 text-white font-medium transition-all duration-200 focus:ring-4 focus:ring-primary/20 dark:focus:ring-primary/40 flex items-center justify-center"
+            className="flex w-full items-center justify-center rounded-lg bg-primary py-3.5 font-medium text-white transition-all duration-200 hover:bg-primary/90 focus:ring-4 focus:ring-primary/20 dark:focus:ring-primary/40"
           >
             {loading ? (
               <>
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg
+                  className="-ml-1 mr-2 h-4 w-4 animate-spin text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
                 Verifying...
               </>
@@ -313,11 +427,13 @@ export default function OTPVerificationModal({
               <button
                 onClick={handleResendCode}
                 disabled={timeLeft > 270} // Disable resend for 30 seconds after sending
-                className={`font-medium text-primary hover:text-primary/80 transition-colors ${
-                  timeLeft > 270 ? "opacity-50 cursor-not-allowed" : ""
+                className={`font-medium text-primary transition-colors hover:text-primary/80 ${
+                  timeLeft > 270 ? "cursor-not-allowed opacity-50" : ""
                 }`}
               >
-                {timeLeft > 270 ? `Resend in ${formatTime(timeLeft - 270)}` : "Resend code"}
+                {timeLeft > 270
+                  ? `Resend in ${formatTime(timeLeft - 270)}`
+                  : "Resend code"}
               </button>
             </p>
           </div>

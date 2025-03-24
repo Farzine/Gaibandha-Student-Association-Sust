@@ -44,8 +44,12 @@ exports.registerUser = async (req, res) => {
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
-    if (existingUser)
+    if (existingUser && existingUser.emailVerified){
       return res.status(400).json({ message: "User already registered" });
+    } else if (existingUser && !existingUser.emailVerified) {
+      await User.findByIdAndDelete(existingUser._id);
+    }
+
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -90,6 +94,36 @@ exports.registerUser = async (req, res) => {
       });
   } catch (error) {
     res.status(500).json({ message: "Registration failed" });
+  }
+};
+
+
+exports.cancelRegistration = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Delete the user from the database
+    await User.findByIdAndDelete(user._id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Cancelled user registration successfully",
+    });
+  } catch (error) {
+    console.error("Error cancelling user registration:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error cancelling user registration",
+      error: error.message
+    });
   }
 };
 

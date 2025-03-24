@@ -2,6 +2,7 @@
 "use client"
 import { FloatingDockDemo } from "@/components/Landingpage-components/FloatingDock";
 import HeroVideoDialog from "@/components/Landingpage-components/HeroVideoDialog";
+import { BackgroundLines } from "@/components/ui/background-lines";
 import GoogleTranslate from "@/components/ui/GoogleTranslate";
 import { MorphingText } from "@/components/ui/morphing-text";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
@@ -33,9 +34,11 @@ function Example() {
       <div className="mt-28">
       <FloatingDockDemo />
       </div>
+      <BackgroundLines className="flex items-center justify-center w-full flex-col px-4">
       <div className="mt-28 mx-50 mb-50">
       <GoogleTranslate />
       </div>
+      </BackgroundLines>
     </div>
   );
 }

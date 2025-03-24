@@ -29,6 +29,7 @@ export default function RootLayout({
         <Providers>
         {showHeaderFooter && <Header />}
           {children}
+          <div id="modal-root" />
           {showHeaderFooter && <Footer />}
           <ScrollToTop />
         </Providers>

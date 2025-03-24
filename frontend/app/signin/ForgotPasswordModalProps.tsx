@@ -39,6 +39,7 @@ export default function ForgotPasswordModal({
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -153,7 +154,7 @@ export default function ForgotPasswordModal({
       setTimeout(() => {
         router.push("/signin");
         onClose();
-      }, 1000);
+      }, 500);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -197,8 +198,17 @@ export default function ForgotPasswordModal({
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    setMounted(true);
+    const existingRoot = document.getElementById("modal-root");
+    if (existingRoot) {
+      setPortalRoot(existingRoot);
+    }
+    return () => setMounted(false);
+  }, []);
+
   // Only render the modal on client-side and when open
-  if (!mounted || !isOpen) return null;
+  if (!mounted || !isOpen || !portalRoot) return null;
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 px-5">
@@ -469,7 +479,7 @@ export default function ForgotPasswordModal({
             </button>
 
             <div className="text-gray-600 dark:text-gray-400 text-center text-sm">
-              Didn’t receive the code?{" "}
+              Didn&apos;t receive the code?{" "}
               <button
                 type="button"
                 onClick={handleResendCode}
@@ -482,5 +492,6 @@ export default function ForgotPasswordModal({
         )}
       </div>
     </div>,
+    portalRoot,
   );
 }

@@ -36,7 +36,6 @@ const DEPARTMENTS = [
   "Food & Tea Technology",
   "Foresrty and Environmental Science",
   "Genetic Engineering & Biotechnology",
-  "Geography & Environment",
   "Geography & Environmental Science",
   "Industrial & Production Engineering",
   "Mathematics",

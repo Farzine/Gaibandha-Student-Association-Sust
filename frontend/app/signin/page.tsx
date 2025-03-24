@@ -1,10 +1,13 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Cookie from "js-cookie"; 
+import Cookie from "js-cookie";
 import ForgotPasswordModal from "./ForgotPasswordModalProps";
+import Breadcrumb from "@/components/Landingpage-components/Common/Breadcrumb";
+import { TextAnimate } from "@/components/ui/text-animate";
+import { SparklesText } from "@/components/ui/sparkles-text";
 
 const SigninPage = () => {
   const [formData, setFormData] = useState({
@@ -58,7 +61,7 @@ const SigninPage = () => {
       );
 
       const data = await response.json();
-      const userData =data.userData;
+      const userData = data.userData;
       // save the user data in the local storage
       localStorage.setItem("userData", JSON.stringify(userData));
 
@@ -68,7 +71,7 @@ const SigninPage = () => {
       }
 
       if (data.token) {
-        Cookie.set("token", data.token, { expires: 7 }); 
+        Cookie.set("token", data.token, { expires: 7 });
       }
 
       setSuccessMessage(data.message);
@@ -84,105 +87,92 @@ const SigninPage = () => {
 
   return (
     <>
-      <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
+      <Breadcrumb pageName="Sign in" />
+      <section className="relative z-10 mb-20 overflow-hidden">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
-              <div className="mx-auto max-w-[500px] rounded bg-white px-6 py-10 shadow-three dark:bg-dark sm:p-[60px]">
-                <h3 className="mb-3 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
-                  Sign in to your account
-                </h3>
-                <p className="mb-11 text-center text-base font-medium text-body-color">
-                  Login to your account for a faster checkout.
-                </p>
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-8">
+              <div className="mx-auto max-w-[500px] rounded-lg bg-white px-6 shadow-three dark:bg-dark sm:p-[10px]">
+                {/* Header Section with Brand Colors */}
+                <div className="mb-5 text-center">
+                  <div className="relative mb-5">
+                    <SparklesText text="GSA-SUST" />
+                    <div className="mt-4 flex items-center justify-center">
+                      <div className="h-1 w-16 rounded-full bg-gradient-to-r from-[#2563eb] to-[#60a5fa]"></div>
+                      <div className="mx-2 h-1 w-8 rounded-full bg-[#d1d5db] dark:bg-[#374151]"></div>
+                      <div className="h-1 w-4 rounded-full bg-[#e5e7eb] dark:bg-[#374151]"></div>
+                    </div>
+                    <div className="absolute left-1/2 top-1/2 -z-10 h-36 w-36 -translate-x-1/2 -translate-y-1/2 transform rounded-full bg-primary opacity-10 blur-3xl"></div>
+                  </div>
+                  <TextAnimate
+                    animation="blurInUp"
+                    by="character"
+                    once
+                    className="text-lg text-[#4b5563] dark:text-[#d1d5db]"
+                  >
+                    Sign in to your account for GSA-SUST
+                  </TextAnimate>
+                </div>
+                <form onSubmit={handleSubmit} className="lg:mx-10 ">
+                  <div className="relative mb-4">
                     <label
                       htmlFor="email"
-                      className="mb-3 block text-sm text-dark dark:text-white"
+                      className="mb-1 block text-sm font-medium text-[#374151] dark:text-[#e5e7eb]"
                     >
-                      Your Email
+                      Email Address
                     </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="Enter your Email"
-                      className="w-full rounded-sm border border-stroke bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                    />
+                    <div className="relative my-2">
+                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <Mail size={18} className="text-[#9ca3af]" />
+                      </div>
+                      <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="your.email@example.com"
+                        className="w-full rounded-lg border border-[#d1d5db] bg-white px-4 py-2.5 pl-10 text-sm text-[#374151] focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/20 dark:border-[#4b5563] dark:bg-[#374151] dark:text-white dark:placeholder-[#9ca3af] dark:focus:border-[#3b82f6]"
+                      />
+                    </div>
                   </div>
-                  <div className="mb-8">
+
+                  <div className="relative my-2">
                     <label
                       htmlFor="password"
-                      className="mb-3 block text-sm text-dark dark:text-white"
+                      className="mb-1 block text-sm font-medium text-[#374151] dark:text-[#e5e7eb]"
                     >
-                      Your Password
+                      Password
                     </label>
-                    <div className="relative">
+                    <div className="relative my-2">
+                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <Lock size={18} className="text-[#9ca3af]" />
+                      </div>
                       <input
                         type={showPassword ? "text" : "password"}
                         name="password"
+                        id="password"
                         value={formData.password}
                         onChange={handleChange}
-                        placeholder="Enter your Password"
-                        className="w-full rounded-sm border border-stroke bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                        placeholder="Create a secure password"
+                        className="w-full rounded-lg border border-[#d1d5db] bg-white px-4 py-2.5 pl-10 text-sm text-[#374151] focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/20 dark:border-[#4b5563] dark:bg-[#374151] dark:text-white dark:placeholder-[#9ca3af] dark:focus:border-[#3b82f6]"
                       />
                       <button
                         type="button"
-                        className="absolute inset-y-4 right-4 flex items-center"
-                        onClick={() => setShowPassword((prev) => !prev)}
+                        className="absolute inset-y-0 right-0 flex items-center pr-3"
+                        onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? (
-                          <Eye
-                            size={20}
-                            className="text-body-color dark:text-body-color-dark "
-                          />
+                          <Eye size={18} className="text-gray-500" />
                         ) : (
-                          <EyeOff
-                            size={20}
-                            className="text-body-color dark:text-body-color-dark "
-                          />
+                          <EyeOff size={18} className="text-gray-500" />
                         )}
                       </button>
                     </div>
                   </div>
-                  <div className="mb-8 flex flex-col justify-between sm:flex-row sm:items-center">
-                    <div className="mb-4 sm:mb-0">
-                      <label
-                        htmlFor="checkboxLabel"
-                        className="flex cursor-pointer select-none items-center text-sm font-medium text-body-color"
-                      >
-                        <div className="relative">
-                          <input
-                            type="checkbox"
-                            id="checkboxLabel"
-                            className="sr-only"
-                          />
-                          <div className="box mr-4 flex h-5 w-5 items-center justify-center rounded border border-body-color border-opacity-20 dark:border-white dark:border-opacity-10">
-                            <span className="opacity-0">
-                              <svg
-                                width="11"
-                                height="8"
-                                viewBox="0 0 11 8"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M10.0915 0.951972L10.0867 0.946075L10.0813 0.940568C9.90076 0.753564 9.61034 0.753146 9.42927 0.939309L4.16201 6.22962L1.58507 3.63469C1.40401 3.44841 1.11351 3.44879 0.932892 3.63584C0.755703 3.81933 0.755703 4.10875 0.932892 4.29224L0.932878 4.29225L0.934851 4.29424L3.58046 6.95832C3.73676 7.11955 3.94983 7.2 4.1473 7.2C4.36196 7.2 4.55963 7.11773 4.71406 6.9584L10.0468 1.60234C10.2436 1.4199 10.2421 1.1339 10.0915 0.951972ZM4.2327 6.30081L4.2317 6.2998C4.23206 6.30015 4.23237 6.30049 4.23269 6.30082L4.2327 6.30081Z"
-                                  fill="#3056D3"
-                                  stroke="#3056D3"
-                                  strokeWidth="0.4"
-                                />
-                              </svg>
-                            </span>
-                          </div>
-                        </div>
-                        Keep me signed in
-                      </label>
-                    </div>
+                  <div className="mb-8 flex flex-col justify-end sm:flex-row sm:items-center">
                     <div>
-                      <a
+                      <Link
                         href="#0"
                         className="text-sm font-medium text-primary hover:underline"
                         onClick={(e) => {
@@ -191,7 +181,7 @@ const SigninPage = () => {
                         }}
                       >
                         Forgot Password?
-                      </a>
+                      </Link>
                     </div>
                   </div>
 
@@ -282,7 +272,7 @@ const SigninPage = () => {
                   </div>
                 </form>
                 <p className="text-center text-base font-medium text-body-color">
-                  Don’t you have an account?{" "}
+                  Don&apos;t you have an account?{" "}
                   <Link href="/signup" className="text-primary hover:underline">
                     Sign up
                   </Link>
@@ -290,63 +280,6 @@ const SigninPage = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="absolute left-0 top-0 z-[-1]">
-          <svg
-            width="1440"
-            height="969"
-            viewBox="0 0 1440 969"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <mask
-              id="mask0_95:1005"
-              style={{ maskType: "alpha" }}
-              maskUnits="userSpaceOnUse"
-              x="0"
-              y="0"
-              width="1440"
-              height="969"
-            >
-              <rect width="1440" height="969" fill="#090E34" />
-            </mask>
-            <g mask="url(#mask0_95:1005)">
-              <path
-                opacity="0.1"
-                d="M1086.96 297.978L632.959 554.978L935.625 535.926L1086.96 297.978Z"
-                fill="url(#paint0_linear_95:1005)"
-              />
-              <path
-                opacity="0.1"
-                d="M1324.5 755.5L1450 687V886.5L1324.5 967.5L-10 288L1324.5 755.5Z"
-                fill="url(#paint1_linear_95:1005)"
-              />
-            </g>
-            <defs>
-              <linearGradient
-                id="paint0_linear_95:1005"
-                x1="1178.4"
-                y1="151.853"
-                x2="780.959"
-                y2="453.581"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" />
-                <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-              </linearGradient>
-              <linearGradient
-                id="paint1_linear_95:1005"
-                x1="160.5"
-                y1="220"
-                x2="1099.45"
-                y2="1192.04"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" />
-                <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-          </svg>
         </div>
       </section>
       <ForgotPasswordModal

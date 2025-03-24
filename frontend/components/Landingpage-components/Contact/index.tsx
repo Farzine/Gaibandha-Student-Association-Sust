@@ -409,7 +409,7 @@ const Contact = () => {
                           htmlFor="name"
                           className="mb-2 block text-sm font-medium text-[#111827] dark:text-white"
                         >
-                          Full Name <span className="text-[#fef2f2]">*</span>
+                          Full Name <span className="text-[#fc2727]">*</span>
                         </label>
                         <input
                           type="text"
@@ -433,7 +433,7 @@ const Contact = () => {
                           className="mb-2 block text-sm font-medium text-[#111827] dark:text-white"
                         >
                           Email Address{" "}
-                          <span className="text-[#fef2f2]">*</span>
+                          <span className="text-[#fc2727]">*</span>
                         </label>
                         <input
                           type="email"
@@ -452,7 +452,7 @@ const Contact = () => {
                         htmlFor="message"
                         className="mb-2 block text-sm font-medium text-[#111827] dark:text-white"
                       >
-                        Your Message <span className="text-[#fef2f2]">*</span>
+                        Your Message <span className="text-[#fc2727]">*</span>
                       </label>
                       <textarea
                         id="message"

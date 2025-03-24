@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Event } from "./types";
 import EventCard from "./EventCard";
-import { Calendar, Loader2 } from "lucide-react";
 import { SparklesText } from "@/components/ui/sparkles-text";
 import { TextAnimate } from "@/components/ui/text-animate";
 
@@ -12,6 +11,8 @@ const EventsPage: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [eventsPerPage] = useState(3);
 
   const baseUrl = process.env.NEXT_PUBLIC_APP_BACKEND_URL;
 
@@ -40,6 +41,37 @@ const EventsPage: React.FC = () => {
   useEffect(() => {
     fetchEvents();
   }, []);
+
+  // Pagination logic
+  const indexOfLastEvent = currentPage * eventsPerPage;
+  const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
+  const currentEvents = events.slice(indexOfFirstEvent, indexOfLastEvent);
+  const totalPages = Math.ceil(events.length / eventsPerPage);
+
+   // Change page
+   const paginate = (pageNumber: number) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Generate page numbers
+  const pageNumbers = [];
+  const maxPageNumbersToShow = 5;
+  
+  let startPage = Math.max(1, currentPage - Math.floor(maxPageNumbersToShow / 2));
+  let endPage = Math.min(totalPages, startPage + maxPageNumbersToShow - 1);
+  
+  if (endPage - startPage + 1 < maxPageNumbersToShow) {
+    startPage = Math.max(1, endPage - maxPageNumbersToShow + 1);
+  }
+  
+  for (let i = startPage; i <= endPage; i++) {
+    pageNumbers.push(i);
+  }
+
+
 
   // Loading UI
   if (loading) {
@@ -214,7 +246,7 @@ const EventsPage: React.FC = () => {
           </div>
           {/* Events */}
             <div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:gap-10">
-              {events.map((event, index) => (
+              {currentEvents.map((event, index) => (
                 <div
                   key={event._id}
                   className={`relative transform transition-all duration-500 hover:scale-[1.02] ${
@@ -223,12 +255,116 @@ const EventsPage: React.FC = () => {
                 >
                   <div className="absolute -left-3 h-full w-1 rounded bg-gradient-to-b from-primary/80 to-primary/20"></div>
                   <EventCard event={event} />
-                  {index < events.length - 1 && (
+                  {index < currentEvents.length - 1 && (
                     <div className="via-[#d1d5db] dark:via-[#374151] absolute bottom-0 left-1/2 h-px w-1/3 -translate-x-1/2 transform bg-gradient-to-r from-transparent to-transparent"></div>
                   )}
                 </div>
               ))}
             </div>
+
+            {/* Pagination */}
+          {events.length > eventsPerPage && (
+            <div
+              className="wow fadeInUp -mx-4 flex flex-wrap"
+              data-wow-delay=".15s"
+            >
+              <div className="w-full px-4">
+                <ul className="flex items-center justify-center pt-8">
+                  <li className="mx-1">
+                    <button
+                      onClick={() => paginate(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className={`flex h-9 min-w-[36px] items-center justify-center rounded-md bg-body-color bg-opacity-[15%] px-4 text-sm text-body-color transition ${
+                        currentPage === 1
+                          ? "cursor-not-allowed opacity-60"
+                          : "hover:bg-primary hover:bg-opacity-100 hover:text-white"
+                      }`}
+                    >
+                      Prev
+                    </button>
+                  </li>
+                  
+                  {startPage > 1 && (
+                    <>
+                      <li className="mx-1">
+                        <button
+                          onClick={() => paginate(1)}
+                          className={`flex h-9 min-w-[36px] items-center justify-center rounded-md ${
+                            currentPage === 1
+                              ? "bg-primary bg-opacity-100 text-white"
+                              : "bg-body-color bg-opacity-[15%] text-body-color hover:bg-primary hover:bg-opacity-100 hover:text-white"
+                          } px-4 text-sm transition`}
+                        >
+                          1
+                        </button>
+                      </li>
+                      {startPage > 2 && (
+                        <li className="mx-1">
+                          <span className="flex h-9 min-w-[36px] cursor-not-allowed items-center justify-center rounded-md bg-body-color bg-opacity-[15%] px-4 text-sm text-body-color">
+                            ...
+                          </span>
+                        </li>
+                      )}
+                    </>
+                  )}
+                  
+                  {pageNumbers.map((number) => (
+                    <li key={number} className="mx-1">
+                      <button
+                        onClick={() => paginate(number)}
+                        className={`flex h-9 min-w-[36px] items-center justify-center rounded-md ${
+                          currentPage === number
+                            ? "bg-primary bg-opacity-100 text-white"
+                            : "bg-body-color bg-opacity-[15%] text-body-color hover:bg-primary hover:bg-opacity-100 hover:text-white"
+                        } px-4 text-sm transition`}
+                      >
+                        {number}
+                      </button>
+                    </li>
+                  ))}
+                  
+                  {endPage < totalPages && (
+                    <>
+                      {endPage < totalPages - 1 && (
+                        <li className="mx-1">
+                          <span className="flex h-9 min-w-[36px] cursor-not-allowed items-center justify-center rounded-md bg-body-color bg-opacity-[15%] px-4 text-sm text-body-color">
+                            ...
+                          </span>
+                        </li>
+                      )}
+                      <li className="mx-1">
+                        <button
+                          onClick={() => paginate(totalPages)}
+                          className={`flex h-9 min-w-[36px] items-center justify-center rounded-md ${
+                            currentPage === totalPages
+                              ? "bg-primary bg-opacity-100 text-white"
+                              : "bg-body-color bg-opacity-[15%] text-body-color hover:bg-primary hover:bg-opacity-100 hover:text-white"
+                          } px-4 text-sm transition`}
+                        >
+                          {totalPages}
+                        </button>
+                      </li>
+                    </>
+                  )}
+                  
+                  <li className="mx-1">
+                    <button
+                      onClick={() => paginate(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className={`flex h-9 min-w-[36px] items-center justify-center rounded-md bg-body-color bg-opacity-[15%] px-4 text-sm text-body-color transition ${
+                        currentPage === totalPages
+                          ? "cursor-not-allowed opacity-60"
+                          : "hover:bg-primary hover:bg-opacity-100 hover:text-white"
+                      }`}
+                    >
+                      Next
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
     </>

@@ -1,5 +1,5 @@
 {
-  "name": "startup-nextjs-template",
+  "name": "gaibandha-student-association-sust",
   "version": "0.2.0",
   "private": true,
   "scripts": {
@@ -16,13 +16,13 @@
     "@mui/material": "^6.4.6",
     "@radix-ui/react-hover-card": "^1.1.6",
     "@tabler/icons-react": "^3.31.0",
-    "apexcharts": "^4.4.0",
     "axios": "^1.8.1",
     "class-variance-authority": "^0.7.1",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
     "flatpickr": "^4.6.13",
     "flowbite": "^3.1.2",
+    "gaibandha-student-association-sust": "file:",
     "js-cookie": "^3.0.5",
     "jsvectormap": "^1.6.0",
     "jwt-decode": "^4.0.0",

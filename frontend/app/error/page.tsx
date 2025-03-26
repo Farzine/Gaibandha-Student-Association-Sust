@@ -1,538 +1,290 @@
-import Link from "next/link";
+"use client";
+import { useState } from "react";
 
-import { Metadata } from "next";
+// Data for landmarks and personalities
+const landmarks = [
+  {
+    name: "Bamondanga and Noldanga Zamindar Bari",
+    description:
+      "Historical zamindar estate showcasing traditional Bengali architecture. The estate reflects the opulence of the zamindar era with its intricate designs and sprawling grounds.",
+    image: "/images/landmark1.jpg",
+  },
+  {
+    name: "Balashighat",
+    description:
+      "Important river port and trading center with historical significance. It was a bustling hub during the British colonial period.",
+    image: "/images/landmark2.jpg",
+  },
+  {
+    name: "Shah Sultan Gazi Mosque",
+    description:
+      "Ancient mosque with unique architectural features dating back centuries. It is a testament to the rich Islamic heritage of the region.",
+    image: "/images/landmark3.jpg",
+  },
+  {
+    name: "Birat Raja Dhibi",
+    description:
+      "Archaeological site with remnants of ancient civilization. Excavations have revealed artifacts from the pre-Mughal era.",
+    image: "/images/landmark4.jpg",
+  },
+];
 
-export const metadata: Metadata = {
-  title: "Error Page | Free Next.js Template for Startup and SaaS",
-  description: "This is Error Page for Startup Nextjs Template",
-  // other metadata
-};
+const personalities = [
+  {
+    name: "Shah Abdul Hamid",
+    description:
+      "First Speaker of independent Bangladesh, played a crucial role in the country's early parliamentary system.",
+    image: "/images/person1.jpg",
+  },
+  {
+    name: "Akhtaruzzaman Elias",
+    description:
+      "Renowned Bangladeshi writer and novelist, known for his contributions to Bengali literature.",
+    image: "/images/person2.jpg",
+  },
+  {
+    name: "Tulsi Lahiri",
+    description:
+      "Famous dramatist and theater personality, instrumental in promoting cultural arts in the region.",
+    image: "/images/person3.jpg",
+  },
+  {
+    name: "Fazle Rabbi Miah",
+    description:
+      "Honourable Deputy Speaker of Parliament, a prominent political figure from Gaibandha.",
+    image: "/images/person4.jpg",
+  },
+];
 
-const ErrorPage = () => {
+// FlipCard Component
+const FlipCard = ({ name, description, image }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const handleClick = () => setIsFlipped(!isFlipped);
+
   return (
-    <>
-      <section className="relative z-10 pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
-        <div className="container">
-          <div className="flex flex-wrap -mx-4">
-            <div className="w-full px-4">
-              <div className="mx-auto max-w-[530px] text-center">
-                <div className="mx-auto text-center mb-9">
-                  <svg
-                    className="w-full mx-auto text-center"
-                    height="210"
-                    viewBox="0 0 474 210"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      opacity="0.5"
-                      d="M25 163.051H101.211V191H133.308V163.051H153V136.111H133.308V32H91.2871L25 136.577V163.051ZM101.831 136.111H58.8025V134.869L100.591 68.6445H101.831V136.111Z"
-                      stroke="url(#paint0_linear_116:1137)"
-                      strokeWidth="3"
-                    />
-                    <path
-                      opacity="0.5"
-                      d="M307 133.051H383.211V161H415.308V133.051H435V106.111H415.308V2H373.287L307 106.577V133.051ZM383.831 106.111H340.803V104.869L382.591 38.6445H383.831V106.111Z"
-                      stroke="url(#paint1_linear_116:1137)"
-                      strokeWidth="3"
-                    />
-                    <circle
-                      opacity="0.8"
-                      cx="227.5"
-                      cy="81.5"
-                      r="68.5"
-                      fill="#4A6CF7"
-                    />
-                    <mask
-                      id="mask0_116:1137"
-                      style={{ maskType: "alpha" }}
-                      maskUnits="userSpaceOnUse"
-                      x="159"
-                      y="13"
-                      width="137"
-                      height="137"
-                    >
-                      <circle
-                        opacity="0.8"
-                        cx="227.5"
-                        cy="81.5"
-                        r="68.5"
-                        fill="#4A6CF7"
-                      />
-                    </mask>
-                    <g mask="url(#mask0_116:1137)">
-                      <circle
-                        opacity="0.8"
-                        cx="227.5"
-                        cy="81.5"
-                        r="68.5"
-                        fill="url(#paint2_radial_116:1137)"
-                      />
-                      <g opacity="0.8" filter="url(#filter0_f_116:1137)">
-                        <circle
-                          cx="233.543"
-                          cy="49.2645"
-                          r="28.2059"
-                          fill="white"
-                        />
-                      </g>
-                    </g>
-                    <path
-                      d="M0 182H83.5V209H150.5V178H169.5V148.5C169.5 148.5 194 165 229.5 165C265 165 294 134.5 294 134.5V152H306.5H361V178H435V152H474"
-                      stroke="white"
-                      strokeOpacity="0.08"
-                      strokeWidth="2"
-                    />
-                    <defs>
-                      <filter
-                        id="filter0_f_116:1137"
-                        x="175.337"
-                        y="-8.94141"
-                        width="116.412"
-                        height="116.412"
-                        filterUnits="userSpaceOnUse"
-                        colorInterpolationFilters="sRGB"
-                      >
-                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                        <feBlend
-                          mode="normal"
-                          in="SourceGraphic"
-                          in2="BackgroundImageFix"
-                          result="shape"
-                        />
-                        <feGaussianBlur
-                          stdDeviation="15"
-                          result="effect1_foregroundBlur_116:1137"
-                        />
-                      </filter>
-                      <linearGradient
-                        id="paint0_linear_116:1137"
-                        x1="25"
-                        y1="183"
-                        x2="126.155"
-                        y2="27.0837"
-                        gradientUnits="userSpaceOnUse"
-                      >
-                        <stop stopColor="#4A6CF7" stopOpacity="0" />
-                        <stop offset="1" stopColor="#4A6CF7" />
-                      </linearGradient>
-                      <linearGradient
-                        id="paint1_linear_116:1137"
-                        x1="307"
-                        y1="153"
-                        x2="408.155"
-                        y2="-2.91631"
-                        gradientUnits="userSpaceOnUse"
-                      >
-                        <stop stopColor="#4A6CF7" stopOpacity="0" />
-                        <stop offset="1" stopColor="#4A6CF7" />
-                      </linearGradient>
-                      <radialGradient
-                        id="paint2_radial_116:1137"
-                        cx="0"
-                        cy="0"
-                        r="1"
-                        gradientUnits="userSpaceOnUse"
-                        gradientTransform="translate(227.5 81.5) rotate(90) scale(73.5368)"
-                      >
-                        <stop stopOpacity="0.47" />
-                        <stop offset="1" stopOpacity="0" />
-                      </radialGradient>
-                    </defs>
-                  </svg>
-                </div>
-                <h3 className="mb-4 text-3xl font-bold text-black dark:text-white sm:text-4xl">
-                  Sorry, the page can’t be found
-                </h3>
-                <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
-                  The page you were looking for appears to have been moved,
-                  deleted or does not exist.
-                </p>
-                <Link
-                  href="/"
-                  className="px-8 py-3 text-base font-bold text-white duration-300 rounded-md bg-primary shadow-signUp hover:bg-white hover:text-primary md:px-9 lg:px-8 xl:px-9"
-                >
-                  Back to Homepage
-                </Link>
-              </div>
-            </div>
+    <div
+      className={`flip-card w-full ${isFlipped ? "flipped" : ""}`}
+      onClick={handleClick}
+    >
+      <div className="flip-card-inner">
+        <div className="flip-card-front flex items-center justify-center rounded-lg bg-white p-6 text-black shadow-md transition-transform duration-300 dark:bg-[#1f2937] dark:text-white">
+          <h4 className="text-center text-lg font-semibold">{name}</h4>
+        </div>
+        <div className="flip-card-back rounded-lg bg-white p-4 text-black shadow-md dark:bg-[#1f2937] dark:text-white">
+          <div className="relative mb-4 h-0 pb-[56.25%]">
+            <img
+              src={image}
+              style={{ objectFit: "cover", width: "100%", height: "100%" }}
+              alt={name}
+              className="rounded-t-lg"
+            />
           </div>
+          <p className="text-sm">{description}</p>
         </div>
-        <div className="absolute bottom-0 left-0 z-[-1] hidden sm:block">
-          <svg
-            width="406"
-            height="286"
-            viewBox="0 0 406 286"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g opacity="0.5">
-              <rect
-                opacity="0.5"
-                x="56.25"
-                y="110.344"
-                width="116.719"
-                height="116.438"
-                stroke="url(#paint0_linear_116:1140)"
-              />
-              <rect
-                opacity="0.1"
-                x="56.25"
-                y="110.344"
-                width="116.719"
-                height="116.438"
-                fill="url(#paint1_linear_116:1140)"
-              />
-              <path
-                opacity="0.5"
-                d="M172.688 110.344L229.219 51V167.601L172.688 226.781V110.344Z"
-                stroke="url(#paint2_linear_116:1140)"
-              />
-              <path
-                opacity="0.1"
-                d="M172.688 110.344L229.219 51V167.601L172.688 226.781V110.344Z"
-                fill="url(#paint3_linear_116:1140)"
-              />
-              <path
-                opacity="0.5"
-                d="M0 169.619L56.25 110.344V226.85L0 286.125V169.619Z"
-                stroke="url(#paint4_linear_116:1140)"
-              />
-              <path
-                opacity="0.1"
-                d="M0 169.619L56.25 110.344V226.85L0 286.125V169.619Z"
-                fill="url(#paint5_linear_116:1140)"
-              />
-              <rect
-                opacity="0.5"
-                x="228.938"
-                y="51.2812"
-                width="119.25"
-                height="116.438"
-                stroke="url(#paint6_linear_116:1140)"
-              />
-              <rect
-                opacity="0.1"
-                x="228.938"
-                y="51.2812"
-                width="119.25"
-                height="116.438"
-                fill="url(#paint7_linear_116:1140)"
-              />
-              <path
-                opacity="0.5"
-                d="M347.906 51.2812L405 2V110.113L347.906 167.719V51.2812Z"
-                stroke="url(#paint8_linear_116:1140)"
-              />
-              <path
-                opacity="0.1"
-                d="M347.906 51.2812L405 2V110.113L347.906 167.719V51.2812Z"
-                fill="url(#paint9_linear_116:1140)"
-              />
-            </g>
-            <defs>
-              <linearGradient
-                id="paint0_linear_116:1140"
-                x1="49.0781"
-                y1="112.313"
-                x2="148.922"
-                y2="131.859"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" stopOpacity="0" />
-                <stop offset="1" stopColor="#4A6CF7" />
-              </linearGradient>
-              <linearGradient
-                id="paint1_linear_116:1140"
-                x1="179.141"
-                y1="209.062"
-                x2="32.6026"
-                y2="145.47"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" />
-                <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-              </linearGradient>
-              <linearGradient
-                id="paint2_linear_116:1140"
-                x1="170.016"
-                y1="125.25"
-                x2="217.542"
-                y2="125.507"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" stopOpacity="0" />
-                <stop offset="1" stopColor="#4A6CF7" />
-              </linearGradient>
-              <linearGradient
-                id="paint3_linear_116:1140"
-                x1="233.578"
-                y1="113.156"
-                x2="146.509"
-                y2="143.95"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" />
-                <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-              </linearGradient>
-              <linearGradient
-                id="paint4_linear_116:1140"
-                x1="-3.45633"
-                y1="113.316"
-                x2="46.311"
-                y2="116.426"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" stopOpacity="0" />
-                <stop offset="1" stopColor="#4A6CF7" />
-              </linearGradient>
-              <linearGradient
-                id="paint5_linear_116:1140"
-                x1="69.8907"
-                y1="189.234"
-                x2="84.0124"
-                y2="249.947"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" />
-                <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-              </linearGradient>
-              <linearGradient
-                id="paint6_linear_116:1140"
-                x1="218.953"
-                y1="157.453"
-                x2="330.261"
-                y2="148.369"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" stopOpacity="0" />
-                <stop offset="1" stopColor="#4A6CF7" />
-              </linearGradient>
-              <linearGradient
-                id="paint7_linear_116:1140"
-                x1="348.187"
-                y1="46.6406"
-                x2="280.112"
-                y2="168.552"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" />
-                <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-              </linearGradient>
-              <linearGradient
-                id="paint8_linear_116:1140"
-                x1="329"
-                y1="190"
-                x2="369.525"
-                y2="-29.8829"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" stopOpacity="0" />
-                <stop offset="1" stopColor="#4A6CF7" />
-              </linearGradient>
-              <linearGradient
-                id="paint9_linear_116:1140"
-                x1="409"
-                y1="10"
-                x2="331.729"
-                y2="34.2741"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" />
-                <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-        <div className="absolute right-0 top-0 z-[-1] hidden sm:block">
-          <svg
-            width="406"
-            height="286"
-            viewBox="0 0 406 286"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g opacity="0.5">
-              <rect
-                opacity="0.5"
-                x="57.25"
-                y="108.344"
-                width="116.719"
-                height="116.438"
-                stroke="url(#paint0_linear_116:1151)"
-              />
-              <rect
-                opacity="0.1"
-                x="57.25"
-                y="108.344"
-                width="116.719"
-                height="116.438"
-                fill="url(#paint1_linear_116:1151)"
-              />
-              <path
-                opacity="0.5"
-                d="M173.688 108.344L230.219 49V165.601L173.688 224.781V108.344Z"
-                stroke="url(#paint2_linear_116:1151)"
-              />
-              <path
-                opacity="0.1"
-                d="M173.688 108.344L230.219 49V165.601L173.688 224.781V108.344Z"
-                fill="url(#paint3_linear_116:1151)"
-              />
-              <path
-                opacity="0.5"
-                d="M1 167.619L57.25 108.344V224.85L1 284.125V167.619Z"
-                stroke="url(#paint4_linear_116:1151)"
-              />
-              <path
-                opacity="0.1"
-                d="M1 167.619L57.25 108.344V224.85L1 284.125V167.619Z"
-                fill="url(#paint5_linear_116:1151)"
-              />
-              <rect
-                opacity="0.5"
-                x="229.938"
-                y="49.2812"
-                width="119.25"
-                height="116.438"
-                stroke="url(#paint6_linear_116:1151)"
-              />
-              <rect
-                opacity="0.1"
-                x="229.938"
-                y="49.2812"
-                width="119.25"
-                height="116.438"
-                fill="url(#paint7_linear_116:1151)"
-              />
-              <path
-                opacity="0.5"
-                d="M348.906 49.2812L406 0V108.113L348.906 165.719V49.2812Z"
-                stroke="url(#paint8_linear_116:1151)"
-              />
-              <path
-                opacity="0.1"
-                d="M348.906 49.2812L406 0V108.113L348.906 165.719V49.2812Z"
-                fill="url(#paint9_linear_116:1151)"
-              />
-            </g>
-            <defs>
-              <linearGradient
-                id="paint0_linear_116:1151"
-                x1="50.0781"
-                y1="110.313"
-                x2="149.922"
-                y2="129.859"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" stopOpacity="0" />
-                <stop offset="1" stopColor="#4A6CF7" />
-              </linearGradient>
-              <linearGradient
-                id="paint1_linear_116:1151"
-                x1="180.141"
-                y1="207.062"
-                x2="33.6026"
-                y2="143.47"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" />
-                <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-              </linearGradient>
-              <linearGradient
-                id="paint2_linear_116:1151"
-                x1="171.016"
-                y1="123.25"
-                x2="218.542"
-                y2="123.507"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" stopOpacity="0" />
-                <stop offset="1" stopColor="#4A6CF7" />
-              </linearGradient>
-              <linearGradient
-                id="paint3_linear_116:1151"
-                x1="234.578"
-                y1="111.156"
-                x2="147.509"
-                y2="141.95"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" />
-                <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-              </linearGradient>
-              <linearGradient
-                id="paint4_linear_116:1151"
-                x1="85.5"
-                y1="71.5"
-                x2="100.174"
-                y2="270.716"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" stopOpacity="0" />
-                <stop offset="1" stopColor="#4A6CF7" />
-              </linearGradient>
-              <linearGradient
-                id="paint5_linear_116:1151"
-                x1="70.8907"
-                y1="187.234"
-                x2="85.0124"
-                y2="247.947"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" />
-                <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-              </linearGradient>
-              <linearGradient
-                id="paint6_linear_116:1151"
-                x1="219.953"
-                y1="155.453"
-                x2="331.261"
-                y2="146.369"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" stopOpacity="0" />
-                <stop offset="1" stopColor="#4A6CF7" />
-              </linearGradient>
-              <linearGradient
-                id="paint7_linear_116:1151"
-                x1="349.187"
-                y1="44.6406"
-                x2="281.112"
-                y2="166.552"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" />
-                <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-              </linearGradient>
-              <linearGradient
-                id="paint8_linear_116:1151"
-                x1="394.75"
-                y1="64.3284"
-                x2="409.531"
-                y2="110.901"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" stopOpacity="0" />
-                <stop offset="1" stopColor="#4A6CF7" />
-              </linearGradient>
-              <linearGradient
-                id="paint9_linear_116:1151"
-                x1="410"
-                y1="8.00001"
-                x2="332.729"
-                y2="32.2741"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" />
-                <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-      </section>
-    </>
+      </div>
+    </div>
   );
 };
 
-export default ErrorPage;
+const HistoryOfGaibandha = () => {
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [modalImage, setModalImage] = useState("");
+
+  const openImageModal = (imageSrc) => {
+    setModalImage(imageSrc);
+    setIsImageModalOpen(true);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#f9fafb] transition-colors duration-300 dark:bg-[#111827]">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-r from-[#dbeafe] to-[#bfdbfe] py-20 dark:from-[#1e3a8a] dark:to-[#1e40af]">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="animate-fade-in mb-6 text-5xl font-extrabold text-[#1e40af] dark:text-[#bfdbfe]">
+            History of Gaibandha District
+          </h2>
+          <p className="mb-8 text-lg text-[#374151] dark:text-[#d1d5db]">
+            Discover the rich heritage and vibrant journey of Gaibandha
+          </p>
+        </div>
+      </section>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-12">
+        {/* Introduction */}
+        <section className="mb-20">
+          <h3 className="mb-6 text-3xl font-bold text-[#1d4ed8] dark:text-[#93c5fd]">
+            Introduction
+          </h3>
+          <p className="leading-relaxed text-[#374151] dark:text-[#d1d5db]">
+            Gaibandha, a northern district of Bangladesh established in 1984,
+            lies within the Rangpur Division. Spanning 2,179 square kilometers
+            along the Ghaghot River, it supports a population of approximately
+            2.83 million (2011 census) across seven upazilas. The river shapes
+            its geography and economy, fostering a rich cultural legacy.
+          </p>
+        </section>
+
+        {/* Geography Section */}
+        <section className="mb-20">
+          <h3 className="mb-6 text-3xl font-bold text-[#1d4ed8] dark:text-[#93c5fd]">
+            Geography
+          </h3>
+          <div className="flex flex-col items-start gap-10 md:flex-row">
+            <div className="md:w-1/2">
+              <p className="leading-relaxed text-[#374151] dark:text-[#d1d5db]">
+                Located along the Ghaghot River, Gaibandha’s fertile plains and
+                riverine landscapes drive its agricultural economy. These
+                natural features have historically supported the district&apos;s
+                growth and sustenance.
+              </p>
+            </div>
+            <div className="md:w-1/2">
+              <div
+                className="group relative h-72 cursor-pointer overflow-hidden rounded-xl shadow-xl"
+                onClick={() => openImageModal("/images/cards/cards-01.png")}
+              >
+                <img
+                  src="/images/cards/cards-01.png"
+                  alt="Gaibandha Map"
+                  className="h-full w-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 transition-all duration-300 group-hover:bg-opacity-60">
+                  <span className="text-lg font-medium text-white">
+                    Click to Enlarge
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Historical Landmarks */}
+        <section className="mb-20">
+          <h3 className="mb-6 text-3xl font-bold text-[#1d4ed8] dark:text-[#93c5fd]">
+            Historical & Cultural Landmarks
+          </h3>
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {landmarks.map((landmark, index) => (
+              <FlipCard
+                key={index}
+                name={landmark.name}
+                description={landmark.description}
+                image={landmark.image}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Notable Personalities */}
+        <section className="mb-20">
+          <h3 className="mb-6 text-3xl font-bold text-[#1d4ed8] dark:text-[#93c5fd]">
+            Notable Personalities
+          </h3>
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {personalities.map((person, index) => (
+              <FlipCard
+                key={index}
+                name={person.name}
+                description={person.description}
+                image={person.image}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Development Section */}
+        <section className="mb-20">
+          <h3 className="mb-6 text-3xl font-bold text-[#1d4ed8] dark:text-[#93c5fd]">
+            Development and Economy
+          </h3>
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+            <div>
+              <p className="mb-4 leading-relaxed text-[#374151] dark:text-[#d1d5db]">
+                Agriculture, including rice, wheat, and vegetables, sustains
+                most of Gaibandha’s population. The district has advanced in
+                education, healthcare, and infrastructure while preserving its
+                cultural heritage.
+              </p>
+              <p className="leading-relaxed text-[#374151] dark:text-[#d1d5db]">
+                The Gaibandha Student Association at SUST fosters community,
+                cultural preservation, and academic excellence among students
+                from the region.
+              </p>
+            </div>
+            <div>
+              <div
+                className="group relative h-72 cursor-pointer overflow-hidden rounded-xl shadow-xl"
+                onClick={() => openImageModal("/images/cards/cards-01.png")}
+              >
+                <img
+                  src="/images/cards/cards-01.png"
+                  alt="Gaibandha Agriculture"
+                  className="h-full w-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 transition-all duration-300 group-hover:bg-opacity-60">
+                  <span className="text-lg font-medium text-white">
+                    Click to Enlarge
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Image Gallery */}
+        <section className="mb-20">
+          <h3 className="mb-6 text-3xl font-bold text-[#1d4ed8] dark:text-[#93c5fd]">
+            Gallery
+          </h3>
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
+            {[
+              "/images/cards/cards-01.png",
+              "/images/cards/cards-01.png",
+              "/images/cards/cards-01.png",
+              "/images/cards/cards-01.png",
+            ].map((src, index) => (
+              <div
+                key={index}
+                className="group relative h-48 cursor-pointer overflow-hidden rounded-lg shadow-md"
+                onClick={() => openImageModal(src)}
+              >
+                <img
+                  src={src}
+                  alt={`Gallery Image ${index + 1}`}
+                  className="h-full w-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      {/* Image Modal */}
+      {isImageModalOpen && (
+        <div
+          className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80"
+          onClick={() => setIsImageModalOpen(false)}
+        >
+          <div className="relative w-full max-w-4xl p-4">
+            <img
+              src={modalImage}
+              style={{ objectFit: "contain", maxWidth: "100%" }}
+              alt="Enlarged Image"
+              className="rounded-lg w-full h-auto"
+            />
+            <button
+              className="absolute right-2 top-2 rounded-full bg-[#dc2626] p-2 text-white hover:bg-[#b91c1c]"
+              onClick={() => setIsImageModalOpen(false)}
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default HistoryOfGaibandha;

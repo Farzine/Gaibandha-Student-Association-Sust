@@ -8,7 +8,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
 
   // const pathname = usePathname();
@@ -18,14 +17,14 @@ export default function RootLayout({
   }, []);
 
   return (
-    <html lang="en">
-      <body suppressHydrationWarning={true}>
+    <div>
+      <div suppressHydrationWarning={true}>
         <div className="dark:bg-boxdark-2 dark:text-bodydark">
           <DefaultLayout>
           {loading ? <Loader /> : children}
           </DefaultLayout>
         </div>
-      </body>
-    </html>
+      </div>
+    </div>
   );
 }

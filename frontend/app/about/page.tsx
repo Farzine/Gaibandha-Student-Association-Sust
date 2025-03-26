@@ -1,8 +1,8 @@
 import Breadcrumb from "@/components/Landingpage-components/Common/Breadcrumb";
-import AboutSectionOne from "@/components/Landingpage-components/About/AboutSectionOne";
-import AboutSectionTwo from "@/components/Landingpage-components/About/AboutSectionTwo";
+
 
 import { Metadata } from "next";
+import HistoryOfGaibandha from "@/components/Landingpage-components/About/About";
 
 export const metadata: Metadata = {
   title: "About Page | Free Next.js Template for Startup and SaaS",
@@ -16,8 +16,7 @@ const AboutPage = () => {
       <Breadcrumb
         pageName="About Page"
       />
-      <AboutSectionOne />
-      <AboutSectionTwo />
+      <HistoryOfGaibandha />
     </>
   );
 };

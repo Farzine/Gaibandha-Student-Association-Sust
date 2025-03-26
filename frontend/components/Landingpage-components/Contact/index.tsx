@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
 import DockDemo from "../dock-demo-3";
 import { TextAnimate } from "@/components/ui/text-animate";
 import { BoxReveal } from "@/components/ui/box-reveal";

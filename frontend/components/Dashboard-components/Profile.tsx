@@ -2,7 +2,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaFacebookF, FaLinkedinIn, FaEnvelope } from "react-icons/fa";
@@ -111,12 +110,12 @@ const Profile = () => {
       <div className="flex flex-col">
         {/* Cover Image */}
         <div className="relative h-44 w-full sm:h-56 md:h-64 lg:h-72 xl:h-80">
-          <Image
+          <img
             src="/images/cover/cover-01.png"
             alt="User Cover"
-            fill
-            priority
-            className="object-cover"
+            width={1920}
+            height={400}
+            className="h-full w-full object-cover"
           />
         </div>
 
@@ -125,7 +124,7 @@ const Profile = () => {
           {/* Profile Image and Name */}
           <div className="-mt-16 mb-8 flex flex-col items-start gap-4 sm:-mt-20 sm:flex-row sm:items-end md:-mt-24 lg:-mt-28">
             <div className="h-24 w-24 overflow-hidden rounded-lg border-4 border-white shadow-md dark:border-[#1f2937] sm:h-32 sm:w-32 md:h-40 md:w-40">
-              <Image
+              <img
                 src={userData.profilePic || "/images/user/user-01.png"}
                 alt="Profile Picture"
                 width={160}

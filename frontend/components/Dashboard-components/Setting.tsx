@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Breadcrumb from "@/components/Dashboard-components/Breadcrumbs/Breadcrumb";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import Image from "next/image";
 
 // Heroicons (example). Install with: npm i @heroicons/react
 import {
@@ -698,7 +697,7 @@ export default function Settings() {
                 <div className="h-14 w-14 overflow-hidden rounded-full border border-stroke dark:border-strokedark">
                   {profilePic ? (
                     // If the user selected a new file, show local preview:
-                    <Image
+                    <img
                       src={URL.createObjectURL(profilePic)}
                       alt="Preview"
                       width={56}
@@ -706,7 +705,7 @@ export default function Settings() {
                     />
                   ) : (
                     // Otherwise show existing user photo (from DB) or fallback
-                    <Image
+                    <img
                       src={existingProfilePicUrl}
                       width={56}
                       height={56}

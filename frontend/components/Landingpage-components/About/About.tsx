@@ -364,13 +364,13 @@ const HistoryOfGaibandha = () => {
                 Riverine Landscapes
               </h3>
               <p className="mb-6 text-lg leading-relaxed text-[#4b5563] dark:text-[#d1d5db]">
-                Located along the majestic Ghaghot River, Gaibandha's fertile
+                Located along the majestic Ghaghot River, Gaibandha&apos;s fertile
                 plains and unique riverine landscapes drive its agricultural
                 economy and shape the daily lives of its inhabitants.
               </p>
               <p className="text-lg leading-relaxed text-[#4b5563] dark:text-[#d1d5db]">
                 These natural features have historically supported the
-                district's growth and cultural development, creating a unique
+                district&apos;s growth and cultural development, creating a unique
                 regional identity characterized by its close relationship with
                 water.
               </p>
@@ -400,7 +400,7 @@ const HistoryOfGaibandha = () => {
             </h3>
             <p className="mx-auto max-w-3xl text-lg leading-relaxed text-[#4b5563] dark:text-[#d1d5db]">
               Gaibandha is home to numerous historical sites that tell the story
-              of Bangladesh's rich cultural past
+              of Bangladesh&apos;s rich cultural past
             </p>
           </div>
 
@@ -457,12 +457,12 @@ const HistoryOfGaibandha = () => {
                 </h3>
                 <p className="mb-6 text-lg leading-relaxed text-[#4b5563] dark:text-[#d1d5db]">
                   Agriculture, including rice, wheat, corn and vegetables, sustains
-                  most of Gaibandha's population. The district has made
+                  most of Gaibandha&apos;s population. The district has made
                   significant strides in education, healthcare, and
                   infrastructure while preserving its cultural heritage.
                 </p>
                 <p className="mb-8 text-lg leading-relaxed text-[#4b5563] dark:text-[#d1d5db]">
-                It was said that "The scent of Rasmanjuri, full of flavor, the corn and chilies of the Char region are the lifeblood of Gaibandha."
+                It was said that &apos;The scent of Rasmanjuri, full of flavor, the corn and chilies of the Char region are the lifeblood of Gaibandha.&apos;
                 </p>
                 <p className="mb-8 text-lg leading-relaxed text-[#4b5563] dark:text-[#d1d5db]">
                   The Gaibandha Student Association at SUST fosters community,

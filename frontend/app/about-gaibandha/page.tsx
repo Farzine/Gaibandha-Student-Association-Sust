@@ -5,16 +5,15 @@ import { Metadata } from "next";
 import HistoryOfGaibandha from "@/components/Landingpage-components/About/About";
 
 export const metadata: Metadata = {
-  title: "About Page | Free Next.js Template for Startup and SaaS",
-  description: "This is About Page for Startup Nextjs Template",
-  // other metadata
+  title: "About Gaibandha | Gaibandha Students Association, SUST",
+  description: "This is About Page of Gaibandha District for Gaibandha Students Association, SUST", 
 };
 
 const AboutPage = () => {
   return (
     <>
       <Breadcrumb
-        pageName="About Page"
+        pageName="About Gaibandha Page"
       />
       <HistoryOfGaibandha />
     </>

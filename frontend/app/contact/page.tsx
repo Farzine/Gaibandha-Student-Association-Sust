@@ -3,8 +3,8 @@ import Contact from "@/components/Landingpage-components/Contact";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact Page | Free Next.js Template for Startup and SaaS",
-  description: "This is Contact Page for Startup Nextjs Template",
+  title: "Contact Page | Gaibandha Students Association, SUST",
+  description: "This is Contact Page for Gaibandha Students Association, SUST",
   // other metadata
 };
 

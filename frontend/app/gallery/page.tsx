@@ -24,6 +24,9 @@ export default function Gallery() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [imagesPerPage] = useState(24);
+
   const tags = ["Newcomer's welcome", "Relief", "Party", "Programs", "Others"];
 
   useEffect(() => {
@@ -96,6 +99,35 @@ export default function Gallery() {
     setSelectedYear(null);
     setSearchTerm("");
   };
+
+  // Pagination logic
+  const indexOfLastImage = currentPage * imagesPerPage;
+  const indexOfFirstEvent = indexOfLastImage - imagesPerPage;
+  const currentImage = filteredImages.slice(indexOfFirstEvent, indexOfLastImage);
+  const totalPages = Math.ceil(filteredImages.length / imagesPerPage);
+
+   // Change page
+   const paginate = (pageNumber: number) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Generate page numbers
+  const pageNumbers = [];
+  const maxPageNumbersToShow = 5;
+  
+  let startPage = Math.max(1, currentPage - Math.floor(maxPageNumbersToShow / 2));
+  let endPage = Math.min(totalPages, startPage + maxPageNumbersToShow - 1);
+  
+  if (endPage - startPage + 1 < maxPageNumbersToShow) {
+    startPage = Math.max(1, endPage - maxPageNumbersToShow + 1);
+  }
+  
+  for (let i = startPage; i <= endPage; i++) {
+    pageNumbers.push(i);
+  }
 
   return (
     <>
@@ -319,9 +351,9 @@ export default function Gallery() {
                       </div>
                     ))}
                   </div>
-                ) : filteredImages.length > 0 ? (
+                ) : currentImage.length > 0 ? (
                     <div className="grid auto-rows-[1fr] grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
-                    {[...filteredImages]
+                    {[...currentImage]
                       .sort(() => Math.random() - 0.5)
                       .map((item, index) => (
                       <MasonryImageGrid
@@ -350,6 +382,108 @@ export default function Gallery() {
             </div>
           </div>
         </div>
+         {/* Pagination */}
+         {filteredImages.length > imagesPerPage && (
+            <div
+              className="wow fadeInUp -mx-4 flex flex-wrap mb-20"
+              data-wow-delay=".15s"
+            >
+              <div className="w-full px-4">
+                <ul className="flex items-center justify-center pt-8">
+                  <li className="mx-1">
+                    <button
+                      onClick={() => paginate(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className={`flex h-9 min-w-[36px] items-center justify-center rounded-md bg-body-color bg-opacity-[15%] px-4 text-sm text-body-color transition ${
+                        currentPage === 1
+                          ? "cursor-not-allowed opacity-60"
+                          : "hover:bg-primary hover:bg-opacity-100 hover:text-white"
+                      }`}
+                    >
+                      Prev
+                    </button>
+                  </li>
+                  
+                  {startPage > 1 && (
+                    <>
+                      <li className="mx-1">
+                        <button
+                          onClick={() => paginate(1)}
+                          className={`flex h-9 min-w-[36px] items-center justify-center rounded-md ${
+                            currentPage === 1
+                              ? "bg-primary bg-opacity-100 text-white"
+                              : "bg-body-color bg-opacity-[15%] text-body-color hover:bg-primary hover:bg-opacity-100 hover:text-white"
+                          } px-4 text-sm transition`}
+                        >
+                          1
+                        </button>
+                      </li>
+                      {startPage > 2 && (
+                        <li className="mx-1">
+                          <span className="flex h-9 min-w-[36px] cursor-not-allowed items-center justify-center rounded-md bg-body-color bg-opacity-[15%] px-4 text-sm text-body-color">
+                            ...
+                          </span>
+                        </li>
+                      )}
+                    </>
+                  )}
+                  
+                  {pageNumbers.map((number) => (
+                    <li key={number} className="mx-1">
+                      <button
+                        onClick={() => paginate(number)}
+                        className={`flex h-9 min-w-[36px] items-center justify-center rounded-md ${
+                          currentPage === number
+                            ? "bg-primary bg-opacity-100 text-white"
+                            : "bg-body-color bg-opacity-[15%] text-body-color hover:bg-primary hover:bg-opacity-100 hover:text-white"
+                        } px-4 text-sm transition`}
+                      >
+                        {number}
+                      </button>
+                    </li>
+                  ))}
+                  
+                  {endPage < totalPages && (
+                    <>
+                      {endPage < totalPages - 1 && (
+                        <li className="mx-1">
+                          <span className="flex h-9 min-w-[36px] cursor-not-allowed items-center justify-center rounded-md bg-body-color bg-opacity-[15%] px-4 text-sm text-body-color">
+                            ...
+                          </span>
+                        </li>
+                      )}
+                      <li className="mx-1">
+                        <button
+                          onClick={() => paginate(totalPages)}
+                          className={`flex h-9 min-w-[36px] items-center justify-center rounded-md ${
+                            currentPage === totalPages
+                              ? "bg-primary bg-opacity-100 text-white"
+                              : "bg-body-color bg-opacity-[15%] text-body-color hover:bg-primary hover:bg-opacity-100 hover:text-white"
+                          } px-4 text-sm transition`}
+                        >
+                          {totalPages}
+                        </button>
+                      </li>
+                    </>
+                  )}
+                  
+                  <li className="mx-1">
+                    <button
+                      onClick={() => paginate(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className={`flex h-9 min-w-[36px] items-center justify-center rounded-md bg-body-color bg-opacity-[15%] px-4 text-sm text-body-color transition ${
+                        currentPage === totalPages
+                          ? "cursor-not-allowed opacity-60"
+                          : "hover:bg-primary hover:bg-opacity-100 hover:text-white"
+                      }`}
+                    >
+                      Next
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          )}
       </main>
     </>
   );

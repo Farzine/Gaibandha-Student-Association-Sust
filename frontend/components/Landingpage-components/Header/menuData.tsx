@@ -10,8 +10,21 @@ const menuData: Menu[] = [
   {
     id: 2,
     title: "About",
-    path: "/about",
     newTab: false,
+    submenu: [
+      {
+        id: 21,
+        title: "About GSA-SUST",
+        path: "/about-gsa",
+        newTab: false,
+      },
+      {
+        id: 22,
+        title: "About Gaibandha",
+        path: "/about-gaibandha",
+        newTab: false,
+      },
+    ]
   },
   {
     id: 3,

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 
 const Header = () => {
   // Navbar toggle
@@ -23,14 +24,14 @@ const Header = () => {
       setSticky(false);
     }
   };
-  
+
   useEffect(() => {
     window.addEventListener("scroll", handleStickyNavbar);
-    
+
     // Listen for custom event from MasonryImageGrid component
     const handleStickyToggle = (e) => {
       setStickyEnabled(e.detail.enabled);
-      
+
       // Force immediate update of sticky state
       if (!e.detail.enabled) {
         setSticky(false);
@@ -38,16 +39,15 @@ const Header = () => {
         setSticky(true);
       }
     };
-    
+
     window.addEventListener("toggleStickyNavbar", handleStickyToggle);
-    
+
     // Cleanup event listeners
     return () => {
       window.removeEventListener("scroll", handleStickyNavbar);
       window.removeEventListener("toggleStickyNavbar", handleStickyToggle);
     };
   }, [stickyEnabled]);
-
 
   // submenu handler
   const [openIndex, setOpenIndex] = useState(-1);
@@ -202,6 +202,9 @@ const Header = () => {
           </div>
         </div>
       </header>
+      <ScrollProgress
+            className={`md:top-[70px] top-[63px] ${sticky ? 'fixed' : 'absolute'} z-[9999] w-full`}
+          />
     </>
   );
 };

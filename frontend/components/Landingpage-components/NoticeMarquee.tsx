@@ -226,10 +226,10 @@ export function NoticeMarquee() {
     <div className="relative flex w-full flex-col items-center justify-center overflow-hidden py-20">
       <div className="mb-6 w-full">
         <div className="mb-4 flex items-center justify-center gap-2">
-          <div className="relative">
+          <div className="relative ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 animate-pulse text-primary dark:text-primary/90"
+              className="h-8 w-8 animate-pulse text-primary dark:text-primary/90"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -243,7 +243,7 @@ export function NoticeMarquee() {
             </svg>
           </div>
           <h2 className="group relative flex items-center text-center text-2xl font-bold dark:text-white">
-            <span className="relative inline-block bg-gradient-to-r from-primary via-primary/80 to-primary/70 bg-clip-text text-transparent">
+            <span className="text-3xl md:text-4xl font-bold relative inline-block bg-gradient-to-r from-primary via-primary/80 to-primary/70 bg-clip-text text-transparent">
               Latest Notices
               <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-gradient-to-r from-primary to-primary/50 transition-all duration-300 group-hover:w-full"></span>
             </span>
@@ -253,7 +253,7 @@ export function NoticeMarquee() {
             </div>
           </h2>
         </div>
-        <div className="mx-auto max-w-sm">
+        <div className="mx-auto max-w-sm mb-5">
           <p className="animate-fade-in text-center text-sm text-[#6b7280] dark:text-[#9ca3af]">
             Stay updated with our most recent announcements
           </p>

@@ -9,6 +9,7 @@ import {
 import Contact from "@/components/Landingpage-components/Contact";
 import Features from "@/components/Landingpage-components/Features";
 import HeroImage from "@/components/Landingpage-components/HeroImage";
+import MessagesDisplay from "@/components/Landingpage-components/Message";
 import { NoticeMarquee } from "@/components/Landingpage-components/NoticeMarquee";
 import Pricing from "@/components/Landingpage-components/Pricing";
 import Testimonials from "@/components/Landingpage-components/Testimonials";
@@ -43,6 +44,7 @@ export default function Home() {
       {/* Main Content */}
       <main className="flex-grow">
       <NoticeMarquee/>
+      <MessagesDisplay/>
       <Features />
       <Video />
       <div className="container mx-auto px-4 md:px-8">

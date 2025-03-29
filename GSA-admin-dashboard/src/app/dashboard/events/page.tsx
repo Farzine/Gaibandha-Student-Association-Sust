@@ -1,6 +1,4 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import AdminEvents from "@/components/Events/AdminEvents";
-// import AdminEvents from "@/components/event";
 
 import { Metadata } from "next";
 
@@ -13,8 +11,6 @@ export const metadata: Metadata = {
 const EventsPage = () => {
   return (
     <>
-      {/* <Breadcrumb pageName="Tables" /> */}
-
       <div className="flex flex-col gap-10">
         {/* <AdminEvents/> */}
         <AdminEvents />

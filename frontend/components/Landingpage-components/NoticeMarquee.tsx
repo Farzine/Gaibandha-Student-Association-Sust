@@ -104,7 +104,7 @@ export function NoticeMarquee() {
   // Show loading state with skeleton loader
   if (loading) {
     return (
-      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden mt-20">
         <div className="mb-3 w-full">
           <div className="mx-auto h-6 w-48 animate-pulse rounded-md bg-[#e5e7eb] dark:bg-[#374151]"></div>
         </div>

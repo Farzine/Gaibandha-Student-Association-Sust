@@ -1,4 +1,3 @@
-// types.ts
 export interface EventImage {
   _id?: string;
   path: string;

@@ -1,4 +1,3 @@
-// export default MemberRequest;
 "use client";
 
 import Profile from "@/components/Profile";

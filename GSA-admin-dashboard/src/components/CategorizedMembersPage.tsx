@@ -31,8 +31,6 @@ import {
   Card,
   CardContent,
   Badge,
-  Tab,
-  Tabs,
   useTheme,
   useMediaQuery
 } from "@mui/material";

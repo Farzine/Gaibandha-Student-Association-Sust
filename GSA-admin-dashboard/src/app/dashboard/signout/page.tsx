@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Cookies from "js-cookie";
-import { div } from "framer-motion/client";
 
 const SignOutPage: React.FC = () => {
   const [loading, setLoading] = useState(false);

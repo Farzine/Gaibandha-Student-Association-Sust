@@ -120,17 +120,22 @@ const MessageForm: React.FC<MessageFormProps> = ({
           </div>
           
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-[#374151] dark:text-[#e5e7eb]">
+          <label className="block text-sm font-medium text-[#374151] dark:text-[#e5e7eb]">
               Designation
             </label>
-            <input
-              type="text"
+            <select
               value={designation}
               onChange={(e) => setDesignation(e.target.value)}
               className="w-full p-3 bg-[#f9fafb] dark:bg-[#374151] rounded-lg border border-[#e5e7eb] dark:border-[#4b5563] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-[#1f2937] dark:text-white"
-              placeholder="Enter position or title"
               required
-            />
+            >
+              <option value="">Select Designation</option>
+              <option value="Vice Chancellor">Vice Chancellor</option>
+              <option value="Pro Vice Chancellor">Pro Vice Chancellor</option>
+              <option value="Chief Advisor">Chief Advisor</option>
+              <option value="President">President</option>
+              <option value="General Secretary">General Secretary</option>
+            </select>
           </div>
         </div>
         

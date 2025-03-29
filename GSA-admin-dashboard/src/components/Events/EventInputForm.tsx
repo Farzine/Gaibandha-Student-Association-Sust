@@ -1,5 +1,4 @@
-// EventInputForm.tsx
-import React, { useState, ChangeEvent } from "react";
+import React, { ChangeEvent } from "react";
 import { Editor } from "primereact/editor";
 import { EventFormData } from "./types";
 import { PhotoIcon } from "@heroicons/react/24/outline";

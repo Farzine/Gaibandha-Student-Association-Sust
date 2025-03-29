@@ -1,4 +1,3 @@
-// EventList.tsx
 import React, { useState } from "react";
 import { CalendarIcon, MapPinIcon, PhotoIcon, PencilIcon, TrashIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Event } from "./types";

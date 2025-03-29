@@ -32,22 +32,20 @@ import Loader from "@/components/common/Loader";
 import Alert from "@/components/Alert";
 
 /* Interface for the image data */
-interface HeroImage {
+interface YoutubeTrumbanail {
   _id: string;
   path: string;
   public_id: string;
-  description?: string;
-  title: string;
+  videoSrc: string;
 }
 
-const HeroSectionImage: React.FC = () => {
+const YoutubeThumbnailManager: React.FC = () => {
   // ------------------ State ------------------
-  const [images, setImages] = useState<HeroImage[]>([]);
+  const [images, setImages] = useState<YoutubeTrumbanail[]>([]);
 
   // Form states
   const [file, setFile] = useState<File | null>(null);
-  const [description, setDescription] = useState("");
-  const [title, setTitle] = useState("");
+  const [videoSrc, setVideoSrc] = useState("");
   const [preview, setPreview] = useState<string | null>(null);
 
   // Loader states
@@ -84,7 +82,7 @@ const HeroSectionImage: React.FC = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/heroSectionImage`,
+        `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/youtubeVideo`,
       );
       setImages(res.data.data);
     } catch (err: any) {
@@ -102,7 +100,7 @@ const HeroSectionImage: React.FC = () => {
       return;
     }
     
-    if (!title.trim()) {
+    if (!videoSrc.trim()) {
       showAlertMessage("error", "Title is required!");
       return;
     }
@@ -113,11 +111,10 @@ const HeroSectionImage: React.FC = () => {
       const token = Cookies.get("token");
       const formData = new FormData();
       formData.append("image", file);
-      formData.append("description", description);
-      formData.append("title", title);
+      formData.append("videoSrc", videoSrc);
 
       await axios.post(
-        `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/heroSectionImage/upload`,
+        `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/youtubeVideo/upload`,
         formData,
         {
           headers: {
@@ -127,13 +124,12 @@ const HeroSectionImage: React.FC = () => {
         },
       );
 
-      showAlertMessage("success", "Hero image uploaded successfully!");
+      showAlertMessage("success", "Image uploaded successfully!");
       fetchImages();
 
       // Reset form
       setFile(null);
-      setDescription("");
-      setTitle("");
+      setVideoSrc("");
       setPreview(null);
     } catch (err: any) {
       showAlertMessage(
@@ -151,7 +147,7 @@ const HeroSectionImage: React.FC = () => {
       setDeleting(id);
       const token = Cookies.get("token");
       await axios.delete(
-        `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/heroSectionImage/${id}`,
+        `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/youtubeVideo/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -223,7 +219,7 @@ const HeroSectionImage: React.FC = () => {
           }}
         >
           <AddPhotoAlternateIcon color="primary" />
-          Add New Hero Image
+          Add New Thumbnail
         </Typography>
 
         <form onSubmit={handleUpload}>
@@ -285,7 +281,7 @@ const HeroSectionImage: React.FC = () => {
                       Drag and drop an image or click to browse
                     </Typography>
                     <Typography variant="caption" color="text.secondary" sx={{ mt: 1 }}>
-                      Recommended size: 1920×1080px
+                      Recommended size: 1080x720 pixels
                     </Typography>
                   </>
                 )}
@@ -298,24 +294,11 @@ const HeroSectionImage: React.FC = () => {
                   <TextField
                     fullWidth
                     required
-                    label="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    label="Link"
+                    value={videoSrc}
+                    onChange={(e) => setVideoSrc(e.target.value)}
                     variant="outlined"
-                    helperText="Enter a title for the hero image"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    variant="outlined"
-                    multiline
-                    rows={4}
-                    placeholder="Enter a brief description for this hero image"
-                    helperText="Optional: Add context or description for this image"
+                    helperText="Enter youtube video link"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -340,7 +323,7 @@ const HeroSectionImage: React.FC = () => {
                       boxShadow: 2
                     }}
                   >
-                    {uploading ? "Uploading..." : "Upload Hero Image"}
+                    {uploading ? "Uploading..." : "Upload Thumbnail"}
                   </Button>
                 </Grid>
               </Grid>
@@ -395,10 +378,10 @@ const HeroSectionImage: React.FC = () => {
           >
             <ImageIcon sx={{ fontSize: 48, color: "text.disabled", mb: 2 }} />
             <Typography variant="h6" color="text.secondary">
-              No hero images yet
+              No thrumbnail found
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Upload your first hero image using the form above.
+              Upload a new thumbnail to get started
             </Typography>
           </Paper>
         ) : (
@@ -424,7 +407,7 @@ const HeroSectionImage: React.FC = () => {
                       <CardMedia
                         component="img"
                         image={img.path}
-                        alt={img.title}
+                        alt={img.videoSrc}
                         sx={{
                           position: "absolute",
                           top: 0,
@@ -476,24 +459,8 @@ const HeroSectionImage: React.FC = () => {
                         gutterBottom
                         noWrap
                       >
-                        {img.title}
+                        {img.videoSrc}
                       </Typography>
-                      {img.description && (
-                        <Typography 
-                          variant="body2" 
-                          color="text.secondary"
-                          sx={{
-                            display: "-webkit-box",
-                            WebkitLineClamp: 2,
-                            WebkitBoxOrient: "vertical",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            lineHeight: 1.5,
-                          }}
-                        >
-                          {img.description}
-                        </Typography>
-                      )}
                     </CardContent>
                   </Card>
                 </Zoom>
@@ -506,4 +473,4 @@ const HeroSectionImage: React.FC = () => {
   );
 };
 
-export default HeroSectionImage;
+export default YoutubeThumbnailManager;

@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import Image from "next/image";
 import { FaFacebookF, FaLinkedinIn, FaEnvelope, FaPhone } from "react-icons/fa";
 
 interface ProfileProps {
@@ -42,13 +41,11 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
           {/* Profile Picture */}
           <div className="relative -mt-16 flex-shrink-0 md:-mt-20">
             <div className="relative mx-auto h-32 w-32 overflow-hidden rounded-full border-4 border-white bg-white shadow-md dark:border-[#374151] md:h-40 md:w-40">
-              <Image
+              <img
                 src={user.profilePic || "/images/user/user-06.png"}
                 alt={user.name}
-                fill
                 className="w-fit h-fit"
                 sizes="(max-width: 768px) 128px, 160px"
-                priority
               />
             </div>
           </div>

@@ -63,6 +63,20 @@ exports.getAllNotifications = async (req, res) => {
       });
     } 
 
+    const savenDaysAgo = new Date();
+    savenDaysAgo.setDate(savenDaysAgo.getDate() - 7);
+
+    // Filter out read notifications older than 7 days
+    const filteredNotifications = user.notifications.filter(notification => {
+      return !(notification.read && new Date(notification.createdAt) < savenDaysAgo);
+    });
+
+    // Update user's notifications
+    user.notifications = filteredNotifications;
+
+    // Save the updated user
+    await user.save();
+
     res.status(200).json({
       success: true,
       notifications: user.notifications

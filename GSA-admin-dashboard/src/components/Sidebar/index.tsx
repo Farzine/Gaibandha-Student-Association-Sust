@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import ClickOutside from "@/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
@@ -78,6 +77,7 @@ const menuGroups = [
         children: [
           { label: "Gallery", route: "/dashboard/gallery" },
           { label: "Hero Image", route: "/dashboard/heroSectionImage" },
+          { label: "Youtube Thrumbnail", route: "/dashboard/youtubeVideo" },
         
         ],
       },
@@ -287,12 +287,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         {/* <!-- SIDEBAR HEADER --> */}
         <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
           <Link href="/">
-            <Image
+            <img
               width={176}
               height={32}
               src={"/images/logo/logo.svg"}
               alt="Logo"
-              priority
             />
           </Link>
 

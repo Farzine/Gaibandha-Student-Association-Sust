@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { AiOutlineClose, AiOutlineDownload } from "react-icons/ai";
 
@@ -89,15 +88,13 @@ const MasonryImageGrid = ({ src, desc, year,tag }) => {
           )}
 
           <div className="relative h-full w-full">
-            <Image
+            <img
               src={src}
               alt={desc}
-              layout="fill"
-              objectFit="cover"
-              className={`transition-opacity duration-300 ${
+              className={`transition-opacity duration-300 w-full h-full object-cover ${
                 isLoading ? "opacity-0" : "opacity-100"
               }`}
-              onLoadingComplete={() => setIsLoading(false)}
+              onLoad={() => setIsLoading(false)}
             />
           </div>
         </div>
@@ -130,12 +127,10 @@ const MasonryImageGrid = ({ src, desc, year,tag }) => {
             onClick={handleModalClick}
           >
             <div className="relative h-full w-full">
-              <Image
+              <img
                 src={src}
                 alt={desc}
-                layout="fill"
-                objectFit="contain"
-                className="rounded-lg"
+                className="rounded-lg w-full h-full object-contain"
               />
             </div>
 

@@ -55,7 +55,7 @@ const HeroSection = () => {
           <div className="mb-10">
             <h3 className="relative inline-block text-xl font-medium italic text-[#2563eb] dark:text-[#93c5fd] md:text-2xl">
             <TextAnimate animation="blurInUp" by="character" once>
-              "Uniting Minds, Shaping Tomorrow's Leaders"
+            &quot;Uniting Minds, Shaping Tomorrow&apos;s Leaders&quot;
               </TextAnimate>
               <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#3b82f6] transition-all duration-700 group-hover:w-full dark:bg-[#60a5fa]"></span>
             </h3>

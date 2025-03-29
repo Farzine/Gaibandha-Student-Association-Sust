@@ -5,6 +5,7 @@ const noticeController = require('../../controllers/adminTask/noticeController')
 
 // Public routes
 router.get('/', noticeController.getAllNotices);
+router.get('/latest', noticeController.getAllNoticesFront);
 router.get('/:id', noticeController.getNoticeById);
 
 // Protected routes (admin only)

@@ -9,6 +9,7 @@ import {
 import Contact from "@/components/Landingpage-components/Contact";
 import Features from "@/components/Landingpage-components/Features";
 import HeroImage from "@/components/Landingpage-components/HeroImage";
+import { NoticeMarquee } from "@/components/Landingpage-components/NoticeMarquee";
 import Pricing from "@/components/Landingpage-components/Pricing";
 import Testimonials from "@/components/Landingpage-components/Testimonials";
 import Video from "@/components/Landingpage-components/Video";
@@ -34,13 +35,14 @@ export default function Home() {
       <HeroImage />
       <BackgroundLines className="flex items-center justify-center w-full flex-col px-4">
         <div>
-          
+
         </div>
       </BackgroundLines>
       </section>
       
       {/* Main Content */}
       <main className="flex-grow">
+      <NoticeMarquee/>
       <Features />
       <Video />
       <div className="container mx-auto px-4 md:px-8">

@@ -113,7 +113,8 @@ exports.updateNotice = async (req, res) => {
     const notice = await Notice.findByIdAndUpdate(
       req.params.id,
       { title },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
+      { created_at: new Date() }
     );
 
     if (!notice) {
@@ -170,3 +171,23 @@ exports.deleteNotice = async (req, res) => {
     });
   }
 };
+
+// get all notices front end
+
+exports.getAllNoticesFront = async (req, res) => {
+  try {
+    const notices = await Notice.find().sort('-created_at');
+
+    res.status(200).json({
+      success: true,
+      data: notices,
+      message: 'Notices fetched successfully'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error retrieving notices',
+      error: error.message
+    });
+  }
+}

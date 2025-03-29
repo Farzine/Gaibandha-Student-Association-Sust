@@ -66,7 +66,8 @@ export function AnimatedCarousel({
 
   return (
     <div
-      className="relative overflow-hidden"
+      // className="relative overflow-hidden"
+      className="relative w-full max-w-[1400px] mx-auto rounded-xl shadow-lg dark:shadow-[#2D37484C] overflow-hidden bg-white dark:bg-[#111827] border-2 border-[#e5e7eb] dark:border-primary"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >

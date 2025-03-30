@@ -1,35 +1,39 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
+import GoogleTranslate from "@/components/ui/GoogleTranslate";
 
 const Footer = () => {
   return (
     <>
       <footer
-        className="wow fadeInUp dark:bg-gray-dark relative z-10 bg-white pt-16 md:pt-20 lg:pt-24"
+        className="wow fadeInUp relative z-10 bg-white pt-16 dark:bg-gray-dark md:pt-20 lg:pt-24"
         data-wow-delay=".1s"
       >
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-5/12">
               <div className="mb-12 max-w-[360px] lg:mb-16">
-                <Link href="/" className="mb-8 inline-block">
-                  <Image
-                    src="/images/logo/logo-2.svg"
-                    alt="logo"
-                    className="w-full dark:hidden"
-                    width={140}
-                    height={30}
-                  />
-                  <Image
-                    src="/images/logo/logo.svg"
-                    alt="logo"
-                    className="hidden w-full dark:block"
-                    width={140}
-                    height={30}
-                  />
-                </Link>
-                <p className="dark:text-body-color-dark mb-9 text-base leading-relaxed text-body-color">
+                <div className="flex justify-between">
+                  <Link href="/" className="mb-8 inline-block">
+                    <img
+                      src="/images/logo/logo-2.svg"
+                      alt="logo"
+                      className="w-full dark:hidden"
+                      width={140}
+                      height={30}
+                    />
+                    <img
+                      src="/images/logo/logo.svg"
+                      alt="logo"
+                      className="hidden w-full dark:block"
+                      width={140}
+                      height={30}
+                    />
+                  </Link>
+                  {/* <GoogleTranslate /> */}
+                </div>
+
+                <p className="mb-9 text-base leading-relaxed text-body-color dark:text-body-color-dark">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Integer lobortis.
                 </p>
@@ -37,7 +41,7 @@ const Footer = () => {
                   <a
                     href="/"
                     aria-label="social-link"
-                    className="dark:text-body-color-dark mr-6 text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                    className="mr-6 text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                   >
                     <svg
                       width="9"
@@ -51,7 +55,7 @@ const Footer = () => {
                   <a
                     href="/"
                     aria-label="social-link"
-                    className="dark:text-body-color-dark mr-6 text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                    className="mr-6 text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                   >
                     <svg
                       width="19"
@@ -65,7 +69,7 @@ const Footer = () => {
                   <a
                     href="/"
                     aria-label="social-link"
-                    className="dark:text-body-color-dark mr-6 text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                    className="mr-6 text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                   >
                     <svg
                       width="18"
@@ -79,7 +83,7 @@ const Footer = () => {
                   <a
                     href="/"
                     aria-label="social-link"
-                    className="dark:text-body-color-dark text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                    className="text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                   >
                     <svg
                       width="17"
@@ -102,26 +106,26 @@ const Footer = () => {
                 <ul>
                   <li>
                     <a
-                      href="/blogs"
-                      className="dark:text-body-color-dark mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                      href="/members"
+                      className="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                     >
-                      Blog
+                      Members
                     </a>
                   </li>
                   <li>
                     <a
-                      href="/pricing"
-                      className="dark:text-body-color-dark mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                      href="/gallery"
+                      className="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                     >
-                      Pricing
+                      Gallery
                     </a>
                   </li>
                   <li>
                     <a
-                      href="/about"
-                      className="dark:text-body-color-dark mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                      href="/events"
+                      className="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                     >
-                      About
+                      Events
                     </a>
                   </li>
                 </ul>
@@ -131,31 +135,23 @@ const Footer = () => {
             <div className="w-full px-4 sm:w-1/2 md:w-1/2 lg:w-2/12 xl:w-2/12">
               <div className="mb-12 lg:mb-16">
                 <h2 className="mb-10 text-xl font-bold text-black dark:text-white">
-                  Terms
+                  About
                 </h2>
                 <ul>
                   <li>
                     <a
-                      href="/"
-                      className="dark:text-body-color-dark mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                      href="/about-gsa"
+                      className="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                     >
-                      TOS
+                      About GSA
                     </a>
                   </li>
                   <li>
                     <a
-                      href="/"
-                      className="dark:text-body-color-dark mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                      href="/about-gaibandha"
+                      className="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                     >
-                      Privacy Policy
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/"
-                      className="dark:text-body-color-dark mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:hover:text-primary"
-                    >
-                      Refund Policy
+                      About Gaibandha
                     </a>
                   </li>
                 </ul>
@@ -171,25 +167,17 @@ const Footer = () => {
                   <li>
                     <a
                       href="/contact"
-                      className="dark:text-body-color-dark mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                      className="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                     >
-                      Open Support Ticket
+                      Contact
                     </a>
                   </li>
                   <li>
                     <a
                       href="/"
-                      className="dark:text-body-color-dark mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                      className="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                     >
-                      Terms of Use
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/about"
-                      className="dark:text-body-color-dark mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:hover:text-primary"
-                    >
-                      About
+                      Terms & Condition
                     </a>
                   </li>
                 </ul>
@@ -199,87 +187,43 @@ const Footer = () => {
 
           <div className="h-px w-full bg-gradient-to-r from-transparent via-[#D2D8E183] to-transparent dark:via-[#959CB183]"></div>
           <div className="py-8">
-            <p className="text-center text-base text-body-color dark:text-white">
-              Template by UIdeck and{" "}
-              <a href="https://nextjstemplates.com" rel="nofollow noopener">
-                Next.js Templates
-              </a>
-            </p>
+            <div className="flex flex-wrap items-center justify-between">
+              <div className="mb-6 w-full md:mb-0 md:w-1/2">
+                <p className="text-base text-body-color dark:text-body-color-dark">
+                  &copy; {new Date().getFullYear()} Gaibandha Student
+                  Association. All rights reserved.
+                </p>
+              </div>
+              <div className="w-full md:w-1/2">
+                <div className="flex justify-center md:justify-end">
+                  <Link
+                    href="https://github.com/farzine"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative inline-flex items-center overflow-hidden rounded-lg border border-white px-6 py-3 text-base text-body-color shadow-md transition-all duration-300 hover:shadow-lg dark:text-body-color-dark"
+                  >
+                    <span className="relative flex items-center gap-2 font-medium transition-all duration-300 group-hover:translate-x-1">
+                      Developed by Farzine SWE-20
+                      <svg
+                        className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M13 7l5 5-5 5"
+                        />
+                      </svg>
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="absolute right-0 top-14 z-[-1]">
-          <svg
-            width="55"
-            height="99"
-            viewBox="0 0 55 99"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle opacity="0.8" cx="49.5" cy="49.5" r="49.5" fill="#959CB1" />
-            <mask
-              id="mask0_94:899"
-              style={{ maskType: "alpha" }}
-              maskUnits="userSpaceOnUse"
-              x="0"
-              y="0"
-              width="99"
-              height="99"
-            >
-              <circle
-                opacity="0.8"
-                cx="49.5"
-                cy="49.5"
-                r="49.5"
-                fill="#4A6CF7"
-              />
-            </mask>
-            <g mask="url(#mask0_94:899)">
-              <circle
-                opacity="0.8"
-                cx="49.5"
-                cy="49.5"
-                r="49.5"
-                fill="url(#paint0_radial_94:899)"
-              />
-              <g opacity="0.8" filter="url(#filter0_f_94:899)">
-                <circle cx="53.8676" cy="26.2061" r="20.3824" fill="white" />
-              </g>
-            </g>
-            <defs>
-              <filter
-                id="filter0_f_94:899"
-                x="12.4852"
-                y="-15.1763"
-                width="82.7646"
-                height="82.7646"
-                filterUnits="userSpaceOnUse"
-                colorInterpolationFilters="sRGB"
-              >
-                <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                <feBlend
-                  mode="normal"
-                  in="SourceGraphic"
-                  in2="BackgroundImageFix"
-                  result="shape"
-                />
-                <feGaussianBlur
-                  stdDeviation="10.5"
-                  result="effect1_foregroundBlur_94:899"
-                />
-              </filter>
-              <radialGradient
-                id="paint0_radial_94:899"
-                cx="0"
-                cy="0"
-                r="1"
-                gradientUnits="userSpaceOnUse"
-                gradientTransform="translate(49.5 49.5) rotate(90) scale(53.1397)"
-              >
-                <stop stopOpacity="0.47" />
-                <stop offset="1" stopOpacity="0" />
-              </radialGradient>
-            </defs>
-          </svg>
         </div>
         <div className="absolute bottom-24 left-0 z-[-1]">
           <svg

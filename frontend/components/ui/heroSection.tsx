@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { TextAnimate } from "./text-animate";
 
 const HeroSection = () => {
@@ -63,12 +64,12 @@ const HeroSection = () => {
 
           {/* Call to Action Buttons */}
           <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-            <button className="rounded-lg bg-[#e2e8f0]/80 px-6 py-3 font-medium text-[#1e293b] shadow-lg shadow-[#93C5FD80] transition-all hover:bg-[#cbd5e1]/80 hover:shadow-xl hover:shadow-[#60A5FA80] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:ring-offset-2 focus:ring-offset-[#f1f5f9] dark:bg-white/5 dark:text-white dark:shadow-[#2563EB33] dark:hover:bg-white/10 dark:hover:shadow-[#1D4ED833] dark:focus:ring-[#2563eb] dark:focus:ring-offset-[#111827]">
+            <Link href="/about-gsa" className="rounded-lg bg-[#e2e8f0]/80 px-6 py-3 font-medium text-[#1e293b] shadow-lg shadow-[#93C5FD80] transition-all hover:bg-[#cbd5e1]/80 hover:shadow-xl hover:shadow-[#60A5FA80] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:ring-offset-2 focus:ring-offset-[#f1f5f9] dark:bg-white/5 dark:text-white dark:shadow-[#2563EB33] dark:hover:bg-white/10 dark:hover:shadow-[#1D4ED833] dark:focus:ring-[#2563eb] dark:focus:ring-offset-[#111827]">
               Learn More
-            </button>
-            <button className="rounded-lg bg-[#e2e8f0]/80 px-6 py-3 font-medium text-[#1e293b] shadow-lg shadow-[#93C5FD80] transition-all hover:bg-[#cbd5e1]/80 hover:shadow-xl hover:shadow-[#60A5FA80] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:ring-offset-2 focus:ring-offset-[#f1f5f9] dark:bg-white/5 dark:text-white dark:shadow-[#2563EB33] dark:hover:bg-white/10 dark:hover:shadow-[#1D4ED833] dark:focus:ring-[#2563eb] dark:focus:ring-offset-[#111827]">
+            </Link>
+            <Link href="/signup" className="rounded-lg bg-[#e2e8f0]/80 px-6 py-3 font-medium text-[#1e293b] shadow-lg shadow-[#93C5FD80] transition-all hover:bg-[#cbd5e1]/80 hover:shadow-xl hover:shadow-[#60A5FA80] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:ring-offset-2 focus:ring-offset-[#f1f5f9] dark:bg-white/5 dark:text-white dark:shadow-[#2563EB33] dark:hover:bg-white/10 dark:hover:shadow-[#1D4ED833] dark:focus:ring-[#2563eb] dark:focus:ring-offset-[#111827]">
               Join Us
-            </button>
+            </Link>
           </div>
         </div>
       </div>

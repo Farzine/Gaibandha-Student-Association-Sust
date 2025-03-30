@@ -125,13 +125,13 @@ const GoogleTranslate = () => {
     <div className="relative" ref={dropdownRef}>
         <button
             onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center space-x-1 px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm rounded-md dark:bg-black bg-white border hover:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-[#3b82f6]"
+            className="flex items-center space-x-1 px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm rounded-md dark:bg-black bg-white border hover:bg-[#1f2937] focus:outline-none focus:ring-1 focus:ring-[#3b82f6]"
         >
             <span className="font-medium dark:text-white text-black">
                 {language === 'en' ? 'English' : 'বাংলা'}
             </span>
             <svg
-                className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400"
+                className="h-3 w-3 sm:h-4 sm:w-4 text-[#9ca3af]"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"

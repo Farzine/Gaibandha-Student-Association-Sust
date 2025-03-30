@@ -2,8 +2,6 @@
 "use client"
 import { FloatingDockDemo } from "@/components/Landingpage-components/FloatingDock";
 import HeroVideoDialog from "@/components/Landingpage-components/HeroVideoDialog";
-import { AnimatedCarousel } from "@/components/ui/animated-carousel";
-import { BackgroundLines } from "@/components/ui/background-lines";
 import GoogleTranslate from "@/components/ui/GoogleTranslate";
 import { MorphingText } from "@/components/ui/morphing-text";
 import { ScrollProgress } from "@/components/ui/scroll-progress";

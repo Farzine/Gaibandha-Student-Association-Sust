@@ -12,6 +12,7 @@ router.post('/updateUser', authenticateToken, upload.single("profilePic"), userC
 router.post('/verify-email', userController.verifyEmail);
 router.post('/forgot-password', userController.forgotPassword);
 router.post('/reset-password', userController.resetPassword);
+router.post('/update-password',authenticateToken, userController.updatePassword);
 router.post('/resend-code', userController.resendCode);
 router.post('/resend-code-for-reset-Password', userController.resendCodeForResetPassword);
 router.get("/:id", userController.getUserDetails);

@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import ClickOutside from "@/components/Dashboard-components/ClickOutside";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import { toast } from 'sonner';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [userData, setUserData] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
 
@@ -25,6 +25,7 @@ const DropdownUser = () => {
   const handleLogout = async () => {
     try {
       // Send the logout request to the backend
+      setLoading(true);
       await axios.post(
         `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/user/logout`,
         {},
@@ -40,15 +41,27 @@ const DropdownUser = () => {
 
       // Remove the token from cookies
       Cookies.remove("token");
+      setLoading(false);
 
-      // Redirect to the login page or any public page after logout
-      router.push("/signin");
+      // Show success message
+      toast("Logged out successfully", {
+        position: "top-right",
+        duration: 2000,
+      });
+
+      // Reload page to update state
+      window.location.reload();
+      
+      // Redirect to the login page after reload
+      setTimeout(() => {
+        router.push("/signin");
+      }, 500);
     } catch (err) {
       console.error("Logout failed", err);
-    toast.error("Failed to logout. Please try again.", {
-      position: "top-right",
-      duration: 3000,
-    });
+      toast("Failed to logout. Please try again.", {
+        position: "top-right",
+        duration: 3000,
+      });
     }
   };
 
@@ -68,12 +81,10 @@ const DropdownUser = () => {
         </span>
 
         <div className=" relative h-12 w-12 overflow-hidden rounded-full border-2 border-primary shadow-sm transition-all duration-300 hover:scale-105">
-          <Image
+          <img
             src={userData?.profilePic || "/images/user/default-avatar.png"}
             alt={userData?.name || "User"}
-            className="h-fit w-fit"
-            priority
-            fill
+            className="h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 rounded-full ring-2 ring-white/10"></div>
         </div>
@@ -193,7 +204,14 @@ const DropdownUser = () => {
                 fill=""
               />
             </svg>
-            Log Out
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <span className="animate-spin h-5 w-5 border-t-2 border-b-2 border-primary rounded-full"></span>
+                <span>Logging out...</span>
+              </div>
+            ) : (
+              "Log Out"
+            )}
           </button>
         </div>
       )}

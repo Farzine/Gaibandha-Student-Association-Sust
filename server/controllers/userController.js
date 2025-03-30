@@ -507,4 +507,41 @@ exports.verifyEmail = async (req, res) => {
       });
     }
   };
+
+  exports.updatePassword = async (req, res) => {
+    try {
+      const { oldPassword, newPassword } = req.body;
+      if (!oldPassword || !newPassword) {
+        return res.status(400).json({ message: 'Old password and new password are required' });
+      }
+  
+      // Validate password strength if needed
+      const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$/;
+      if (!strongPasswordRegex.test(newPassword)) {
+        return res.status(400).json({
+          message: 'Password must contain uppercase, lowercase, number, special character, and be at least 6 characters long',
+        });
+      }
+  
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      const isMatch = await bcrypt.compare(oldPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: 'Old password is incorrect' });
+      }
+  
+      // Update password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword;
+      await user.save();
+  
+      return res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Error updating password' });
+    }
+  }
   

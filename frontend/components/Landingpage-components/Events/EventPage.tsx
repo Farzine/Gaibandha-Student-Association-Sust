@@ -145,6 +145,35 @@ const EventsPage: React.FC = () => {
     );
   }
 
+  if(events.length === 0) {
+    return (
+      <div className="min-h-screen px-4 py-16 pt-28 md:py-20 lg:py-28 lg:pt-[150px]">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col items-center justify-center text-center">
+            <div className="relative mb-8 animate-fade-up">
+              <SparklesText text="No Events Yet" className="mb-4" />
+              <div className="mt-4 flex items-center justify-center">
+                <div className="h-1 w-16 rounded-full bg-gradient-to-r from-[#2563eb] to-[#60a5fa]"></div>
+                <div className="mx-2 h-1 w-8 rounded-full bg-[#d1d5db] dark:bg-[#374151]"></div>
+                <div className="h-1 w-4 rounded-full bg-[#e5e7eb] dark:bg-[#1f2937]"></div>
+              </div>
+            </div>
+            <div className="max-w-lg animate-fade-up delay-150">
+              <TextAnimate
+                animation="blurInUp"
+                by="word"
+                once
+                className="text-lg text-[#4b5563] dark:text-[#d1d5db]"
+              >
+                We're currently organizing new events. Check back soon for upcoming activities and gatherings.
+              </TextAnimate>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div>

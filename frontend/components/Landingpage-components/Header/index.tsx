@@ -1,11 +1,12 @@
 "use client";
-import Image from "next/image";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
+import DropdownUser from "@/components/Dashboard-components/Header/DropdownUser";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
-import { ScrollProgress } from "@/components/ui/scroll-progress";
+import Cookies from "js-cookie";
 
 const Header = () => {
   // Navbar toggle
@@ -13,6 +14,16 @@ const Header = () => {
   const navbarToggleHandler = () => {
     setNavbarOpen(!navbarOpen);
   };
+
+  // Authentication state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Check if user is logged in
+  useEffect(() => {
+    const token = Cookies.get("token");
+    const userData = localStorage.getItem("userData");
+    setIsLoggedIn(!!(token && userData));
+  }, []);
 
   // Sticky Navbar
   const [sticky, setSticky] = useState(false);
@@ -79,14 +90,14 @@ const Header = () => {
                   sticky ? "py-5 lg:py-2" : "py-8"
                 } `}
               >
-                <Image
+                <img
                   src="/images/logo/logo-2.svg"
                   alt="logo"
                   width={140}
                   height={30}
                   className="w-full dark:hidden"
                 />
-                <Image
+                <img
                   src="/images/logo/logo.svg"
                   alt="logo"
                   width={140}
@@ -182,18 +193,16 @@ const Header = () => {
                 </nav>
               </div>
               <div className="flex items-center justify-end pr-16 lg:pr-0">
+              {isLoggedIn ? (
+                  <DropdownUser />
+                ) : (
                 <Link
                   href="/signin"
-                  className="hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block"
+                  className="ease-in-up hidden rounded-sm bg-primary px-8 py-3 text-base font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9"
                 >
                   Sign In
                 </Link>
-                <Link
-                  href="/signup"
-                  className="ease-in-up hidden rounded-sm bg-primary px-8 py-3 text-base font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9"
-                >
-                  Sign Up
-                </Link>
+                )}
                 <div>
                   <ThemeToggler />
                 </div>
@@ -203,8 +212,10 @@ const Header = () => {
         </div>
       </header>
       <ScrollProgress
-            className={`md:top-[70px] top-[63px] ${sticky ? 'fixed' : 'absolute'} z-[9999] w-full`}
-          />
+        className={`top-[63px] md:top-[70px] ${
+          sticky ? "fixed" : "absolute"
+        } z-[9999] w-full`}
+      />
     </>
   );
 };

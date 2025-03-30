@@ -244,13 +244,85 @@ const MessageCard = ({ message, className, highlightColor, compact = false }) =>
 
 // Component for loading state
 const LoadingState = () => (
-  <div className="w-full min-h-screen flex justify-center items-center dark:bg-[#111827] dark:text-white bg-[#f9fafb] text-[#1f2937]">
-    <div className="flex flex-col items-center">
-      <div className="w-12 h-12 border-4 border-[#bfdbfe] border-t-[#2563eb] rounded-full animate-spin mb-4"></div>
-      <div className="text-xl">Loading messages...</div>
+    <div className="w-full min-h-screen p-4 transition-colors duration-300 dark:bg-[#111827] dark:text-white bg-[#f9fafb] text-[#1f2937]">
+        <div className="max-w-7xl mx-auto">
+            {/* Skeleton header */}
+            <div className="mb-12 w-full">
+                <div className="mb-6 flex flex-col items-center justify-center">
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-3 mb-4">
+                        <div className="h-10 w-10 md:h-10 md:w-10 mb-2 md:mb-0 rounded-full bg-[#e5e7eb] dark:bg-[#374151] animate-pulse"></div>
+                        <div className="h-8 w-48 bg-[#e5e7eb] dark:bg-[#374151] rounded-md animate-pulse"></div>
+                    </div>
+                    <div className="mx-auto max-w-3xl px-4 md:px-8">
+                        <div className="h-4 w-full max-w-3xl bg-[#e5e7eb] dark:bg-[#374151] rounded-md animate-pulse mb-2"></div>
+                        <div className="h-4 w-5/6 bg-[#e5e7eb] dark:bg-[#374151] rounded-md animate-pulse mb-2"></div>
+                        <div className="h-4 w-4/6 bg-[#e5e7eb] dark:bg-[#374151] rounded-md animate-pulse"></div>
+                        <div className="flex justify-center mt-3">
+                            <div className="h-1 w-16 bg-[#e5e7eb] dark:bg-[#374151] rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {/* Row 1: Skeleton cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <SkeletonCard />
+                <SkeletonCard />
+            </div>
+            
+            {/* Row 2: Skeleton center card */}
+            <div className="flex justify-center w-full mb-8">
+                <div className="max-w-2xl w-full">
+                    <SkeletonCard />
+                </div>
+            </div>
+            
+            {/* Row 3: Skeleton cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <SkeletonCard />
+                <SkeletonCard />
+            </div>
+            
+            {/* Other Messages Skeleton */}
+            <div className="mt-10 mb-4">
+                <div className="h-6 w-48 bg-[#e5e7eb] dark:bg-[#374151] rounded-md animate-pulse"></div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <SkeletonCard compact={true} />
+                <SkeletonCard compact={true} />
+                <SkeletonCard compact={true} />
+            </div>
+        </div>
     </div>
-  </div>
 );
+
+// Skeleton card component
+const SkeletonCard = ({ compact = false }) => (
+    <div className="rounded-xl shadow-md overflow-hidden border border-[#e5e7eb] dark:border-[#374151]">
+        <div className="p-6">
+            <div className={`flex ${compact ? "flex-row items-center" : "flex-col md:flex-row"} gap-5`}>
+                <div className="flex-shrink-0">
+                    <div className="relative">
+                        <div className={`${compact ? "w-16 h-16" : "w-20 h-20 md:w-24 md:h-24"} rounded-full bg-[#e5e7eb] dark:bg-[#374151] animate-pulse`}></div>
+                        <div className={`absolute -bottom-1 -right-1 ${compact ? "w-7 h-7" : "w-9 h-9"} rounded-full bg-[#d1d5db] dark:bg-[#4b5563] animate-pulse`}></div>
+                    </div>
+                </div>
+                <div className="flex-grow">
+                    <div className="flex flex-col gap-2">
+                        <div className="h-6 w-36 bg-[#e5e7eb] dark:bg-[#374151] rounded-md animate-pulse"></div>
+                        <div className="h-4 w-24 bg-[#e5e7eb] dark:bg-[#374151] rounded-md animate-pulse mb-3"></div>
+                        <div className="space-y-2">
+                            <div className="h-3 w-full bg-[#e5e7eb] dark:bg-[#374151] rounded-md animate-pulse"></div>
+                            <div className="h-3 w-full bg-[#e5e7eb] dark:bg-[#374151] rounded-md animate-pulse"></div>
+                            <div className="h-3 w-2/3 bg-[#e5e7eb] dark:bg-[#374151] rounded-md animate-pulse"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
 
 // Component for error state
 const ErrorState = ({ error }) => (

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { FaBell } from "react-icons/fa";
 import ClickOutside from "@/components/Dashboard-components/ClickOutside";
 import Cookies from "js-cookie";

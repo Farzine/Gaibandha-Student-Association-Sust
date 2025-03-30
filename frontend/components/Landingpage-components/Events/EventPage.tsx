@@ -165,7 +165,7 @@ const EventsPage: React.FC = () => {
                 once
                 className="text-lg text-[#4b5563] dark:text-[#d1d5db]"
               >
-                We're currently organizing new events. Check back soon for upcoming activities and gatherings.
+                We&apos;re currently organizing new events. Check back soon for upcoming activities and gatherings.
               </TextAnimate>
             </div>
           </div>
